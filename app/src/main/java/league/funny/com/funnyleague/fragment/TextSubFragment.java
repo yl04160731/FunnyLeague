@@ -1,6 +1,5 @@
 package league.funny.com.funnyleague.fragment;
 
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -10,10 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,12 +22,15 @@ import league.funny.com.funnyleague.view.RecycleViewDivider;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TextSubFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class TextSubFragment extends Fragment {
 
     private int pid;
     private View view = null;
 
-    private TextRecyclerAdapter textRecyclerAdapter;
+    boolean isLoading;
+    private ArrayList<String> data = new ArrayList<>();
+    private TextRecyclerAdapter adapter;
+    private Handler handler = new Handler();
 
     @BindView(R.id.swipeRefreshLayout_text)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -40,8 +41,6 @@ public class TextSubFragment extends Fragment implements SwipeRefreshLayout.OnRe
     public TextSubFragment() {
         // Required empty public constructor
     }
-
-    private List<String> mList = new ArrayList<>();
 
     public TextSubFragment(int pid) {
         this.pid = pid;
@@ -54,48 +53,103 @@ public class TextSubFragment extends Fragment implements SwipeRefreshLayout.OnRe
         setRetainInstance(true);
         view = inflater.inflate(R.layout.fragment_text_sub, container, false);
         ButterKnife.bind(this, view);
-        setHasOptionsMenu(true);
-
-
-        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(android.R.color.white);
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.gray);
-
-        swipeRefreshLayout.setOnRefreshListener(this);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        textRecyclerAdapter = new TextRecyclerAdapter(getActivity(), initData());
-        recyclerView.setAdapter(textRecyclerAdapter);
-
-        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(),RecycleViewDivider.VERTICAL_LIST));
+        initView();
+        initData();
         return view;
     }
 
-    private List<String> initData() {
-        List<String> datas = new ArrayList<String>();
-        for (int i = 0; i <= 30; i++) {
-            datas.add("item:" + Math.random());
-        }
-        return datas;
-    }
+    public void initView() {
+        adapter = new TextRecyclerAdapter(getActivity(), data);
 
-    @Override
-    public void onRefresh() {
-
-        swipeRefreshLayout.setRefreshing(true);
-
-        new Handler().postDelayed(new Runnable() {
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                textRecyclerAdapter = new TextRecyclerAdapter(getActivity(), initData());
-                recyclerView.setAdapter(textRecyclerAdapter);
-                textRecyclerAdapter.notifyDataSetChanged();
-
-                Toast.makeText(getActivity(), "刷新了一条数据", Toast.LENGTH_SHORT).show();
-
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(true);
             }
-        }, 3200);
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        data.clear();
+                        getData();
+                    }
+                }, 2000);
+            }
+        });
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(),RecycleViewDivider.VERTICAL_LIST));
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+                if (lastVisibleItemPosition + 1 == adapter.getItemCount()) {
+
+                    boolean isRefreshing = swipeRefreshLayout.isRefreshing();
+                    if (isRefreshing) {
+                        adapter.notifyItemRemoved(adapter.getItemCount());
+                        return;
+                    }
+                    if (!isLoading) {
+                        isLoading = true;
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                getData();
+                                isLoading = false;
+                            }
+                        }, 1000);
+                    }
+                }
+            }
+        });
+
+        //添加点击事件
+        adapter.setOnItemClickListener(new TextRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        });
+    }
+
+    public void initData() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getData();
+            }
+        }, 1500);
+    }
+
+    /**
+     * 获取测试数据
+     */
+    private void getData() {
+        for (int i = 0; i < 30; i++) {
+            data.add(new Random(20) + "");
+        }
+        adapter.notifyDataSetChanged();
+        swipeRefreshLayout.setRefreshing(false);
+        adapter.notifyItemRemoved(adapter.getItemCount());
     }
 
 }

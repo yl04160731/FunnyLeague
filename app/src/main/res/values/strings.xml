@@ -8,6 +8,8 @@
     <string name="title_chengren">荤段子</string>
     <string name="title_more">更多</string>
 
+    <string name="loading">加载中…</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

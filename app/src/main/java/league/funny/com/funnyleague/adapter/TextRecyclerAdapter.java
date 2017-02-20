@@ -1,48 +1,111 @@
 package league.funny.com.funnyleague.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.Adapter;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import league.funny.com.funnyleague.R;
 
-public class TextRecyclerAdapter extends RecyclerView.Adapter<TextRecyclerAdapter.TextRecyclerHolder> {
+public class TextRecyclerAdapter extends Adapter<ViewHolder> {
 
-    private List<String> datas;
-    private LayoutInflater inflater;
+    private static final int TYPE_ITEM = 0;
+    private static final int TYPE_FOOTER = 1;
+    private Context context;
+    private ArrayList<String> data;
 
-    public TextRecyclerAdapter(Context context, List<String> datas) {
-        this.datas = datas;
-        inflater = LayoutInflater.from(context);
+
+    public TextRecyclerAdapter(Context context, ArrayList<String> data) {
+        this.context = context;
+        this.data = data;
     }
 
-    public class TextRecyclerHolder extends RecyclerView.ViewHolder {
-        private TextView title;
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
 
-        public TextRecyclerHolder(View itemView) {
-            super(itemView);
-            title = (TextView) itemView.findViewById(R.id.item_title);
-        }
+        void onItemLongClick(View view, int position);
     }
 
-    @Override
-    public TextRecyclerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        TextRecyclerHolder holder = new TextRecyclerHolder(inflater.inflate(R.layout.recycler_text_item, parent, false));
-        return holder;
-    }
+    private OnItemClickListener onItemClickListener;
 
-    @Override
-    public void onBindViewHolder(TextRecyclerHolder holder, int position) {
-        holder.title.setText(datas.get(position));
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
     public int getItemCount() {
-        return datas.size();
+        return data.size() == 0 ? 0 : data.size() + 1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position + 1 == getItemCount()) {
+            return TYPE_FOOTER;
+        } else {
+            return TYPE_ITEM;
+        }
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == TYPE_ITEM) {
+            View view = LayoutInflater.from(context).inflate(R.layout.recycler_text_item, parent,
+                    false);
+            return new ItemViewHolder(view);
+        } else if (viewType == TYPE_FOOTER) {
+            View view = LayoutInflater.from(context).inflate(R.layout.item_foot, parent,
+                    false);
+            return new FootViewHolder(view);
+        }
+        return null;
+    }
+
+
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        if (holder instanceof ItemViewHolder) {
+            ((ItemViewHolder) holder).tv.setText(data.get(position));
+            if (onItemClickListener != null) {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position = holder.getLayoutPosition();
+                        onItemClickListener.onItemClick(holder.itemView, position);
+                    }
+                });
+
+                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        int position = holder.getLayoutPosition();
+                        onItemClickListener.onItemLongClick(holder.itemView, position);
+                        return false;
+                    }
+                });
+            }
+        }
+    }
+
+
+    public static class ItemViewHolder extends ViewHolder {
+
+        TextView tv;
+
+        public ItemViewHolder(View view) {
+            super(view);
+            tv = (TextView) view.findViewById(R.id.item_title);
+        }
+    }
+
+    public static class FootViewHolder extends ViewHolder {
+
+        public FootViewHolder(View view) {
+            super(view);
+        }
     }
 }

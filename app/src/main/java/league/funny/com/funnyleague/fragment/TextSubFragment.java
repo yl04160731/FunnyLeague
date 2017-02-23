@@ -2,6 +2,7 @@ package league.funny.com.funnyleague.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,13 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
 import java.util.ArrayList;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.R;
 import league.funny.com.funnyleague.adapter.TextRecyclerAdapter;
+import league.funny.com.funnyleague.bean.QiuBaiItemBean;
+import league.funny.com.funnyleague.util.HttpUrlUtil;
 import league.funny.com.funnyleague.view.RecycleViewDivider;
 
 /**
@@ -27,8 +33,10 @@ public class TextSubFragment extends Fragment {
     private int pid;
     private View view = null;
 
+    private int page = 1;
+
     boolean isLoading;
-    private ArrayList<String> data = new ArrayList<>();
+    private ArrayList<QiuBaiItemBean> qiuBaiItemBeanArrayList = new ArrayList<>();
     private TextRecyclerAdapter adapter;
     private Handler handler = new Handler();
 
@@ -59,7 +67,7 @@ public class TextSubFragment extends Fragment {
     }
 
     public void initView() {
-        adapter = new TextRecyclerAdapter(getActivity(), data);
+        adapter = new TextRecyclerAdapter(getActivity(), qiuBaiItemBeanArrayList);
 
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.post(new Runnable() {
@@ -75,7 +83,7 @@ public class TextSubFragment extends Fragment {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        data.clear();
+                        qiuBaiItemBeanArrayList.clear();
                         getData();
                     }
                 }, 2000);
@@ -132,24 +140,71 @@ public class TextSubFragment extends Fragment {
     }
 
     public void initData() {
-        handler.postDelayed(new Runnable() {
+        Runnable networkTask = new Runnable() {
             @Override
             public void run() {
                 getData();
+                Message message = new Message();
+                message.what = 1;
+                HtmlHandler.sendMessage(message);
             }
-        }, 1500);
+        };
+
+        new Thread(networkTask).start();
     }
+
+    Handler HtmlHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            adapter.notifyDataSetChanged();
+            swipeRefreshLayout.setRefreshing(false);
+            adapter.notifyItemRemoved(adapter.getItemCount());
+        }
+    };
 
     /**
      * 获取测试数据
      */
     private void getData() {
-        for (int i = 0; i < 30; i++) {
-            data.add(new Random(20) + "");
+        try {
+            String URL = HttpUrlUtil.QIU_BAI_TEXT_PAGE + page + HttpUrlUtil.SPRIT;
+            Document doc = Jsoup.connect(URL)
+                    .userAgent("Mozilla/5.0 (Windows NT 5.1; zh-CN) AppleWebKit/535.12 (KHTML, like Gecko) Chrome/22.0.1229.79 Safari/535.12")
+                    .timeout(6000).get();
+
+            Elements elementsArticle = doc.select(".article").select(".block");
+            if (elementsArticle != null && elementsArticle.size() <= 0) {
+                return;
+            }
+            for (int i = 0; i < elementsArticle.size(); i++) {
+                QiuBaiItemBean qiuBaiItemBean = new QiuBaiItemBean();
+                Elements elementsAuthor = elementsArticle.get(i).select(".author");
+
+                String userUrl = elementsAuthor.select("a").attr("href");
+                qiuBaiItemBean.setUserId(userUrl.replace("/","").replace("users",""));
+                qiuBaiItemBean.setUserUrl(HttpUrlUtil.QIU_BAI_HOME + userUrl);
+                qiuBaiItemBean.setUserName(elementsAuthor.select("h2").html());
+                qiuBaiItemBean.setUserImage(elementsAuthor.select("img").attr("src"));
+                qiuBaiItemBean.setUserAge(elementsAuthor.select(".articleGender").html());
+
+                if(elementsAuthor.html().contains("manIcon")){
+                    qiuBaiItemBean.setUserSex("man");
+                }else{
+                    qiuBaiItemBean.setUserSex("women");
+                }
+                qiuBaiItemBean.setItemContentUrl(HttpUrlUtil.QIU_BAI_HOME + elementsArticle.get(i).select(".contentHerf").attr("href"));
+                qiuBaiItemBean.setItemContent(elementsArticle.get(i).select(".content").select("span").html().replace("<br/>",System.getProperty("line.separator")).replace("<br>",System.getProperty("line.separator")));
+                qiuBaiItemBean.setSmileCount(elementsArticle.get(i).select(".stats-vote").select(".number").html());
+                qiuBaiItemBean.setCommentCount(elementsArticle.get(i).select(".stats-comments").select(".number").html());
+                qiuBaiItemBean.setCommentGoodName(elementsArticle.get(i).select(".cmt-name").html());
+                String likeNum = elementsArticle.get(i).select(".likenum").text();
+                qiuBaiItemBean.setCommentGoodContent(elementsArticle.get(i).select(".main-text").text().replace(" " + likeNum,""));
+                qiuBaiItemBean.setCommentGoodCount(elementsArticle.get(i).select(".likenum").text());
+
+                qiuBaiItemBeanArrayList.add(qiuBaiItemBean);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        adapter.notifyDataSetChanged();
-        swipeRefreshLayout.setRefreshing(false);
-        adapter.notifyItemRemoved(adapter.getItemCount());
     }
 
 }

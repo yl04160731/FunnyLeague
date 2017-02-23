@@ -11,18 +11,19 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import league.funny.com.funnyleague.R;
+import league.funny.com.funnyleague.bean.QiuBaiItemBean;
 
 public class TextRecyclerAdapter extends Adapter<ViewHolder> {
 
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
     private Context context;
-    private ArrayList<String> data;
+    private ArrayList<QiuBaiItemBean> qiuBaiItemBeanArrayList;
 
 
-    public TextRecyclerAdapter(Context context, ArrayList<String> data) {
+    public TextRecyclerAdapter(Context context, ArrayList<QiuBaiItemBean> qiuBaiItemBeanArrayList) {
         this.context = context;
-        this.data = data;
+        this.qiuBaiItemBeanArrayList = qiuBaiItemBeanArrayList;
     }
 
     public interface OnItemClickListener {
@@ -39,7 +40,7 @@ public class TextRecyclerAdapter extends Adapter<ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return data.size() == 0 ? 0 : data.size() + 1;
+        return qiuBaiItemBeanArrayList.size() == 0 ? 0 : qiuBaiItemBeanArrayList.size() + 1;
     }
 
     @Override
@@ -69,7 +70,7 @@ public class TextRecyclerAdapter extends Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
-            ((ItemViewHolder) holder).tv.setText(data.get(position));
+            ((ItemViewHolder) holder).tv.setText(qiuBaiItemBeanArrayList.get(position).getItemContent());
             if (onItemClickListener != null) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

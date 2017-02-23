@@ -11,12 +11,14 @@ public class QiuBaiItemBean {
     private String userId;
     private String userName;
     private String userImage;
+    private String userUrl;
     private String userAge;
     private String userSex;
     private String itemContent;
+    private String itemContentUrl;
     private String smileCount;
     private String commentCount;
-    private String commentGood;
+    private String commentGoodName;
     private String commentGoodContent;
     private String commentGoodCount;
     private ArrayList<QiuBaiCommentBean> qbcbList = new ArrayList<>();
@@ -93,12 +95,12 @@ public class QiuBaiItemBean {
         this.commentCount = commentCount;
     }
 
-    public String getCommentGood() {
-        return commentGood;
+    public String getCommentGoodName() {
+        return commentGoodName;
     }
 
-    public void setCommentGood(String commentGood) {
-        this.commentGood = commentGood;
+    public void setCommentGoodName(String commentGoodName) {
+        this.commentGoodName = commentGoodName;
     }
 
     public String getCommentGoodContent() {
@@ -123,5 +125,21 @@ public class QiuBaiItemBean {
 
     public void setQbcbList(ArrayList<QiuBaiCommentBean> qbcbList) {
         this.qbcbList = qbcbList;
+    }
+
+    public String getItemContentUrl() {
+        return itemContentUrl;
+    }
+
+    public void setItemContentUrl(String itemContentUrl) {
+        this.itemContentUrl = itemContentUrl;
+    }
+
+    public String getUserUrl() {
+        return userUrl;
+    }
+
+    public void setUserUrl(String userUrl) {
+        this.userUrl = userUrl;
     }
 }

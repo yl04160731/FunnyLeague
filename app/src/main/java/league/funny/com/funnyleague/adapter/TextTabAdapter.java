@@ -5,7 +5,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
-import league.funny.com.funnyleague.fragment.TextSubFragment;
+import league.funny.com.funnyleague.fragment.BaiSiJieTextFragment;
+import league.funny.com.funnyleague.fragment.NeiHanTextFragment;
+import league.funny.com.funnyleague.fragment.PengFuTextFragment;
+import league.funny.com.funnyleague.fragment.QiuBaiTextFragment;
 
 public class TextTabAdapter extends FragmentPagerAdapter {
     // 内容标题
@@ -19,22 +22,22 @@ public class TextTabAdapter extends FragmentPagerAdapter {
     // 获取项
     @Override
     public Fragment getItem(int position) {
-        TextSubFragment textSubFragment = null;
+        Fragment textFragment = null;
         switch (position) {
             case 0:
-                textSubFragment = new TextSubFragment(0);
-                return textSubFragment;
+                textFragment = new QiuBaiTextFragment();
+                return textFragment;
             case 1:
-                textSubFragment = new TextSubFragment(1);
-                return textSubFragment;
+                textFragment = new PengFuTextFragment();
+                return textFragment;
             case 2:
-                textSubFragment = new TextSubFragment(2);
-                return textSubFragment;
+                textFragment = new NeiHanTextFragment();
+                return textFragment;
             case 3:
-                textSubFragment = new TextSubFragment(3);
-                return textSubFragment;
+                textFragment = new BaiSiJieTextFragment();
+                return textFragment;
         }
-        return textSubFragment;
+        return textFragment;
     }
 
     @Override

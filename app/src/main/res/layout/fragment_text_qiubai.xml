@@ -2,7 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="league.funny.com.funnyleague.fragment.TextSubFragment">
+    tools:context="league.funny.com.funnyleague.fragment.QiuBaiTextFragment">
+    <View
+        android:background="@color/lightGrey"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout_text"

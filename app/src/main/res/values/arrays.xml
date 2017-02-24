@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pingtai_names">
+        <item>糗事百科</item>
+        <item>捧腹网</item>
+        <item>内涵段子</item>
+        <item>百思姐</item>
+    </string-array>
+</resources>

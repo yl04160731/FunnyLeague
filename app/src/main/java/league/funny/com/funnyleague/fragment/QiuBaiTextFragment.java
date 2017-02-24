@@ -3,8 +3,9 @@ package league.funny.com.funnyleague.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,24 +21,18 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.R;
-import league.funny.com.funnyleague.adapter.TextRecyclerAdapter;
+import league.funny.com.funnyleague.adapter.QiuBaiTextRecyclerAdapter;
 import league.funny.com.funnyleague.bean.QiuBaiItemBean;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
 import league.funny.com.funnyleague.view.RecycleViewDivider;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class TextSubFragment extends Fragment {
+public class QiuBaiTextFragment extends BaseFragment {
 
-    private int pid;
     private View view = null;
-
     private int page = 1;
-
     boolean isLoading;
     private ArrayList<QiuBaiItemBean> qiuBaiItemBeanArrayList = new ArrayList<>();
-    private TextRecyclerAdapter adapter;
+    private QiuBaiTextRecyclerAdapter adapter;
     private Handler handler = new Handler();
 
     @BindView(R.id.swipeRefreshLayout_text)
@@ -46,20 +41,15 @@ public class TextSubFragment extends Fragment {
     @BindView(R.id.recyclerView_text)
     RecyclerView recyclerView;
 
-    public TextSubFragment() {
+    public QiuBaiTextFragment() {
         // Required empty public constructor
     }
-
-    public TextSubFragment(int pid) {
-        this.pid = pid;
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setRetainInstance(true);
-        view = inflater.inflate(R.layout.fragment_text_sub, container, false);
+        view = inflater.inflate(R.layout.fragment_text_qiubai, container, false);
         ButterKnife.bind(this, view);
         initView();
         initData();
@@ -67,26 +57,28 @@ public class TextSubFragment extends Fragment {
     }
 
     public void initView() {
-        adapter = new TextRecyclerAdapter(getActivity(), qiuBaiItemBeanArrayList);
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setCustomView(R.layout.actionbar_main);//自定义ActionBar布局
+
+        adapter = new QiuBaiTextRecyclerAdapter(getActivity(), qiuBaiItemBeanArrayList);
 
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-            }
-        });
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                handler.postDelayed(new Runnable() {
+                Runnable networkTask = new Runnable() {
                     @Override
                     public void run() {
-                        qiuBaiItemBeanArrayList.clear();
-                        getData();
+                        swipeRefreshLayout.setRefreshing(true);
+
+                        page = 1;
+                        getData(true);
                     }
-                }, 2000);
+                };
+                new Thread(networkTask).start();
             }
         });
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -109,25 +101,27 @@ public class TextSubFragment extends Fragment {
 
                     boolean isRefreshing = swipeRefreshLayout.isRefreshing();
                     if (isRefreshing) {
-                        adapter.notifyItemRemoved(adapter.getItemCount());
+//                        adapter.notifyItemRemoved(adapter.getItemCount());
                         return;
                     }
                     if (!isLoading) {
                         isLoading = true;
-                        handler.postDelayed(new Runnable() {
+                        Runnable networkTask = new Runnable() {
                             @Override
                             public void run() {
-                                getData();
+                                page = page + 1;
+                                getData(false);
                                 isLoading = false;
                             }
-                        }, 1000);
+                        };
+                        new Thread(networkTask).start();
                     }
                 }
             }
         });
 
         //添加点击事件
-        adapter.setOnItemClickListener(new TextRecyclerAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new QiuBaiTextRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
             }
@@ -143,10 +137,8 @@ public class TextSubFragment extends Fragment {
         Runnable networkTask = new Runnable() {
             @Override
             public void run() {
-                getData();
-                Message message = new Message();
-                message.what = 1;
-                HtmlHandler.sendMessage(message);
+                swipeRefreshLayout.setRefreshing(true);
+                getData(false);
             }
         };
 
@@ -164,7 +156,7 @@ public class TextSubFragment extends Fragment {
     /**
      * 获取测试数据
      */
-    private void getData() {
+    private void getData(boolean clearFlg) {
         try {
             String URL = HttpUrlUtil.QIU_BAI_TEXT_PAGE + page + HttpUrlUtil.SPRIT;
             Document doc = Jsoup.connect(URL)
@@ -175,6 +167,9 @@ public class TextSubFragment extends Fragment {
             if (elementsArticle != null && elementsArticle.size() <= 0) {
                 return;
             }
+
+            if(clearFlg) qiuBaiItemBeanArrayList.clear();
+
             for (int i = 0; i < elementsArticle.size(); i++) {
                 QiuBaiItemBean qiuBaiItemBean = new QiuBaiItemBean();
                 Elements elementsAuthor = elementsArticle.get(i).select(".author");
@@ -182,28 +177,33 @@ public class TextSubFragment extends Fragment {
                 String userUrl = elementsAuthor.select("a").attr("href");
                 qiuBaiItemBean.setUserId(userUrl.replace("/","").replace("users",""));
                 qiuBaiItemBean.setUserUrl(HttpUrlUtil.QIU_BAI_HOME + userUrl);
-                qiuBaiItemBean.setUserName(elementsAuthor.select("h2").html());
+                qiuBaiItemBean.setUserName(elementsAuthor.select("h2").html().replace("&lt;","<").replace("&gt;",">").replace("&amp;","&"));
                 qiuBaiItemBean.setUserImage(elementsAuthor.select("img").attr("src"));
                 qiuBaiItemBean.setUserAge(elementsAuthor.select(".articleGender").html());
 
                 if(elementsAuthor.html().contains("manIcon")){
                     qiuBaiItemBean.setUserSex("man");
-                }else{
+                }else if(elementsAuthor.html().contains("womenIcon")){
                     qiuBaiItemBean.setUserSex("women");
                 }
+
                 qiuBaiItemBean.setItemContentUrl(HttpUrlUtil.QIU_BAI_HOME + elementsArticle.get(i).select(".contentHerf").attr("href"));
-                qiuBaiItemBean.setItemContent(elementsArticle.get(i).select(".content").select("span").html().replace("<br/>",System.getProperty("line.separator")).replace("<br>",System.getProperty("line.separator")));
+                qiuBaiItemBean.setItemContent(elementsArticle.get(i).select(".content").select("span").html().replace("<br/>",System.getProperty("line.separator")).replace("<br>",System.getProperty("line.separator")).replace("&lt;","<").replace("&gt;",">").replace("&amp;","&"));
                 qiuBaiItemBean.setSmileCount(elementsArticle.get(i).select(".stats-vote").select(".number").html());
                 qiuBaiItemBean.setCommentCount(elementsArticle.get(i).select(".stats-comments").select(".number").html());
-                qiuBaiItemBean.setCommentGoodName(elementsArticle.get(i).select(".cmt-name").html());
+                qiuBaiItemBean.setCommentGoodName(elementsArticle.get(i).select(".cmt-name").html().replace("<br/>",System.getProperty("line.separator")).replace("<br>",System.getProperty("line.separator")).replace("&lt;","<").replace("&gt;",">").replace("&amp;","&"));
                 String likeNum = elementsArticle.get(i).select(".likenum").text();
-                qiuBaiItemBean.setCommentGoodContent(elementsArticle.get(i).select(".main-text").text().replace(" " + likeNum,""));
+                qiuBaiItemBean.setCommentGoodContent(elementsArticle.get(i).select(".main-text").text().replace(" " + likeNum,"").replace("<br/>",System.getProperty("line.separator")).replace("<br>",System.getProperty("line.separator")).replace("&lt;","<").replace("&gt;",">").replace("&amp;","&"));
                 qiuBaiItemBean.setCommentGoodCount(elementsArticle.get(i).select(".likenum").text());
 
                 qiuBaiItemBeanArrayList.add(qiuBaiItemBean);
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            Message message = new Message();
+            message.what = 1;
+            HtmlHandler.sendMessage(message);
         }
     }
 

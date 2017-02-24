@@ -6,7 +6,7 @@
     <color name="white">#FFFFFF</color>
     <color name="gray">#666666</color>
     <color name="lightGray">#f2f2f2</color>
+    <color name="lightGrey">#e5e5e5</color>
     <color name="dark">#424242</color>
     <color name="grey">#8C8C8C</color>
-    <color name="blueStatus">#1680E2</color>
 </resources>

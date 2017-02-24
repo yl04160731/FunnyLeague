@@ -29,6 +29,12 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
     private final int EXIT_ALL_TIME = 2000;
     private long exitTime = 0;
 
+    private TextFragment textFragment = null;
+    private ImageFragment imageFragment = null;
+    private VideoFragment videoFragment = null;
+    private ChengrenFragment chengrenFragment = null;
+    private MoreFragment moreFragment = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +68,10 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
                 .initialise();
 
         if(currentFragment == null){
+            Fragment fragment = getFragmentById(0);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, getFragmentById(0)).commit();
+                    .replace(R.id.fragment_container, fragment).commit();
+            currentFragment = fragment;
         }
     }
 
@@ -76,11 +84,17 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
 
         Fragment fragment = getFragmentById(position);
 
-        if (currentFragment == null || !currentFragment
-                .getClass().getName().equals(fragment.getClass().getName())) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fragment).commit();
+//        if (currentFragment == null || !currentFragment
+//                .getClass().getName().equals(fragment.getClass().getName())) {
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.fragment_container, fragment).commit();
+//        }
+        if (!fragment.isAdded()) {	// 先判断是否被add过
+            getSupportFragmentManager().beginTransaction().hide(currentFragment).add(R.id.fragment_container, fragment).commit(); // 隐藏当前的fragment，add下一个到Activity中
+        } else {
+            getSupportFragmentManager().beginTransaction().hide(currentFragment).show(fragment).commit(); // 隐藏当前的fragment，显示下一个
         }
+
         currentFragment = fragment;
 
     }
@@ -99,19 +113,44 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new TextFragment();
+                if(textFragment == null){
+                    textFragment = new TextFragment();
+                    fragment = textFragment;
+                }else{
+                    fragment = textFragment;
+                }
                 break;
             case 1:
-                fragment = new ImageFragment();
+                if(imageFragment == null){
+                    imageFragment = new ImageFragment();
+                    fragment = imageFragment;
+                }else{
+                    fragment = imageFragment;
+                }
                 break;
             case 2:
-                fragment = new VideoFragment();
+                if(videoFragment == null){
+                    videoFragment = new VideoFragment();
+                    fragment = videoFragment;
+                }else{
+                    fragment = videoFragment;
+                }
                 break;
             case 3:
-                fragment = new ChengrenFragment();
+                if(chengrenFragment == null){
+                    chengrenFragment = new ChengrenFragment();
+                    fragment = chengrenFragment;
+                }else{
+                    fragment = chengrenFragment;
+                }
                 break;
             case 4:
-                fragment = new MoreFragment();
+                if(moreFragment == null){
+                    moreFragment = new MoreFragment();
+                    fragment = moreFragment;
+                }else{
+                    fragment = moreFragment;
+                }
                 break;
 
         }

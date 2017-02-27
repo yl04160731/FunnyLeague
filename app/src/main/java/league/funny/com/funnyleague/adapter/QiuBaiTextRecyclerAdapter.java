@@ -1,6 +1,8 @@
 package league.funny.com.funnyleague.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.R;
+import league.funny.com.funnyleague.activity.QiuBaiContentActivity;
 import league.funny.com.funnyleague.bean.QiuBaiItemBean;
 import league.funny.com.funnyleague.util.GlideCircleTransform;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
@@ -34,17 +38,17 @@ public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
         this.qiuBaiItemBeanArrayList = qiuBaiItemBeanArrayList;
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(View view, int position);
-
-        void onItemLongClick(View view, int position);
-    }
-
-    private OnItemClickListener onItemClickListener;
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
+//    public interface OnItemClickListener {
+//        void onItemClick(View view, int position);
+//
+//        void onItemLongClick(View view, int position);
+//    }
+//
+//    private OnItemClickListener onItemClickListener;
+//
+//    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+//        this.onItemClickListener = onItemClickListener;
+//    }
 
     @Override
     public int getItemCount() {
@@ -78,7 +82,7 @@ public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder) {
-            QiuBaiItemBean qiuBaiItemBean = qiuBaiItemBeanArrayList.get(position);
+            final QiuBaiItemBean qiuBaiItemBean = qiuBaiItemBeanArrayList.get(position);
             ((ItemViewHolder) holder).userName.setText(qiuBaiItemBean.getUserName());
 
             if (!qiuBaiItemBean.getUserImage().contains("qiushibaike")) {
@@ -102,29 +106,44 @@ public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
                 ((ItemViewHolder) holder).commentLayout.setVisibility(View.GONE);
             }
 
-            System.out.println(qiuBaiItemBean.getUserName() + "*******" + qiuBaiItemBean.getUserSex() + "*******" + qiuBaiItemBean.getUserAge());
+            ((ItemViewHolder) holder).userName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, qiuBaiItemBean.getUserUrl(), Toast.LENGTH_SHORT).show();
+                }
+            });
 
-            if (onItemClickListener != null) {
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int position = holder.getLayoutPosition();
-                        onItemClickListener.onItemClick(holder.itemView, position);
-                    }
-                });
+            ((ItemViewHolder) holder).userImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, qiuBaiItemBean.getUserUrl(), Toast.LENGTH_SHORT).show();
+                }
+            });
 
-                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        int position = holder.getLayoutPosition();
-                        onItemClickListener.onItemLongClick(holder.itemView, position);
-                        return false;
-                    }
-                });
-            }
+            ((ItemViewHolder) holder).itemContent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toQiuBaiContentActivity(qiuBaiItemBean.getItemContentUrl());
+                }
+            });
+
+            ((ItemViewHolder) holder).commentGood.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toQiuBaiContentActivity(qiuBaiItemBean.getItemContentUrl());
+                }
+            });
         }
     }
 
+    public void toQiuBaiContentActivity(String url){
+        Intent intent = new Intent();
+        intent.setClass(context, QiuBaiContentActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("htmlUrl", url);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+    }
 
     public static class ItemViewHolder extends ViewHolder {
 

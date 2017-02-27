@@ -7,6 +7,7 @@ package league.funny.com.funnyleague.bean;
 public class QiuBaiCommentBean {
     private int id;
     private String userId;
+    private String userUrl;
     private String userName;
     private String userImage;
     private String userAge;
@@ -28,6 +29,14 @@ public class QiuBaiCommentBean {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getUserUrl() {
+        return userUrl;
+    }
+
+    public void setUserUrl(String userUrl) {
+        this.userUrl = userUrl;
     }
 
     public String getUserName() {

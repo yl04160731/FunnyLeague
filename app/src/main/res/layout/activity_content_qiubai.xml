@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_content_qiubai"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="league.funny.com.funnyleague.activity.QiuBaiContentActivity">
+
+    <FrameLayout
+        android:id="@+id/fragment_container_qiubai"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_navigation_bar"
+        android:background="@color/white"/>
+
+</RelativeLayout>

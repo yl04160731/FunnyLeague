@@ -24,6 +24,7 @@ import league.funny.com.funnyleague.R;
 import league.funny.com.funnyleague.adapter.QiuBaiTextRecyclerAdapter;
 import league.funny.com.funnyleague.bean.QiuBaiItemBean;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
+import league.funny.com.funnyleague.util.Util;
 import league.funny.com.funnyleague.view.RecycleViewDivider;
 
 public class QiuBaiTextFragment extends BaseFragment {
@@ -119,18 +120,6 @@ public class QiuBaiTextFragment extends BaseFragment {
                 }
             }
         });
-
-        //添加点击事件
-        adapter.setOnItemClickListener(new QiuBaiTextRecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-            }
-        });
     }
 
     public void initData() {
@@ -161,7 +150,7 @@ public class QiuBaiTextFragment extends BaseFragment {
             String URL = HttpUrlUtil.QIU_BAI_TEXT_PAGE + page + HttpUrlUtil.SPRIT;
             Document doc = Jsoup.connect(URL)
                     .userAgent("Mozilla/5.0 (Windows NT 5.1; zh-CN) AppleWebKit/535.12 (KHTML, like Gecko) Chrome/22.0.1229.79 Safari/535.12")
-                    .timeout(6000).get();
+                    .timeout(15000).get();
 
             Elements elementsArticle = doc.select(".article").select(".block");
             if (elementsArticle != null && elementsArticle.size() <= 0) {
@@ -177,7 +166,7 @@ public class QiuBaiTextFragment extends BaseFragment {
                 String userUrl = elementsAuthor.select("a").attr("href");
                 qiuBaiItemBean.setUserId(userUrl.replace("/","").replace("users",""));
                 qiuBaiItemBean.setUserUrl(HttpUrlUtil.QIU_BAI_HOME + userUrl);
-                qiuBaiItemBean.setUserName(elementsAuthor.select("h2").html().replace("&lt;","<").replace("&gt;",">").replace("&amp;","&"));
+                qiuBaiItemBean.setUserName(Util.replaceHtmlSign(elementsAuthor.select("h2").html()));
                 qiuBaiItemBean.setUserImage(elementsAuthor.select("img").attr("src"));
                 qiuBaiItemBean.setUserAge(elementsAuthor.select(".articleGender").html());
 
@@ -188,12 +177,12 @@ public class QiuBaiTextFragment extends BaseFragment {
                 }
 
                 qiuBaiItemBean.setItemContentUrl(HttpUrlUtil.QIU_BAI_HOME + elementsArticle.get(i).select(".contentHerf").attr("href"));
-                qiuBaiItemBean.setItemContent(elementsArticle.get(i).select(".content").select("span").html().replace("<br/>",System.getProperty("line.separator")).replace("<br>",System.getProperty("line.separator")).replace("&lt;","<").replace("&gt;",">").replace("&amp;","&"));
+                qiuBaiItemBean.setItemContent(Util.replaceHtmlSign(elementsArticle.get(i).select(".content").select("span").html()));
                 qiuBaiItemBean.setSmileCount(elementsArticle.get(i).select(".stats-vote").select(".number").html());
                 qiuBaiItemBean.setCommentCount(elementsArticle.get(i).select(".stats-comments").select(".number").html());
-                qiuBaiItemBean.setCommentGoodName(elementsArticle.get(i).select(".cmt-name").html().replace("<br/>",System.getProperty("line.separator")).replace("<br>",System.getProperty("line.separator")).replace("&lt;","<").replace("&gt;",">").replace("&amp;","&"));
+                qiuBaiItemBean.setCommentGoodName(Util.replaceHtmlSign(elementsArticle.get(i).select(".cmt-name").html()));
                 String likeNum = elementsArticle.get(i).select(".likenum").text();
-                qiuBaiItemBean.setCommentGoodContent(elementsArticle.get(i).select(".main-text").text().replace(" " + likeNum,"").replace("<br/>",System.getProperty("line.separator")).replace("<br>",System.getProperty("line.separator")).replace("&lt;","<").replace("&gt;",">").replace("&amp;","&"));
+                qiuBaiItemBean.setCommentGoodContent(Util.replaceHtmlSign(elementsArticle.get(i).select(".main-text").text().replace(" " + likeNum,"")));
                 qiuBaiItemBean.setCommentGoodCount(elementsArticle.get(i).select(".likenum").text());
 
                 qiuBaiItemBeanArrayList.add(qiuBaiItemBean);

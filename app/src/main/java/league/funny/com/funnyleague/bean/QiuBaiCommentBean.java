@@ -1,10 +1,12 @@
 package league.funny.com.funnyleague.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by inno-y on 2017/2/21.
  */
 
-public class QiuBaiCommentBean {
+public class QiuBaiCommentBean implements Serializable {
     private int id;
     private String userId;
     private String userUrl;
@@ -14,6 +16,15 @@ public class QiuBaiCommentBean {
     private String userSex;
     private String commentContent;
     private String goodCount;
+    private String floor;
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
 
     public int getId() {
         return id;

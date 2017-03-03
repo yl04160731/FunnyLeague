@@ -38,18 +38,6 @@ public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
         this.qiuBaiItemBeanArrayList = qiuBaiItemBeanArrayList;
     }
 
-//    public interface OnItemClickListener {
-//        void onItemClick(View view, int position);
-//
-//        void onItemLongClick(View view, int position);
-//    }
-//
-//    private OnItemClickListener onItemClickListener;
-//
-//    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-//        this.onItemClickListener = onItemClickListener;
-//    }
-
     @Override
     public int getItemCount() {
         return qiuBaiItemBeanArrayList.size() == 0 ? 0 : qiuBaiItemBeanArrayList.size() + 1;
@@ -80,7 +68,7 @@ public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
 
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (holder instanceof ItemViewHolder) {
             final QiuBaiItemBean qiuBaiItemBean = qiuBaiItemBeanArrayList.get(position);
             ((ItemViewHolder) holder).userName.setText(qiuBaiItemBean.getUserName());
@@ -88,7 +76,7 @@ public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
             if (!qiuBaiItemBean.getUserImage().contains("qiushibaike")) {
                 qiuBaiItemBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
             }
-            Glide.with(context).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(context, 30)).into(((ItemViewHolder) holder).userImage);
+            Glide.with(context).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(context, 40)).into(((ItemViewHolder) holder).userImage);
             ((ItemViewHolder) holder).itemContent.setText(qiuBaiItemBean.getItemContent());
             if (qiuBaiItemBean.getUserSex() != null && !"".equals(qiuBaiItemBean.getUserSex())
                     && qiuBaiItemBean.getUserAge() != null && !"".equals(qiuBaiItemBean.getUserAge())) {
@@ -123,24 +111,25 @@ public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
             ((ItemViewHolder) holder).itemContent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toQiuBaiContentActivity(qiuBaiItemBean.getItemContentUrl());
+                    toQiuBaiContentActivity(position);
                 }
             });
 
             ((ItemViewHolder) holder).commentGood.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toQiuBaiContentActivity(qiuBaiItemBean.getItemContentUrl());
+                    toQiuBaiContentActivity(position);
                 }
             });
         }
     }
 
-    public void toQiuBaiContentActivity(String url){
+    public void toQiuBaiContentActivity(int position){
         Intent intent = new Intent();
         intent.setClass(context, QiuBaiContentActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("htmlUrl", url);
+        bundle.putSerializable("qiuBaiItemBeanArrayList", qiuBaiItemBeanArrayList);
+        bundle.putInt("qiubaiContentIndex",position);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
@@ -177,7 +166,6 @@ public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
         public ItemViewHolder(View view) {
             super(view);
             ButterKnife.bind(this,view);
-//            tv = (TextView) view.findViewById(R.id.item_title);
         }
     }
 

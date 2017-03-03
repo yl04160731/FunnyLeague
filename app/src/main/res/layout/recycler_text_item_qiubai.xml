@@ -10,8 +10,8 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="10dp">
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:id="@+id/userImage_qiubai"/>
         <TextView
@@ -59,7 +59,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="好笑"
+            android:text="@string/smile"
             style="@style/SmallGreyTextView" />
         <TextView
             android:layout_width="wrap_content"
@@ -70,7 +70,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" · 评论"
+            android:text="@string/dot_comment"
             style="@style/SmallGreyTextView" />
         <TextView
             android:layout_width="wrap_content"
@@ -90,9 +90,8 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/good"
-            android:layout_marginTop="3dp"
-            style="@style/SmallGreyTextView" />
+            android:src="@drawable/shen"
+            android:layout_marginTop="3dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

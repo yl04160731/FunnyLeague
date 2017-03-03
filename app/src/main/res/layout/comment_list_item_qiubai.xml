@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/userImage_qiubai"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="10dp"/>
+
+    <RelativeLayout
+        android:id="@+id/userInfo"
+        android:layout_toRightOf="@+id/userImage_qiubai"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/userName_qiubai"
+            style="@style/SmallGreyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true" />
+
+        <LinearLayout
+            android:id="@+id/userSex_qiubai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/userName_qiubai"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/userAge_qiubai"
+                style="@style/SmallWhiteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:gravity="right" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/good"
+            android:layout_toLeftOf="@+id/goodCount"
+            android:layout_marginRight="3dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/goodImage"/>
+
+        <TextView
+            android:id="@+id/goodCount"
+            style="@style/SmallGreyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+
+
+    <TextView
+        android:id="@+id/commentContent"
+        style="@style/SmallTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/userImage_qiubai"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/userInfo" />
+
+</RelativeLayout>

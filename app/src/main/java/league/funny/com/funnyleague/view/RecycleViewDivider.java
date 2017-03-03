@@ -1,13 +1,15 @@
 package league.funny.com.funnyleague.view;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import league.funny.com.funnyleague.R;
 
 /**
  * Created by inno-y on 2017/2/20.
@@ -21,15 +23,16 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
     public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
 
     //我们通过获取系统属性中的listDivider来添加，在系统中的AppTheme中设置
-    public static final int[] ATRRS = new int[]{
-            android.R.attr.listDivider
-    };
+//    public static final int[] ATRRS = new int[]{
+//            android.R.attr.listDivider
+//    };
 
     public RecycleViewDivider(Context context, int orientation) {
         this.mContext = context;
-        final TypedArray ta = context.obtainStyledAttributes(ATRRS);
-        this.mDivider = ta.getDrawable(0);
-        ta.recycle();
+//        final TypedArray ta = context.obtainStyledAttributes(ATRRS);
+//        this.mDivider = ta.getDrawable(0);
+        this.mDivider = ContextCompat.getDrawable(context, R.drawable.divider);
+//        ta.recycle();
         setOrientation(orientation);
     }
 

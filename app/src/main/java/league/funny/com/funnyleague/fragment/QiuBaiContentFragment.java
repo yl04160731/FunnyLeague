@@ -6,12 +6,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -20,17 +21,18 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import league.funny.com.funnyleague.R;
+import league.funny.com.funnyleague.adapter.QiuBaiCommentListAdapter;
 import league.funny.com.funnyleague.bean.QiuBaiCommentBean;
+import league.funny.com.funnyleague.bean.QiuBaiItemBean;
+import league.funny.com.funnyleague.util.GlideCircleTransform;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
-import league.funny.com.funnyleague.util.NetworkUtil;
 import league.funny.com.funnyleague.util.Util;
-
-import static league.funny.com.funnyleague.R.id.loading_layout_qiubai;
+import league.funny.com.funnyleague.view.NoScrollListview;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,23 +40,60 @@ import static league.funny.com.funnyleague.R.id.loading_layout_qiubai;
 public class QiuBaiContentFragment extends BaseFragment {
 
     private View view = null;
-    private String htmlUrl;
-    private String content;
-    private String nextLink;
-    @BindView(R.id.content_qiubai)
-    TextView contentTextView;
 
-    @BindView(loading_layout_qiubai)
-    RelativeLayout relativeLayout_loading;
+    private int alreayIndex = 0;
+    private QiuBaiCommentListAdapter qiuBaiCommentListAdapter;
+    private final int ONE_LOAD_COUNT = 20;
 
-    @BindView(R.id.loading_qiubai)
-    ImageView loadingImageView;
+    private ArrayList<QiuBaiCommentBean> shenCommentList = new ArrayList<>();
+    private ArrayList<QiuBaiCommentBean> CommentList = new ArrayList<>();
+    private List<QiuBaiCommentBean> CommentTempList = new ArrayList<>();
 
-    @BindView(R.id.nowifi_layout_qiubai)
-    RelativeLayout relativeLayout_nowifi;
+    @BindView(R.id.userName_qiubai)
+    public TextView userName;
+
+    @BindView(R.id.userImage_qiubai)
+    public ImageView userImage;
+
+    @BindView(R.id.userSex_qiubai)
+    public LinearLayout userSex;
+
+    @BindView(R.id.userAge_qiubai)
+    public TextView userAge;
+
+    @BindView(R.id.itemContent_qiubai)
+    public TextView itemContent;
+
+    @BindView(R.id.smileCount_qiubai)
+    public TextView smileCount;
+
+    @BindView(R.id.commentCount_qiubai)
+    public TextView commentCount;
+
+    @BindView(R.id.shenCommentCount_qiubai)
+    public TextView shenCommentCount;
+
+    @BindView(R.id.PuTongCommentCount_qiubai)
+    public TextView puTongCommentCount;
+
+    @BindView(R.id.hot_comment_layout)
+    public LinearLayout hotCommentLayout;
+
+    @BindView(R.id.putong_comment_layout)
+    public LinearLayout putongCommentLayout;
+
+    @BindView(R.id.shen_comment_ListView)
+    public NoScrollListview shenCommentListView;
+
+    @BindView(R.id.putong_comment_listView)
+    public NoScrollListview putongCommentListView;
+
+    @BindView(R.id.scrollView)
+    public ScrollView scrollView;
+
+    private QiuBaiItemBean qiuBaiItemBean;
 
     public QiuBaiContentFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -64,24 +103,35 @@ public class QiuBaiContentFragment extends BaseFragment {
         view = inflater.inflate(R.layout.fragment_content_qiubai, container, false);
         ButterKnife.bind(this, view);
         initData();
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (scrollView.getChildAt(0).getHeight() - scrollView.getHeight()
+                        == scrollView.getScrollY()){
+                    if(CommentList.size() <= 0 || CommentList.size() <= alreayIndex){
+                        return false;
+                    }
+
+                    int tempIndex = CommentList.size() - alreayIndex < ONE_LOAD_COUNT ?
+                            CommentList.size() : alreayIndex + ONE_LOAD_COUNT;
+                    for(int i = alreayIndex;i < tempIndex;i++){
+                        CommentTempList.add(CommentList.get(i));
+                    }
+                    alreayIndex = tempIndex;
+                    qiuBaiCommentListAdapter.notifyDataSetChanged();
+                }
+                return false;
+            }
+        });
         return view;
     }
 
+    public void setQiuBaiItemBean(QiuBaiItemBean qiuBaiItemBean){
+        this.qiuBaiItemBean = qiuBaiItemBean;
+    }
+
     public void initData(){
-
-        if(!NetworkUtil.isNetworkAvailable(getActivity())){
-            relativeLayout_nowifi.setVisibility(View.VISIBLE);
-            Toast.makeText(getActivity(),getResources().getText(R.string.no_wifi_warn),Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        relativeLayout_nowifi.setVisibility(View.GONE);
-        relativeLayout_loading.setVisibility(View.VISIBLE);
-
-        Glide.with(getActivity()).load(R.drawable.loading).into(loadingImageView);
-
-        Bundle bundle = getArguments();
-        htmlUrl = bundle.getString("htmlUrl");
 
         Runnable networkTask = new Runnable() {
             @Override
@@ -91,43 +141,32 @@ public class QiuBaiContentFragment extends BaseFragment {
         };
 
         new Thread(networkTask).start();
-    }
 
-    @OnClick(R.id.content_qiubai)
-    public void onClickNext(){
-        Bundle bundle=new Bundle();
-        bundle.putString("htmlUrl", nextLink);
-        QiuBaiContentFragment fragment = new QiuBaiContentFragment();
-        fragment.setArguments(bundle);
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container_qiubai, fragment).commit();
-    }
+        userName.setText(qiuBaiItemBean.getUserName());
 
-    @OnClick(R.id.nowifi_layout_qiubai)
-    public void onClickReConnect(){
-        initData();
+        if (!qiuBaiItemBean.getUserImage().contains("qiushibaike")) {
+            qiuBaiItemBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
+        }
+        Glide.with(getActivity()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(getActivity(), 45)).into(userImage);
+        if (qiuBaiItemBean.getUserSex() != null && !"".equals(qiuBaiItemBean.getUserSex())
+                && qiuBaiItemBean.getUserAge() != null && !"".equals(qiuBaiItemBean.getUserAge())) {
+            userSex.setBackgroundResource("man".equals(qiuBaiItemBean.getUserSex()) ? R.drawable.man : R.drawable.women);
+            userAge.setText(qiuBaiItemBean.getUserAge());
+            userSex.setVisibility(View.VISIBLE);
+        }else{
+            userSex.setVisibility(View.GONE);
+        }
+
+        itemContent.setText(qiuBaiItemBean.getItemContent());
+        smileCount.setText(qiuBaiItemBean.getSmileCount());
+        commentCount.setText(qiuBaiItemBean.getCommentCount());
     }
 
     private void getData() {
         try {
-            Document doc = Jsoup.connect(htmlUrl)
+            Document doc = Jsoup.connect(qiuBaiItemBean.getItemContentUrl())
                     .userAgent("Mozilla/5.0 (Windows NT 5.1; zh-CN) AppleWebKit/535.12 (KHTML, like Gecko) Chrome/22.0.1229.79 Safari/535.12")
-                    .timeout(6000).get();
-
-            if(doc.getElementById("articleNextLink").attr("value") != null &&
-                    !"".equals(doc.getElementById("articleNextLink").attr("value")) &&
-                    !"/".equals(doc.getElementById("articleNextLink").attr("value"))){
-                nextLink = HttpUrlUtil.QIU_BAI_HOME + doc.getElementById("articleNextLink").attr("value");
-            }else{
-                nextLink = HttpUrlUtil.QIU_BAI_HOME + doc.select(".recommend").select("a").attr("href");
-            }
-
-            content = Util.replaceHtmlSign(doc.select(".content").html());
-            String smileCount = doc.select(".stats-vote").select(".number").html();
-            String commentCount = doc.select(".stats-comments").select(".number").html();
-
-            ArrayList<QiuBaiCommentBean> shenCommentList = new ArrayList<>();
-            ArrayList<QiuBaiCommentBean> CommentList = new ArrayList<>();
+                    .timeout(15000).get();
 
             Elements elementsShenComments = doc.select(".comments-table");
 
@@ -175,6 +214,7 @@ public class QiuBaiContentFragment extends BaseFragment {
                         qiuBaiCommentBean.setUserSex("women");
                     }
 
+                    qiuBaiCommentBean.setFloor(elementsComments.get(i).select(".report").text());
                     qiuBaiCommentBean.setCommentContent(Util.replaceHtmlSign(elementsComments.get(i).select(".replay").select(".body").text()));
                     CommentList.add(qiuBaiCommentBean);
                 }
@@ -188,14 +228,39 @@ public class QiuBaiContentFragment extends BaseFragment {
         }
     }
 
+
+
     Handler HtmlHandler = new Handler() {
         public void handleMessage(Message msg) {
 
-            if(content != null && !"".equals(content)){
-                contentTextView.setText(content + "****" + nextLink);
-                relativeLayout_loading.setVisibility(View.GONE);
+            if(shenCommentList.size() <= 0){
+                hotCommentLayout.setVisibility(View.GONE);
             }else{
-                relativeLayout_nowifi.setVisibility(View.VISIBLE);
+                hotCommentLayout.setVisibility(View.VISIBLE);
+                shenCommentCount.setText(getResources().getText(R.string.hot_comment)
+                        + "(" + shenCommentList.size() + ")");
+                QiuBaiCommentListAdapter qiuBaishenCommentListAdapter = new QiuBaiCommentListAdapter(getActivity(),shenCommentList);
+                shenCommentListView.setAdapter(qiuBaishenCommentListAdapter);
+            }
+
+            if(CommentList.size() <= 0){
+                putongCommentLayout.setVisibility(View.GONE);
+            }else{
+                putongCommentLayout.setVisibility(View.VISIBLE);
+                if(CommentList.size() <= ONE_LOAD_COUNT){
+                    alreayIndex = CommentList.size();
+                }else{
+                    alreayIndex = ONE_LOAD_COUNT;
+                }
+
+                for(int i = 0; i < alreayIndex; i++){
+                    CommentTempList.add(CommentList.get(i));
+                }
+
+                qiuBaiCommentListAdapter = new QiuBaiCommentListAdapter(getActivity(),CommentTempList);
+                putongCommentListView.setAdapter(qiuBaiCommentListAdapter);
+                puTongCommentCount.setText(getResources().getText(R.string.putong_comment)
+                        + "(" + CommentList.size() + ")");
             }
         }
     };

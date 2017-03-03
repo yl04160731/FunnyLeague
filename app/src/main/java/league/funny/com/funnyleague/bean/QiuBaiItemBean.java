@@ -1,12 +1,13 @@
 package league.funny.com.funnyleague.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by inno-y on 2017/2/21.
  */
 
-public class QiuBaiItemBean {
+public class QiuBaiItemBean implements Serializable {
     private int id;
     private String userId;
     private String userName;

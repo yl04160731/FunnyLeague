@@ -1,55 +1,169 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
     tools:context="league.funny.com.funnyleague.fragment.QiuBaiContentFragment">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:fadingEdge="vertical"
+        android:id="@+id/scrollView"
+        android:scrollbars="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/content_qiubai"
-            android:text="" />
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/loading_layout_qiubai"
-        android:background="@color/white">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:padding="30dp"
-            android:id="@+id/loading_qiubai"/>
-    </RelativeLayout>
+                <ImageView
+                    android:id="@+id/userImage_qiubai"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_centerVertical="true" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/nowifi_layout_qiubai"
-        android:background="@color/white">
-        <ImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_centerInParent="true"
-            android:padding="30dp"
-            android:id="@+id/nowifi_qiubai"
-            android:src="@drawable/no_wifi"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/nowifi_qiubai"
-            android:layout_centerInParent="true"
-            style="@style/SmallGreyTextView"
-            android:text="@string/no_wifi" />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/userName_qiubai"
+                    style="@style/SmallGreyTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/userImage_qiubai" />
 
+                <LinearLayout
+                    android:id="@+id/userSex_qiubai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/userName_qiubai"
+                    android:orientation="horizontal">
 
-</FrameLayout>
+                    <TextView
+                        android:id="@+id/userAge_qiubai"
+                        style="@style/SmallWhiteTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="2dp"
+                        android:gravity="right" />
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/itemContent_qiubai"
+                style="@style/NormalTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    style="@style/SmallGreyTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/smile" />
+
+                <TextView
+                    android:id="@+id/smileCount_qiubai"
+                    style="@style/SmallGreyTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp" />
+
+                <TextView
+                    style="@style/SmallGreyTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dot_comment" />
+
+                <TextView
+                    android:id="@+id/commentCount_qiubai"
+                    style="@style/SmallGreyTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/lightGray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/hot_comment_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/shenCommentCount_qiubai"
+                        style="@style/SmallGreyTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:padding="10dp" />
+
+                    <league.funny.com.funnyleague.view.NoScrollListview
+                        android:id="@+id/shen_comment_ListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </league.funny.com.funnyleague.view.NoScrollListview>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:background="@color/lightGray" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/putong_comment_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/PuTongCommentCount_qiubai"
+                        style="@style/SmallGreyTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:padding="10dp" />
+
+                    <league.funny.com.funnyleague.view.NoScrollListview
+                        android:id="@+id/putong_comment_listView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </league.funny.com.funnyleague.view.NoScrollListview>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -5,8 +5,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -21,18 +22,17 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.R;
-import league.funny.com.funnyleague.adapter.QiuBaiCommentListAdapter;
+import league.funny.com.funnyleague.adapter.QiuBaiCommentRecyclerAdapter;
 import league.funny.com.funnyleague.bean.QiuBaiCommentBean;
 import league.funny.com.funnyleague.bean.QiuBaiItemBean;
 import league.funny.com.funnyleague.util.GlideCircleTransform;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
 import league.funny.com.funnyleague.util.Util;
-import league.funny.com.funnyleague.view.NoScrollListview;
+import league.funny.com.funnyleague.view.RecycleViewDivider;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,13 +41,10 @@ public class QiuBaiContentFragment extends BaseFragment {
 
     private View view = null;
 
-    private int alreayIndex = 0;
-    private QiuBaiCommentListAdapter qiuBaiCommentListAdapter;
-    private final int ONE_LOAD_COUNT = 20;
+    private QiuBaiCommentRecyclerAdapter qiuBaiCommentRecyclerAdapter;
 
     private ArrayList<QiuBaiCommentBean> shenCommentList = new ArrayList<>();
     private ArrayList<QiuBaiCommentBean> CommentList = new ArrayList<>();
-    private List<QiuBaiCommentBean> CommentTempList = new ArrayList<>();
 
     @BindView(R.id.userName_qiubai)
     public TextView userName;
@@ -82,11 +79,11 @@ public class QiuBaiContentFragment extends BaseFragment {
     @BindView(R.id.putong_comment_layout)
     public LinearLayout putongCommentLayout;
 
-    @BindView(R.id.shen_comment_ListView)
-    public NoScrollListview shenCommentListView;
+    @BindView(R.id.shen_comment_recyclerView)
+    public RecyclerView shenCommentRecyclerView;
 
-    @BindView(R.id.putong_comment_listView)
-    public NoScrollListview putongCommentListView;
+    @BindView(R.id.putong_comment_recyclerView)
+    public RecyclerView putongCommentRecyclerView;
 
     @BindView(R.id.scrollView)
     public ScrollView scrollView;
@@ -103,27 +100,25 @@ public class QiuBaiContentFragment extends BaseFragment {
         view = inflater.inflate(R.layout.fragment_content_qiubai, container, false);
         ButterKnife.bind(this, view);
         initData();
-        scrollView.setOnTouchListener(new View.OnTouchListener() {
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()) {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                if (scrollView.getChildAt(0).getHeight() - scrollView.getHeight()
-                        == scrollView.getScrollY()){
-                    if(CommentList.size() <= 0 || CommentList.size() <= alreayIndex){
-                        return false;
-                    }
-
-                    int tempIndex = CommentList.size() - alreayIndex < ONE_LOAD_COUNT ?
-                            CommentList.size() : alreayIndex + ONE_LOAD_COUNT;
-                    for(int i = alreayIndex;i < tempIndex;i++){
-                        CommentTempList.add(CommentList.get(i));
-                    }
-                    alreayIndex = tempIndex;
-                    qiuBaiCommentListAdapter.notifyDataSetChanged();
-                }
+            public boolean canScrollVertically() {
                 return false;
             }
-        });
+        };
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getActivity()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+
+        putongCommentRecyclerView.addItemDecoration(new RecycleViewDivider(getActivity(),RecycleViewDivider.VERTICAL_LIST,R.drawable.small_divider));
+        shenCommentRecyclerView.addItemDecoration(new RecycleViewDivider(getActivity(),RecycleViewDivider.VERTICAL_LIST,R.drawable.small_divider));
+
+        putongCommentRecyclerView.setLayoutManager(linearLayoutManager);
+        shenCommentRecyclerView.setLayoutManager(linearLayoutManager1);
         return view;
     }
 
@@ -239,26 +234,16 @@ public class QiuBaiContentFragment extends BaseFragment {
                 hotCommentLayout.setVisibility(View.VISIBLE);
                 shenCommentCount.setText(getResources().getText(R.string.hot_comment)
                         + "(" + shenCommentList.size() + ")");
-                QiuBaiCommentListAdapter qiuBaishenCommentListAdapter = new QiuBaiCommentListAdapter(getActivity(),shenCommentList);
-                shenCommentListView.setAdapter(qiuBaishenCommentListAdapter);
+                QiuBaiCommentRecyclerAdapter qiuBaishenCommentListAdapter = new QiuBaiCommentRecyclerAdapter(getActivity(),shenCommentList);
+                shenCommentRecyclerView.setAdapter(qiuBaishenCommentListAdapter);
             }
 
             if(CommentList.size() <= 0){
                 putongCommentLayout.setVisibility(View.GONE);
             }else{
                 putongCommentLayout.setVisibility(View.VISIBLE);
-                if(CommentList.size() <= ONE_LOAD_COUNT){
-                    alreayIndex = CommentList.size();
-                }else{
-                    alreayIndex = ONE_LOAD_COUNT;
-                }
-
-                for(int i = 0; i < alreayIndex; i++){
-                    CommentTempList.add(CommentList.get(i));
-                }
-
-                qiuBaiCommentListAdapter = new QiuBaiCommentListAdapter(getActivity(),CommentTempList);
-                putongCommentListView.setAdapter(qiuBaiCommentListAdapter);
+                qiuBaiCommentRecyclerAdapter = new QiuBaiCommentRecyclerAdapter(getActivity(),CommentList);
+                putongCommentRecyclerView.setAdapter(qiuBaiCommentRecyclerAdapter);
                 puTongCommentCount.setText(getResources().getText(R.string.putong_comment)
                         + "(" + CommentList.size() + ")");
             }

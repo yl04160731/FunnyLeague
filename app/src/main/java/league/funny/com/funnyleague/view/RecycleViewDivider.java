@@ -9,8 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import league.funny.com.funnyleague.R;
-
 /**
  * Created by inno-y on 2017/2/20.
  */
@@ -27,11 +25,11 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
 //            android.R.attr.listDivider
 //    };
 
-    public RecycleViewDivider(Context context, int orientation) {
+    public RecycleViewDivider(Context context, int orientation,int drawable) {
         this.mContext = context;
 //        final TypedArray ta = context.obtainStyledAttributes(ATRRS);
 //        this.mDivider = ta.getDrawable(0);
-        this.mDivider = ContextCompat.getDrawable(context, R.drawable.divider);
+        this.mDivider = ContextCompat.getDrawable(context, drawable);
 //        ta.recycle();
         setOrientation(orientation);
     }

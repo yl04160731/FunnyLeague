@@ -129,11 +129,11 @@
                         android:gravity="left"
                         android:padding="10dp" />
 
-                    <league.funny.com.funnyleague.view.NoScrollListview
-                        android:id="@+id/shen_comment_ListView"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/shen_comment_recyclerView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                    </league.funny.com.funnyleague.view.NoScrollListview>
+                        android:layout_height="match_parent"
+                        ></android.support.v7.widget.RecyclerView>
 
                     <View
                         android:layout_width="match_parent"
@@ -156,11 +156,12 @@
                         android:gravity="left"
                         android:padding="10dp" />
 
-                    <league.funny.com.funnyleague.view.NoScrollListview
-                        android:id="@+id/putong_comment_listView"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/putong_comment_recyclerView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                    </league.funny.com.funnyleague.view.NoScrollListview>
+                        android:layout_height="match_parent"
+                        ></android.support.v7.widget.RecyclerView>
+
                 </LinearLayout>
             </LinearLayout>
 

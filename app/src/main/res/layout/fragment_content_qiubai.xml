@@ -7,10 +7,10 @@
     tools:context="league.funny.com.funnyleague.fragment.QiuBaiContentFragment">
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fadingEdge="vertical"
-        android:id="@+id/scrollView"
         android:scrollbars="vertical">
 
         <LinearLayout
@@ -110,10 +110,41 @@
                 android:layout_height="5dp"
                 android:background="@color/lightGray" />
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/comment_wait"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/smileIcon"
+                    android:src="@drawable/smile"/>
+
+                <TextView
+                    style="@style/SmallGreyTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/smileIcon"
+                    android:text="@string/comment_wait" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/commentLinearLayout_qiubai"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:id="@+id/hot_comment_layout"
@@ -132,8 +163,7 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/shen_comment_recyclerView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        ></android.support.v7.widget.RecyclerView>
+                        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
                     <View
                         android:layout_width="match_parent"
@@ -159,8 +189,7 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/putong_comment_recyclerView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        ></android.support.v7.widget.RecyclerView>
+                        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
                 </LinearLayout>
             </LinearLayout>

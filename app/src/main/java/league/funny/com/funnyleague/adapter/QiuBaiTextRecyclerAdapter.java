@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -21,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.R;
 import league.funny.com.funnyleague.activity.QiuBaiContentActivity;
+import league.funny.com.funnyleague.activity.QiuBaiUserActivity;
 import league.funny.com.funnyleague.bean.QiuBaiItemBean;
 import league.funny.com.funnyleague.util.GlideCircleTransform;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
@@ -97,14 +97,14 @@ public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
             ((ItemViewHolder) holder).userName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, qiuBaiItemBean.getUserUrl(), Toast.LENGTH_SHORT).show();
+                    toQiuBaiUserActivity(qiuBaiItemBean);
                 }
             });
 
             ((ItemViewHolder) holder).userImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, qiuBaiItemBean.getUserUrl(), Toast.LENGTH_SHORT).show();
+                    toQiuBaiUserActivity(qiuBaiItemBean);
                 }
             });
 
@@ -130,6 +130,18 @@ public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
         Bundle bundle = new Bundle();
         bundle.putSerializable("qiuBaiItemBeanArrayList", qiuBaiItemBeanArrayList);
         bundle.putInt("qiubaiContentIndex",position);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+    }
+
+    public void toQiuBaiUserActivity(QiuBaiItemBean qiuBaiItemBean){
+        if(qiuBaiItemBean.getUserUrl() == null || "".equals(qiuBaiItemBean.getUserUrl())){
+            return;
+        }
+        Intent intent = new Intent();
+        intent.setClass(context, QiuBaiUserActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("qiuBaiItemBean",qiuBaiItemBean);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }

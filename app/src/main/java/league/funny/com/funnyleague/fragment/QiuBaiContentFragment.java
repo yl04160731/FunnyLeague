@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -38,13 +39,6 @@ import league.funny.com.funnyleague.view.RecycleViewDivider;
  * A simple {@link Fragment} subclass.
  */
 public class QiuBaiContentFragment extends BaseFragment {
-
-    private View view = null;
-
-    private QiuBaiCommentRecyclerAdapter qiuBaiCommentRecyclerAdapter;
-
-    private ArrayList<QiuBaiCommentBean> shenCommentList = new ArrayList<>();
-    private ArrayList<QiuBaiCommentBean> CommentList = new ArrayList<>();
 
     @BindView(R.id.userName_qiubai)
     public TextView userName;
@@ -88,6 +82,16 @@ public class QiuBaiContentFragment extends BaseFragment {
     @BindView(R.id.scrollView)
     public ScrollView scrollView;
 
+    @BindView(R.id.commentLinearLayout_qiubai)
+    public LinearLayout commentLinearLayout;
+
+    @BindView(R.id.comment_wait)
+    public RelativeLayout commentWait;
+
+    private View view = null;
+    private QiuBaiCommentRecyclerAdapter qiuBaiCommentRecyclerAdapter;
+    private ArrayList<QiuBaiCommentBean> shenCommentList = new ArrayList<>();
+    private ArrayList<QiuBaiCommentBean> CommentList = new ArrayList<>();
     private QiuBaiItemBean qiuBaiItemBean;
 
     public QiuBaiContentFragment() {
@@ -160,7 +164,7 @@ public class QiuBaiContentFragment extends BaseFragment {
     private void getData() {
         try {
             Document doc = Jsoup.connect(qiuBaiItemBean.getItemContentUrl())
-                    .userAgent("Mozilla/5.0 (Windows NT 5.1; zh-CN) AppleWebKit/535.12 (KHTML, like Gecko) Chrome/22.0.1229.79 Safari/535.12")
+                    .userAgent(HttpUrlUtil.USER_AGENT)
                     .timeout(15000).get();
 
             Elements elementsShenComments = doc.select(".comments-table");
@@ -247,6 +251,9 @@ public class QiuBaiContentFragment extends BaseFragment {
                 puTongCommentCount.setText(getResources().getText(R.string.putong_comment)
                         + "(" + CommentList.size() + ")");
             }
+
+            commentWait.setVisibility(View.GONE);
+            commentLinearLayout.setVisibility(View.VISIBLE);
         }
     };
 }

@@ -29,7 +29,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.QiuBaiContentActivity"></activity>
+        <activity android:name=".activity.QiuBaiContentActivity" />
+        <activity android:name=".activity.QiuBaiUserActivity"></activity>
     </application>
 
 </manifest>

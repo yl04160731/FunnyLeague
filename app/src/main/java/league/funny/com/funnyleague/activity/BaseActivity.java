@@ -20,6 +20,9 @@ public class BaseActivity extends AppCompatActivity {
 
         activity = this;
         ((FunnyLeagueApplication)FunnyLeagueApplication.getApplication()).addActivity(this);
+
+
+
         init();
     }
 

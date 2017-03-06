@@ -149,7 +149,7 @@ public class QiuBaiTextFragment extends BaseFragment {
         try {
             String URL = HttpUrlUtil.QIU_BAI_TEXT_PAGE + page + HttpUrlUtil.SPRIT;
             Document doc = Jsoup.connect(URL)
-                    .userAgent("Mozilla/5.0 (Windows NT 5.1; zh-CN) AppleWebKit/535.12 (KHTML, like Gecko) Chrome/22.0.1229.79 Safari/535.12")
+                    .userAgent(HttpUrlUtil.USER_AGENT)
                     .timeout(15000).get();
 
             Elements elementsArticle = doc.select(".article").select(".block");

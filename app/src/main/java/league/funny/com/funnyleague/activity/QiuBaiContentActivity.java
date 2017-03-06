@@ -1,6 +1,7 @@
 package league.funny.com.funnyleague.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import league.funny.com.funnyleague.FunnyLeagueApplication;
 import league.funny.com.funnyleague.R;
 import league.funny.com.funnyleague.bean.QiuBaiItemBean;
 import league.funny.com.funnyleague.fragment.QiuBaiContentFragment;
@@ -30,7 +32,13 @@ public class QiuBaiContentActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content_qiubai);
+        ((FunnyLeagueApplication)FunnyLeagueApplication.getContext()).addActivity(this);
         ButterKnife.bind(this);
+
+        if(Build.VERSION.SDK_INT>=21){
+            getSupportActionBar().setElevation(0);
+        }
+
         initData();
     }
 

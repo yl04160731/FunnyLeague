@@ -98,6 +98,36 @@ public class QiuBaiUserActivity extends BaseActivity {
     @BindView(R.id.qiushijingxuan)
     public TextView qiushijingxuan;
 
+    @BindView(R.id.followCount)
+    public TextView followCount;
+
+    @BindView(R.id.fansCount)
+    public TextView fansCount;
+
+    @BindView(R.id.follow1)
+    public ImageView follow1;
+
+    @BindView(R.id.follow2)
+    public ImageView follow2;
+
+    @BindView(R.id.follow3)
+    public ImageView follow3;
+
+    @BindView(R.id.follow4)
+    public ImageView follow4;
+
+    @BindView(R.id.fans1)
+    public ImageView fans1;
+
+    @BindView(R.id.fans2)
+    public ImageView fans2;
+
+    @BindView(R.id.fans3)
+    public ImageView fans3;
+
+    @BindView(R.id.fans4)
+    public ImageView fans4;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -245,6 +275,18 @@ public class QiuBaiUserActivity extends BaseActivity {
             guxiang.setText(qiuBaiUserBean.getHometown());
             qiuling.setText(qiuBaiUserBean.getQiuAge());
             qiushijingxuan.setText(qiuBaiUserBean.getBestCount());
+            followCount.setText(qiuBaiUserBean.getFollowCount());
+            fansCount.setText(qiuBaiUserBean.getFansCount());
+
+            Glide.with(QiuBaiUserActivity.this).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(QiuBaiUserActivity.this, 45)).into(follow1);
+            Glide.with(QiuBaiUserActivity.this).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(QiuBaiUserActivity.this, 45)).into(follow2);
+            Glide.with(QiuBaiUserActivity.this).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(QiuBaiUserActivity.this, 45)).into(follow3);
+            Glide.with(QiuBaiUserActivity.this).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(QiuBaiUserActivity.this, 45)).into(follow4);
+
+            Glide.with(QiuBaiUserActivity.this).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(QiuBaiUserActivity.this, 45)).into(fans1);
+            Glide.with(QiuBaiUserActivity.this).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(QiuBaiUserActivity.this, 45)).into(fans2);
+            Glide.with(QiuBaiUserActivity.this).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(QiuBaiUserActivity.this, 45)).into(fans3);
+            Glide.with(QiuBaiUserActivity.this).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(QiuBaiUserActivity.this, 45)).into(fans4);
         }
     };
 

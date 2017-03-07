@@ -19,7 +19,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="2">
+                android:layout_weight="1.6">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -94,7 +94,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_weight="2"
+                android:layout_weight="1.6"
                 android:background="@color/white" />
 
             <View
@@ -109,7 +109,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:layout_weight="1.6"
                 android:background="@color/white" />
 
             <TableLayout
@@ -170,7 +170,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_weight="2"
+                android:layout_weight="1.6"
                 android:background="@color/white" />
 
             <View
@@ -185,7 +185,173 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="2">
+                android:layout_weight="1.6">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/guanzhu"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/followCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/textSize_big" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5">
+
+                <TableRow>
+
+                    <ImageView
+                        android:id="@+id/follow1"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"/>
+
+                    <ImageView
+                        android:id="@+id/follow2"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"/>
+
+                    <ImageView
+                        android:id="@+id/follow3"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"/>
+
+                    <ImageView
+                        android:id="@+id/follow4"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"/>
+                </TableRow>
+            </TableLayout>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="10dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1.6"
+                android:background="@color/white" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="5"
+                android:background="@color/lightGray" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.6">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/fensi"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/fansCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/textSize_big" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5">
+
+                <TableRow>
+
+                    <ImageView
+                        android:id="@+id/fans1"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"/>
+
+                    <ImageView
+                        android:id="@+id/fans2"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"/>
+
+                    <ImageView
+                        android:id="@+id/fans3"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"/>
+
+                    <ImageView
+                        android:id="@+id/fans4"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"/>
+                </TableRow>
+            </TableLayout>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="10dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1.6"
+                android:background="@color/white" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="5"
+                android:background="@color/lightGray" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.6">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -211,7 +377,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_weight="2"
+                android:layout_weight="1.6"
                 android:background="@color/white" />
 
             <View
@@ -226,7 +392,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="2">
+                android:layout_weight="1.6">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -252,7 +418,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_weight="2"
+                android:layout_weight="1.6"
                 android:background="@color/white" />
 
             <View
@@ -267,7 +433,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="2">
+                android:layout_weight="1.6">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -293,7 +459,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_weight="2"
+                android:layout_weight="1.6"
                 android:background="@color/white" />
 
             <View
@@ -308,7 +474,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="2">
+                android:layout_weight="1.6">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -334,7 +500,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_weight="2"
+                android:layout_weight="1.6"
                 android:background="@color/white" />
 
             <View

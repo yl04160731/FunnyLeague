@@ -1,6 +1,7 @@
 package league.funny.com.funnyleague.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,7 +27,9 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import league.funny.com.funnyleague.R;
+import league.funny.com.funnyleague.activity.QiuBaiUserActivity;
 import league.funny.com.funnyleague.adapter.QiuBaiCommentRecyclerAdapter;
 import league.funny.com.funnyleague.bean.QiuBaiCommentBean;
 import league.funny.com.funnyleague.bean.QiuBaiItemBean;
@@ -124,6 +127,28 @@ public class QiuBaiContentFragment extends BaseFragment {
         putongCommentRecyclerView.setLayoutManager(linearLayoutManager);
         shenCommentRecyclerView.setLayoutManager(linearLayoutManager1);
         return view;
+    }
+
+    @OnClick(R.id.userImage_qiubai)
+    public void toHomeUser0(){
+        toUserInfo();
+    }
+
+    @OnClick(R.id.userName_qiubai)
+    public void toHomeUser1(){
+        toUserInfo();
+    }
+
+    public void toUserInfo(){
+        if(qiuBaiItemBean.getUserUrl() == null || "".equals(qiuBaiItemBean.getUserUrl().replace(HttpUrlUtil.QIU_BAI_HOME,""))){
+            return;
+        }
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), QiuBaiUserActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("qiuBaiItemBean",qiuBaiItemBean);
+        intent.putExtras(bundle);
+        getActivity().startActivity(intent);
     }
 
     public void setQiuBaiItemBean(QiuBaiItemBean qiuBaiItemBean){

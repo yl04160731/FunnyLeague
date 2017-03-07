@@ -30,7 +30,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.QiuBaiContentActivity" />
-        <activity android:name=".activity.QiuBaiUserActivity"></activity>
+        <activity
+            android:name=".activity.QiuBaiUserActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

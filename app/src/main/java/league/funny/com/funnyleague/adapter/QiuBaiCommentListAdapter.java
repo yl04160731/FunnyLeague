@@ -118,6 +118,8 @@ public class QiuBaiCommentListAdapter extends BaseAdapter {
 
         holder.commentContent.setText(qiuBaiCommentBean.getCommentContent());
 
+
+
 //        holder.arrowPicture.setOnClickListener(new View.OnClickListener() {
 //
 //            @Override

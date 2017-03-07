@@ -12,7 +12,7 @@ import android.telephony.TelephonyManager;
  */
 
 public class NetworkUtil {
-    public static boolean isNetworkAvailable(Context c) {
+    public static boolean isNetWorkAvailable(Context c) {
         ConnectivityManager connectivityManager = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Network[] networks = connectivityManager.getAllNetworks();

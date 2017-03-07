@@ -135,7 +135,7 @@ public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
     }
 
     public void toQiuBaiUserActivity(QiuBaiItemBean qiuBaiItemBean){
-        if(qiuBaiItemBean.getUserUrl() == null || "".equals(qiuBaiItemBean.getUserUrl())){
+        if(qiuBaiItemBean.getUserUrl() == null || "".equals(qiuBaiItemBean.getUserUrl().replace(HttpUrlUtil.QIU_BAI_HOME,""))){
             return;
         }
         Intent intent = new Intent();

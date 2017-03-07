@@ -1,6 +1,8 @@
 package league.funny.com.funnyleague.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -17,7 +19,9 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.R;
+import league.funny.com.funnyleague.activity.QiuBaiUserActivity;
 import league.funny.com.funnyleague.bean.QiuBaiCommentBean;
+import league.funny.com.funnyleague.bean.QiuBaiItemBean;
 import league.funny.com.funnyleague.util.GlideCircleTransform;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
 
@@ -75,7 +79,40 @@ public class QiuBaiCommentRecyclerAdapter extends Adapter<ViewHolder> {
             }
 
             ((ItemViewHolder) holder).commentContent.setText(qiuBaiCommentBean.getCommentContent());
+
+            ((ItemViewHolder) holder).userName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toQiuBaiUserActivity(position);
+                }
+            });
+            ((ItemViewHolder) holder).userImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toQiuBaiUserActivity(position);
+                }
+            });
         }
+    }
+
+    public void toQiuBaiUserActivity(int position){
+        if(qiuBaiCommentBeanList.get(position).getUserUrl() == null || "".equals(qiuBaiCommentBeanList.get(position).getUserUrl().replace(HttpUrlUtil.QIU_BAI_HOME,""))){
+            return;
+        }
+        Intent intent = new Intent();
+        intent.setClass(context, QiuBaiUserActivity.class);
+        Bundle bundle = new Bundle();
+        QiuBaiItemBean qiuBaiItemBean = new QiuBaiItemBean();
+        QiuBaiCommentBean iuBaiCommentBean = qiuBaiCommentBeanList.get(position);
+        qiuBaiItemBean.setUserAge(iuBaiCommentBean.getUserAge());
+        qiuBaiItemBean.setUserImage(iuBaiCommentBean.getUserImage());
+        qiuBaiItemBean.setUserId(iuBaiCommentBean.getUserId());
+        qiuBaiItemBean.setUserSex(iuBaiCommentBean.getUserSex());
+        qiuBaiItemBean.setUserName(iuBaiCommentBean.getUserName());
+        qiuBaiItemBean.setUserUrl(iuBaiCommentBean.getUserUrl());
+        bundle.putSerializable("qiuBaiItemBean",qiuBaiItemBean);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
     }
 
     public static class ItemViewHolder extends ViewHolder {

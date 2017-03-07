@@ -13,11 +13,18 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.activity.BaseActivity;
+import league.funny.com.funnyleague.api.ApiManage;
+import league.funny.com.funnyleague.bean.GlobleBean;
+import league.funny.com.funnyleague.bean.image.ImageResponse;
 import league.funny.com.funnyleague.fragment.ChengrenFragment;
 import league.funny.com.funnyleague.fragment.ImageFragment;
 import league.funny.com.funnyleague.fragment.MoreFragment;
 import league.funny.com.funnyleague.fragment.TextFragment;
 import league.funny.com.funnyleague.fragment.VideoFragment;
+import rx.Observer;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity implements OnTabSelectedListener {
 
@@ -35,14 +42,16 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
     private ChengrenFragment chengrenFragment = null;
     private MoreFragment moreFragment = null;
 
+    private Subscription subscription;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ((FunnyLeagueApplication)FunnyLeagueApplication.getContext()).addActivity(this);
+        ((FunnyLeagueApplication) FunnyLeagueApplication.getContext()).addActivity(this);
         ButterKnife.bind(this);
-
-        if(Build.VERSION.SDK_INT>=21){
+        getBackground();
+        if (Build.VERSION.SDK_INT >= 21) {
             getSupportActionBar().setElevation(0);
         }
 
@@ -50,7 +59,7 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
         initListener();
     }
 
-    private void initUI(){
+    private void initUI() {
         bottomNavigationBar
                 .setMode(BottomNavigationBar.MODE_FIXED);
         bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_RIPPLE);
@@ -67,7 +76,7 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
                 .addItem(new BottomNavigationItem(R.drawable.bottom_more, R.string.title_more))
                 .initialise();
 
-        if(currentFragment == null){
+        if (currentFragment == null) {
             Fragment fragment = getFragmentById(0);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, fragment).commit();
@@ -75,7 +84,7 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
         }
     }
 
-    private void initListener(){
+    private void initListener() {
         bottomNavigationBar.setTabSelectedListener(this);
     }
 
@@ -89,7 +98,7 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
 //            getSupportFragmentManager().beginTransaction()
 //                    .replace(R.id.fragment_container, fragment).commit();
 //        }
-        if (!fragment.isAdded()) {	// 先判断是否被add过
+        if (!fragment.isAdded()) {    // 先判断是否被add过
             getSupportFragmentManager().beginTransaction().hide(currentFragment).add(R.id.fragment_container, fragment).commit(); // 隐藏当前的fragment，add下一个到Activity中
         } else {
             getSupportFragmentManager().beginTransaction().hide(currentFragment).show(fragment).commit(); // 隐藏当前的fragment，显示下一个
@@ -113,42 +122,42 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
         Fragment fragment = null;
         switch (position) {
             case 0:
-                if(textFragment == null){
+                if (textFragment == null) {
                     textFragment = new TextFragment();
                     fragment = textFragment;
-                }else{
+                } else {
                     fragment = textFragment;
                 }
                 break;
             case 1:
-                if(imageFragment == null){
+                if (imageFragment == null) {
                     imageFragment = new ImageFragment();
                     fragment = imageFragment;
-                }else{
+                } else {
                     fragment = imageFragment;
                 }
                 break;
             case 2:
-                if(videoFragment == null){
+                if (videoFragment == null) {
                     videoFragment = new VideoFragment();
                     fragment = videoFragment;
-                }else{
+                } else {
                     fragment = videoFragment;
                 }
                 break;
             case 3:
-                if(chengrenFragment == null){
+                if (chengrenFragment == null) {
                     chengrenFragment = new ChengrenFragment();
                     fragment = chengrenFragment;
-                }else{
+                } else {
                     fragment = chengrenFragment;
                 }
                 break;
             case 4:
-                if(moreFragment == null){
+                if (moreFragment == null) {
                     moreFragment = new MoreFragment();
                     fragment = moreFragment;
-                }else{
+                } else {
                     fragment = moreFragment;
                 }
                 break;
@@ -161,8 +170,7 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
 
-            if ((System.currentTimeMillis() - exitTime) > EXIT_ALL_TIME)
-            {
+            if ((System.currentTimeMillis() - exitTime) > EXIT_ALL_TIME) {
                 Toast.makeText(getApplicationContext(), this.getResources().getString(R.string.out_app), Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
@@ -171,5 +179,42 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    public void getBackground() {
+
+        if (GlobleBean.imageResponse == null) {
+
+            subscription = ApiManage.getInstence().getZuiMeiApiService().getImage()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<ImageResponse>() {
+                        @Override
+                        public void onCompleted() {
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                        }
+
+                        @Override
+                        public void onNext(ImageResponse imageReponse) {
+                            if (imageReponse != null) {
+                                GlobleBean.imageResponse = imageReponse;
+                            } else {
+                                return;
+                            }
+
+                        }
+                    });
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (subscription != null && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+        }
     }
 }

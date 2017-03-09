@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import league.funny.com.funnyleague.FunnyLeagueApplication;
 import league.funny.com.funnyleague.R;
 import league.funny.com.funnyleague.activity.QiuBaiUserActivity;
 import league.funny.com.funnyleague.bean.QiuBaiCommentBean;
@@ -60,7 +61,7 @@ public class QiuBaiCommentRecyclerAdapter extends Adapter<ViewHolder> {
                 qiuBaiCommentBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
             }
 
-            Glide.with(context).load(qiuBaiCommentBean.getUserImage()).transform(new GlideCircleTransform(context, 40)).into(((ItemViewHolder) holder).userImage);
+            Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiCommentBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 40)).into(((ItemViewHolder) holder).userImage);
             if (qiuBaiCommentBean.getUserSex() != null && !"".equals(qiuBaiCommentBean.getUserSex())
                     && qiuBaiCommentBean.getUserAge() != null && !"".equals(qiuBaiCommentBean.getUserAge())) {
                 ((ItemViewHolder) holder).userSex.setBackgroundResource("man".equals(qiuBaiCommentBean.getUserSex()) ? R.drawable.man : R.drawable.women);

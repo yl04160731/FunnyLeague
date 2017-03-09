@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import league.funny.com.funnyleague.FunnyLeagueApplication;
 import league.funny.com.funnyleague.R;
 import league.funny.com.funnyleague.activity.QiuBaiUserActivity;
 import league.funny.com.funnyleague.adapter.QiuBaiCommentRecyclerAdapter;
@@ -171,7 +172,7 @@ public class QiuBaiContentFragment extends BaseFragment {
         if (!qiuBaiItemBean.getUserImage().contains("qiushibaike")) {
             qiuBaiItemBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
         }
-        Glide.with(getActivity()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(getActivity(), 45)).into(userImage);
+        Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 45)).into(userImage);
         if (qiuBaiItemBean.getUserSex() != null && !"".equals(qiuBaiItemBean.getUserSex())
                 && qiuBaiItemBean.getUserAge() != null && !"".equals(qiuBaiItemBean.getUserAge())) {
             userSex.setBackgroundResource("man".equals(qiuBaiItemBean.getUserSex()) ? R.drawable.man : R.drawable.women);

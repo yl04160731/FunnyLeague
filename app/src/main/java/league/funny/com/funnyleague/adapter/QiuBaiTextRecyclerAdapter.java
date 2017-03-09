@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import league.funny.com.funnyleague.FunnyLeagueApplication;
 import league.funny.com.funnyleague.R;
 import league.funny.com.funnyleague.activity.QiuBaiContentActivity;
 import league.funny.com.funnyleague.activity.QiuBaiUserActivity;
@@ -76,7 +77,7 @@ public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
             if (!qiuBaiItemBean.getUserImage().contains("qiushibaike")) {
                 qiuBaiItemBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
             }
-            Glide.with(context).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(context, 40)).into(((ItemViewHolder) holder).userImage);
+            Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 40)).into(((ItemViewHolder) holder).userImage);
             ((ItemViewHolder) holder).itemContent.setText(qiuBaiItemBean.getItemContent());
             if (qiuBaiItemBean.getUserSex() != null && !"".equals(qiuBaiItemBean.getUserSex())
                     && qiuBaiItemBean.getUserAge() != null && !"".equals(qiuBaiItemBean.getUserAge())) {

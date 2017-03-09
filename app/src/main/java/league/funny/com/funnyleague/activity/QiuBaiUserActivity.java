@@ -278,15 +278,15 @@ public class QiuBaiUserActivity extends BaseActivity {
             followCount.setText(qiuBaiUserBean.getFollowCount());
             fansCount.setText(qiuBaiUserBean.getFansCount());
 
-            Glide.with(QiuBaiUserActivity.this).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(QiuBaiUserActivity.this, 45)).into(follow1);
-            Glide.with(QiuBaiUserActivity.this).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(QiuBaiUserActivity.this, 45)).into(follow2);
-            Glide.with(QiuBaiUserActivity.this).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(QiuBaiUserActivity.this, 45)).into(follow3);
-            Glide.with(QiuBaiUserActivity.this).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(QiuBaiUserActivity.this, 45)).into(follow4);
+            Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 45)).into(follow1);
+            Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 45)).into(follow2);
+            Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 45)).into(follow3);
+            Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 45)).into(follow4);
 
-            Glide.with(QiuBaiUserActivity.this).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(QiuBaiUserActivity.this, 45)).into(fans1);
-            Glide.with(QiuBaiUserActivity.this).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(QiuBaiUserActivity.this, 45)).into(fans2);
-            Glide.with(QiuBaiUserActivity.this).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(QiuBaiUserActivity.this, 45)).into(fans3);
-            Glide.with(QiuBaiUserActivity.this).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(QiuBaiUserActivity.this, 45)).into(fans4);
+            Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 45)).into(fans1);
+            Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 45)).into(fans2);
+            Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 45)).into(fans3);
+            Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 45)).into(fans4);
         }
     };
 
@@ -297,7 +297,7 @@ public class QiuBaiUserActivity extends BaseActivity {
         if (!qiuBaiItemBean.getUserImage().contains("qiushibaike")) {
             qiuBaiItemBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
         }
-        Glide.with(QiuBaiUserActivity.this).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(QiuBaiUserActivity.this, 50)).into(userImage);
+        Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 50)).into(userImage);
         if (qiuBaiItemBean.getUserSex() != null && !"".equals(qiuBaiItemBean.getUserSex())
                 && qiuBaiItemBean.getUserAge() != null && !"".equals(qiuBaiItemBean.getUserAge())) {
             userSex.setBackgroundResource("man".equals(qiuBaiItemBean.getUserSex()) ? R.drawable.man : R.drawable.women);
@@ -316,7 +316,7 @@ public class QiuBaiUserActivity extends BaseActivity {
         String imagePath = "http://wpstatic.zuimeia.com/"
                 + imageReponse.getData().getImages().get(randomNumber).getImageUrl()
                 + "?imageMogr/v2/auto-orient/thumbnail/480x320/quality/100";
-        Glide.with(QiuBaiUserActivity.this).load(imagePath).asBitmap().into(new SimpleTarget<Bitmap>() {
+        Glide.with(FunnyLeagueApplication.getApplication()).load(imagePath).asBitmap().into(new SimpleTarget<Bitmap>() {
 
             @Override
             public void onResourceReady(Bitmap arg0, GlideAnimation<? super Bitmap> arg1) {

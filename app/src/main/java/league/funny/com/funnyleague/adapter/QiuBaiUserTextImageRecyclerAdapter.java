@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,8 @@ import league.funny.com.funnyleague.activity.QiuBaiContentActivity;
 import league.funny.com.funnyleague.bean.QiuBaiItemBean;
 import league.funny.com.funnyleague.util.GlideCircleTransform;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
+
+import static com.ashokvarma.bottomnavigation.utils.Utils.getScreenWidth;
 
 public class QiuBaiUserTextImageRecyclerAdapter extends Adapter<ViewHolder> {
 
@@ -80,9 +83,45 @@ public class QiuBaiUserTextImageRecyclerAdapter extends Adapter<ViewHolder> {
             ((ItemViewHolder) holder).itemContent.setText(qiuBaiItemBean.getItemContent() == null?"":qiuBaiItemBean.getItemContent());
             if (qiuBaiItemBean.getItemImage() != null && !"".equals(qiuBaiItemBean.getItemImage())) {
                 ((ItemViewHolder) holder).itemImage_qiubai.setVisibility(View.VISIBLE);
+//                ViewGroup.LayoutParams vglp = ((ItemViewHolder) holder).itemImage_qiubai.getLayoutParams();
+//                vglp.width = 10*position;
+//                vglp.height = 10*position;
+//                vglp.
+//                ((ItemViewHolder) holder).itemImage_qiubai.setLayoutParams(vglp);
+
+//                Glide.with(FunnyLeagueApplication.getApplication())
+//                        .load(qiuBaiItemBean.getItemImage()).diskCacheStrategy(DiskCacheStrategy.ALL)
+//                        .placeholder(R.drawable.imageload)
+//                        .error(R.drawable.imageload)
+//                        .dontAnimate()
+//                        .centerCrop()
+//                        .into(new SimpleTarget<GlideDrawable>() {
+//                            @Override
+//                            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+//                                ViewGroup.LayoutParams params = ((ItemViewHolder) holder).itemImage_qiubai.getLayoutParams();
+//                                int screenWidth = getScreenWidth(FunnyLeagueApplication.getApplication());
+//                                params.width = screenWidth;
+//                                params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//                                ((ItemViewHolder) holder).itemImage_qiubai.setLayoutParams(params);
+//                                ((ItemViewHolder) holder).itemImage_qiubai.setMaxWidth(screenWidth);
+//                                ((ItemViewHolder) holder).itemImage_qiubai.setImageDrawable(resource);
+//                            }
+//                        });
+
+                ViewGroup.LayoutParams params = ((ItemViewHolder) holder).itemImage_qiubai.getLayoutParams();
+                int screenWidth = getScreenWidth(FunnyLeagueApplication.getApplication());
+                params.width = screenWidth;
+                params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                ((ItemViewHolder) holder).itemImage_qiubai.setLayoutParams(params);
+                ((ItemViewHolder) holder).itemImage_qiubai.setMaxWidth(screenWidth);
 
                 Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getItemImage())
-                        .placeholder(R.drawable.imageload).into(((ItemViewHolder) holder).itemImage_qiubai);
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .dontAnimate().error(R.drawable.imageload).placeholder(R.drawable.imageload)
+                        .into(((ItemViewHolder) holder).itemImage_qiubai);
+
+//                Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getItemImage())
+//                        .placeholder(R.drawable.imageload).into(((ItemViewHolder) holder).itemImage_qiubai);
             } else {
                 ((ItemViewHolder) holder).itemImage_qiubai.setVisibility(View.GONE);
             }

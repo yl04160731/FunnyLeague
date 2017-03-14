@@ -10,6 +10,6 @@
     <dimen name="textSize_super_small">9sp</dimen>
     <dimen name="textSize_small">14sp</dimen>
     <dimen name="textSize_smaller">12sp</dimen>
-    <dimen name="app_bar_height">260dp</dimen>
+    <dimen name="app_bar_height">248dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 </resources>

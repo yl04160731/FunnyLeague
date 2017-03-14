@@ -8,508 +8,553 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="league.funny.com.funnyleague.activity.QiuBaiUserActivity">
 
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_height="match_parent">
 
-        <TableRow android:layout_marginTop="10dp">
+        <RelativeLayout
+            android:id="@+id/user_info_wait"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.6">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/smileIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/smile" />
+
+                <TextView
+                    style="@style/SmallGreyTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:orientation="vertical">
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/message"
+                    android:layout_toRightOf="@+id/smileIcon"
+                    android:text="@string/user_info_wait" />
+            </LinearLayout>
+        </RelativeLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="@string/qiushi"
-                        android:textSize="16sp" />
+        <TableLayout
+            android:id="@+id/user_info_table"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-                    <TextView
-                        android:id="@+id/qiushiCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="@dimen/textSize_big" />
-                </LinearLayout>
-            </RelativeLayout>
+            <TableRow android:layout_marginTop="10dp">
 
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="5">
-
-                <TableRow>
-
-                    <TextView
-                        android:id="@+id/text1"
-                        style="@style/SuperSmallTextView"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:background="@drawable/textview_border" />
-
-                    <TextView
-                        android:id="@+id/text2"
-                        style="@style/SuperSmallTextView"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:background="@drawable/textview_border" />
-
-                    <TextView
-                        android:id="@+id/text3"
-                        style="@style/SuperSmallTextView"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:background="@drawable/textview_border" />
-
-                    <ImageView
-                        android:id="@+id/text_forward"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:src="@drawable/forward" />
-                </TableRow>
-            </TableLayout>
-        </TableRow>
-
-        <TableRow android:layout_marginTop="10dp">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1.6"
-                android:background="@color/white" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="5"
-                android:background="@color/lightGray" />
-        </TableRow>
-
-        <TableRow android:layout_marginTop="10dp">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.6"
-                android:background="@color/white" />
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="5">
-
-                <TableRow>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.6">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@drawable/smile1" />
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/smileCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/qiushi"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/qiushiCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/textSize_big" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5">
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/text1"
+                            style="@style/SuperSmallTextView"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:background="@drawable/textview_border" />
+
+                        <TextView
+                            android:id="@+id/text2"
+                            style="@style/SuperSmallTextView"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:background="@drawable/textview_border" />
+
+                        <TextView
+                            android:id="@+id/text3"
+                            style="@style/SuperSmallTextView"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:background="@drawable/textview_border" />
+
+                        <ImageView
+                            android:id="@+id/text_forward"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginLeft="5dp"
-                            android:textSize="16sp" />
-                    </LinearLayout>
+                            android:layout_weight="1"
+                            android:src="@drawable/forward" />
+                    </TableRow>
+                </TableLayout>
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1.6"
+                    android:background="@color/white" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="5"
+                    android:background="@color/lightGray" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.6"
+                    android:background="@color/white" />
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5">
+
+                    <TableRow>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@drawable/smile1" />
+
+                            <TextView
+                                android:id="@+id/smileCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@drawable/comment1" />
+
+                            <TextView
+                                android:id="@+id/commentCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+                    </TableRow>
+                </TableLayout>
+
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1.6"
+                    android:background="@color/white" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="5"
+                    android:background="@color/lightGray" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.6">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@drawable/comment1" />
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/commentCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="5dp"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/guanzhu"
                             android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/followCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/textSize_big" />
                     </LinearLayout>
-                </TableRow>
-            </TableLayout>
+                </RelativeLayout>
 
-        </TableRow>
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5">
 
-        <TableRow android:layout_marginTop="10dp">
+                    <TableRow>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1.6"
-                android:background="@color/white" />
+                        <ImageView
+                            android:id="@+id/follow1"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:visibility="invisible" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="5"
-                android:background="@color/lightGray" />
-        </TableRow>
+                        <ImageView
+                            android:id="@+id/follow2"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:visibility="invisible" />
 
-        <TableRow android:layout_marginTop="10dp">
+                        <ImageView
+                            android:id="@+id/follow3"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:visibility="invisible" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.6">
+                        <ImageView
+                            android:id="@+id/follow4"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:visibility="invisible" />
+                    </TableRow>
+                </TableLayout>
+            </TableRow>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:orientation="vertical">
+            <TableRow android:layout_marginTop="10dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1.6"
+                    android:background="@color/white" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="5"
+                    android:background="@color/lightGray" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.6">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/fensi"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/fansCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/textSize_big" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5">
+
+                    <TableRow>
+
+                        <ImageView
+                            android:id="@+id/fans1"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:visibility="invisible" />
+
+                        <ImageView
+                            android:id="@+id/fans2"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:visibility="invisible" />
+
+                        <ImageView
+                            android:id="@+id/fans3"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:visibility="invisible" />
+
+                        <ImageView
+                            android:id="@+id/fans4"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:visibility="invisible" />
+                    </TableRow>
+                </TableLayout>
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1.6"
+                    android:background="@color/white" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="5"
+                    android:background="@color/lightGray" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.6">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="@string/guanzhu"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/qiushijingxuan"
                         android:textSize="16sp" />
+                </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/followCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="@dimen/textSize_big" />
-                </LinearLayout>
-            </RelativeLayout>
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="5">
-
-                <TableRow>
-
-                    <ImageView
-                        android:id="@+id/follow1"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"/>
-
-                    <ImageView
-                        android:id="@+id/follow2"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"/>
-
-                    <ImageView
-                        android:id="@+id/follow3"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"/>
-
-                    <ImageView
-                        android:id="@+id/follow4"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"/>
-                </TableRow>
-            </TableLayout>
-        </TableRow>
-
-        <TableRow android:layout_marginTop="10dp">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1.6"
-                android:background="@color/white" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="5"
-                android:background="@color/lightGray" />
-        </TableRow>
-
-        <TableRow android:layout_marginTop="10dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.6">
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/qiushijingxuan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:orientation="vertical">
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="5"
+                    android:textSize="16sp" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1.6"
+                    android:background="@color/white" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="5"
+                    android:background="@color/lightGray" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.6">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="@string/fensi"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/zhiye"
                         android:textSize="16sp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/zhiye"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="5"
+                    android:textSize="16sp" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1.6"
+                    android:background="@color/white" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="5"
+                    android:background="@color/lightGray" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.6">
 
                     <TextView
-                        android:id="@+id/fansCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="@dimen/textSize_big" />
-                </LinearLayout>
-            </RelativeLayout>
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="5">
-
-                <TableRow>
-
-                    <ImageView
-                        android:id="@+id/fans1"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"/>
-
-                    <ImageView
-                        android:id="@+id/fans2"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"/>
-
-                    <ImageView
-                        android:id="@+id/fans3"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"/>
-
-                    <ImageView
-                        android:id="@+id/fans4"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"/>
-                </TableRow>
-            </TableLayout>
-        </TableRow>
-
-        <TableRow android:layout_marginTop="10dp">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1.6"
-                android:background="@color/white" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="5"
-                android:background="@color/lightGray" />
-        </TableRow>
-
-        <TableRow android:layout_marginTop="10dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.6">
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/guxiang"
+                        android:textSize="16sp" />
+                </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/guxiang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                    android:layout_gravity="left"
                     android:layout_marginLeft="5dp"
-                    android:text="@string/qiushijingxuan"
+                    android:layout_weight="5"
                     android:textSize="16sp" />
-            </RelativeLayout>
+            </TableRow>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="5"
-                android:id="@+id/qiushijingxuan"
-                android:textSize="16sp" />
-        </TableRow>
+            <TableRow android:layout_marginTop="10dp">
 
-        <TableRow android:layout_marginTop="10dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1.6"
+                    android:background="@color/white" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1.6"
-                android:background="@color/white" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="5"
+                    android:background="@color/lightGray" />
+            </TableRow>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="5"
-                android:background="@color/lightGray" />
-        </TableRow>
+            <TableRow android:layout_marginTop="10dp">
 
-        <TableRow android:layout_marginTop="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.6">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.6">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/qiuling"
+                        android:textSize="16sp" />
+                </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/qiuling"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                    android:layout_gravity="left"
                     android:layout_marginLeft="5dp"
-                    android:text="@string/zhiye"
+                    android:layout_weight="5"
                     android:textSize="16sp" />
-            </RelativeLayout>
+            </TableRow>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="5"
-                android:id="@+id/zhiye"
-                android:textSize="16sp" />
-        </TableRow>
+            <TableRow android:layout_marginTop="10dp">
 
-        <TableRow android:layout_marginTop="10dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1.6"
+                    android:background="@color/white" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1.6"
-                android:background="@color/white" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="5"
+                    android:background="@color/lightGray" />
+            </TableRow>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="5"
-                android:background="@color/lightGray" />
-        </TableRow>
-
-        <TableRow android:layout_marginTop="10dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.6">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginLeft="5dp"
-                    android:text="@string/guxiang"
-                    android:textSize="16sp" />
-            </RelativeLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="5"
-                android:id="@+id/guxiang"
-                android:textSize="16sp" />
-        </TableRow>
-
-        <TableRow android:layout_marginTop="10dp">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1.6"
-                android:background="@color/white" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="5"
-                android:background="@color/lightGray" />
-        </TableRow>
-
-        <TableRow android:layout_marginTop="10dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.6">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginLeft="5dp"
-                    android:text="@string/qiuling"
-                    android:textSize="16sp" />
-            </RelativeLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="5"
-                android:id="@+id/qiuling"
-                android:textSize="16sp" />
-        </TableRow>
-
-        <TableRow android:layout_marginTop="10dp">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="1.6"
-                android:background="@color/white" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_weight="5"
-                android:background="@color/lightGray" />
-        </TableRow>
-
-    </TableLayout>
+        </TableLayout>
+    </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

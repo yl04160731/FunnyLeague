@@ -16,13 +16,22 @@ public class QiuBaiItemBean implements Serializable {
     private String userAge;
     private String userSex;
     private String itemContent;
+    private String itemImage;
     private String itemContentUrl;
     private String smileCount;
     private String commentCount;
     private String commentGoodName;
     private String commentGoodContent;
-    private String commentGoodCount;
+    private String commentGoodCount;z
     private ArrayList<QiuBaiCommentBean> qbcbList = new ArrayList<>();
+
+    public String getItemImage() {
+        return itemImage;
+    }
+
+    public void setItemImage(String itemImage) {
+        this.itemImage = itemImage;
+    }
 
     public int getId() {
         return id;

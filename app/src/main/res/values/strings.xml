@@ -20,6 +20,10 @@
 
     <string name="comment_wait">正在为您加载评论......</string>
 
+    <string name="user_info_wait">用户详情加载中......</string>
+
+    <string name="user_info_no">当前用户已关闭糗百个人动态</string>
+
     <string name="qiushi">糗事</string>
     <string name="guxiang">故乡</string>
     <string name="zhiye">职业</string>

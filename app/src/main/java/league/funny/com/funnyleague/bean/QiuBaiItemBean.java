@@ -22,7 +22,7 @@ public class QiuBaiItemBean implements Serializable {
     private String commentCount;
     private String commentGoodName;
     private String commentGoodContent;
-    private String commentGoodCount;z
+    private String commentGoodCount;
     private ArrayList<QiuBaiCommentBean> qbcbList = new ArrayList<>();
 
     public String getItemImage() {

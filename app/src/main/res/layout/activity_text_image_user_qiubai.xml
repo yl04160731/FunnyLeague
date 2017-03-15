@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="league.funny.com.funnyleague.activity.userQiuBaiTextImageActivity">
+    tools:context="league.funny.com.funnyleague.activity.QiuBaiUserTextImageActivity">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout_text"

@@ -467,7 +467,7 @@ public class QiuBaiUserActivity extends BaseActivity {
 
     public void toUserContent(){
         Intent intent = new Intent();
-        intent.setClass(this, userQiuBaiTextImageActivity.class);
+        intent.setClass(this, QiuBaiUserTextImageActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("qiuBaiItemBean", qiuBaiItemBean);
         intent.putExtras(bundle);

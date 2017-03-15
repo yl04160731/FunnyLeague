@@ -43,36 +43,19 @@ public class QiuBaiUserTextImageRecyclerAdapter extends Adapter<ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return qiuBaiItemBeanArrayList.size() == 0 ? 0 : qiuBaiItemBeanArrayList.size() + 1;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (position + 1 == getItemCount()) {
-            return TYPE_FOOTER;
-        } else {
-            return TYPE_ITEM;
-        }
+        return qiuBaiItemBeanArrayList.size();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == TYPE_ITEM) {
-            View view = LayoutInflater.from(context).inflate(R.layout.recycler_text_item_qiubai, parent,
-                    false);
-            return new ItemViewHolder(view);
-        } else if (viewType == TYPE_FOOTER) {
-            View view = LayoutInflater.from(context).inflate(R.layout.item_foot, parent,
-                    false);
-            return new FootViewHolder(view);
-        }
-        return null;
+        View view = LayoutInflater.from(context).inflate(R.layout.recycler_text_item_qiubai, parent,
+                false);
+        return new ItemViewHolder(view);
     }
 
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        if (holder instanceof ItemViewHolder) {
             final QiuBaiItemBean qiuBaiItemBean = qiuBaiItemBeanArrayList.get(position);
 
             ((ItemViewHolder) holder).userName.setText(qiuBaiItemBean.getUserName());
@@ -80,7 +63,7 @@ public class QiuBaiUserTextImageRecyclerAdapter extends Adapter<ViewHolder> {
                 qiuBaiItemBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
             }
             Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 40)).into(((ItemViewHolder) holder).userImage);
-            ((ItemViewHolder) holder).itemContent.setText(qiuBaiItemBean.getItemContent() == null?"":qiuBaiItemBean.getItemContent());
+            ((ItemViewHolder) holder).itemContent.setText(qiuBaiItemBean.getItemContent() == null ? "" : qiuBaiItemBean.getItemContent());
             if (qiuBaiItemBean.getItemImage() != null && !"".equals(qiuBaiItemBean.getItemImage())) {
                 ((ItemViewHolder) holder).itemImage_qiubai.setVisibility(View.VISIBLE);
 //                ViewGroup.LayoutParams vglp = ((ItemViewHolder) holder).itemImage_qiubai.getLayoutParams();
@@ -131,7 +114,7 @@ public class QiuBaiUserTextImageRecyclerAdapter extends Adapter<ViewHolder> {
                 ((ItemViewHolder) holder).userSex.setBackgroundResource("man".equals(qiuBaiItemBean.getUserSex()) ? R.drawable.man : R.drawable.women);
                 ((ItemViewHolder) holder).userAge.setText(qiuBaiItemBean.getUserAge());
                 ((ItemViewHolder) holder).userSex.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 ((ItemViewHolder) holder).userSex.setVisibility(View.GONE);
             }
             ((ItemViewHolder) holder).smileCount.setText(qiuBaiItemBean.getSmileCount());
@@ -148,17 +131,14 @@ public class QiuBaiUserTextImageRecyclerAdapter extends Adapter<ViewHolder> {
                     toQiuBaiContentActivity(position);
                 }
             });
-
-
-        }
     }
 
-    public void toQiuBaiContentActivity(int position){
+    public void toQiuBaiContentActivity(int position) {
         Intent intent = new Intent();
         intent.setClass(context, QiuBaiContentActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("qiuBaiItemBeanArrayList", qiuBaiItemBeanArrayList);
-        bundle.putInt("qiubaiContentIndex",position);
+        bundle.putInt("qiubaiContentIndex", position);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
@@ -197,14 +177,7 @@ public class QiuBaiUserTextImageRecyclerAdapter extends Adapter<ViewHolder> {
 
         public ItemViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this,view);
-        }
-    }
-
-    public static class FootViewHolder extends ViewHolder {
-
-        public FootViewHolder(View view) {
-            super(view);
+            ButterKnife.bind(this, view);
         }
     }
 }

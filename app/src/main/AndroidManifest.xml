@@ -37,7 +37,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activity.userQiuBaiTextImageActivity"
+        <activity android:name=".activity.QiuBaiUserTextImageActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"></activity>
     </application>

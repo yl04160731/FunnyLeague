@@ -1,5 +1,7 @@
-package league.funny.com.funnyleague.fragment;
+package league.funny.com.funnyleague.activity;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -8,9 +10,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
 import com.chanven.lib.cptr.loadmore.SwipeRefreshHelper;
@@ -25,21 +26,23 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.R;
-import league.funny.com.funnyleague.adapter.QiuBaiTextRecyclerAdapter;
+import league.funny.com.funnyleague.adapter.QiuBaiUserTextImageRecyclerAdapter;
 import league.funny.com.funnyleague.bean.QiuBaiItemBean;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
 import league.funny.com.funnyleague.util.Util;
 import league.funny.com.funnyleague.view.LoadMoreViewFooter;
 import league.funny.com.funnyleague.view.RecycleViewDivider;
 
-public class QiuBaiTextFragment extends BaseFragment {
+public class QiuBaiUserTextImageActivity extends AppCompatActivity {
 
-    private View view = null;
     private int page = 1;
+    private String userUrl;
+    private QiuBaiItemBean qiuBaiItemBean;
     private ArrayList<QiuBaiItemBean> qiuBaiItemBeanArrayList = new ArrayList<>();
-    private QiuBaiTextRecyclerAdapter adapter;
+    private QiuBaiUserTextImageRecyclerAdapter adapter;
 
     private boolean onFreshFlg = false;
+    private boolean loadMore = true;
 
     private SwipeRefreshHelper mSwipeRefreshHelper;
     private RecyclerAdapterWithHF mAdapter;
@@ -50,39 +53,47 @@ public class QiuBaiTextFragment extends BaseFragment {
     @BindView(R.id.recyclerView_text)
     RecyclerView recyclerView;
 
-    public QiuBaiTextFragment() {
-        // Required empty public constructor
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        setRetainInstance(true);
-        view = inflater.inflate(R.layout.fragment_text_qiubai, container, false);
-        ButterKnife.bind(this, view);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_text_image_user_qiubai);
+        ButterKnife.bind(this);
         initView();
         initData();
-        return view;
+        if (Build.VERSION.SDK_INT >= 21) {
+            getSupportActionBar().setElevation(0);
+        }
     }
 
     public void initView() {
 
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        actionBar.setCustomView(R.layout.actionbar_main);//自定义ActionBar布局
+        actionBar.setCustomView(R.layout.actionbar_content);//自定义ActionBar布局
+        ImageButton imageButton = (ImageButton) actionBar.getCustomView().findViewById(R.id.contentBack);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(),RecycleViewDivider.VERTICAL_LIST,R.drawable.divider));
+        recyclerView.addItemDecoration(new RecycleViewDivider(this, RecycleViewDivider.VERTICAL_LIST, R.drawable.divider));
     }
 
     public void initData() {
-        adapter = new QiuBaiTextRecyclerAdapter(getActivity(), qiuBaiItemBeanArrayList);
+        adapter = new QiuBaiUserTextImageRecyclerAdapter(this, qiuBaiItemBeanArrayList);
         mAdapter = new RecyclerAdapterWithHF(adapter);
         recyclerView.setAdapter(mAdapter);
         mSwipeRefreshHelper = new SwipeRefreshHelper(swipeRefreshLayout);
         mSwipeRefreshHelper.setFooterView(new LoadMoreViewFooter());
+
+        Intent intent = this.getIntent();
+        qiuBaiItemBean = (QiuBaiItemBean) intent.getSerializableExtra("qiuBaiItemBean");
+        userUrl = qiuBaiItemBean.getUserUrl() + HttpUrlUtil.QIU_BAI_USER_ARTICLES;
 
         swipeRefreshLayout.post(new Runnable() {
             @Override
@@ -113,7 +124,6 @@ public class QiuBaiTextFragment extends BaseFragment {
                 Runnable networkTask = new Runnable() {
                     @Override
                     public void run() {
-                        page = page + 1;
                         onFreshFlg = false;
                         getData();
                     }
@@ -126,12 +136,17 @@ public class QiuBaiTextFragment extends BaseFragment {
 
     Handler HtmlHandler = new Handler() {
         public void handleMessage(Message msg) {
-            mAdapter.notifyDataSetChanged();
-            if(onFreshFlg) {
+            if (onFreshFlg) {
+                mAdapter.notifyDataSetChanged();
                 mSwipeRefreshHelper.refreshComplete();
                 mSwipeRefreshHelper.setLoadMoreEnable(true);
-            }else{
-                mSwipeRefreshHelper.loadMoreComplete(true);
+            } else {
+                if(loadMore) {
+                    mAdapter.notifyDataSetChanged();
+                    mSwipeRefreshHelper.loadMoreComplete(true);
+                }else{
+                    mSwipeRefreshHelper.loadMoreComplete(false);
+                }
             }
         }
     };
@@ -141,43 +156,46 @@ public class QiuBaiTextFragment extends BaseFragment {
      */
     private void getData() {
         try {
-            String URL = HttpUrlUtil.QIU_BAI_TEXT_PAGE + page + HttpUrlUtil.SPRIT;
+            String URL = userUrl + HttpUrlUtil.QIU_BAI_USER_PAGE + page + HttpUrlUtil.SPRIT;
             Document doc = Jsoup.connect(URL)
                     .userAgent(HttpUrlUtil.USER_AGENT)
                     .timeout(15000).get();
 
-            Elements elementsArticle = doc.select(".article").select(".block");
+            Elements elementsArticle = doc.select(".user-block").select(".user-article");
             if (elementsArticle != null && elementsArticle.size() > 0) {
-                if(onFreshFlg) qiuBaiItemBeanArrayList.clear();
+                if (onFreshFlg) qiuBaiItemBeanArrayList.clear();
+
+                page = page + 1;
 
                 for (int i = 0; i < elementsArticle.size(); i++) {
-                    QiuBaiItemBean qiuBaiItemBean = new QiuBaiItemBean();
-                    Elements elementsAuthor = elementsArticle.get(i).select(".author");
+                    QiuBaiItemBean qiuBaiItemTempBean = new QiuBaiItemBean();
 
-                    String userUrl = elementsAuthor.select("a").attr("href");
-                    qiuBaiItemBean.setUserId(userUrl.replace("/","").replace("users",""));
-                    qiuBaiItemBean.setUserUrl(HttpUrlUtil.QIU_BAI_HOME + userUrl);
-                    qiuBaiItemBean.setUserName(Util.replaceHtmlSign(elementsAuthor.select("h2").html()));
-                    qiuBaiItemBean.setUserImage(elementsAuthor.select("img").attr("src"));
-                    qiuBaiItemBean.setUserAge(elementsAuthor.select(".articleGender").html());
+                    qiuBaiItemTempBean.setUserId(qiuBaiItemBean.getUserId());
+                    qiuBaiItemTempBean.setUserUrl(qiuBaiItemBean.getUserUrl());
+                    qiuBaiItemTempBean.setUserName(qiuBaiItemBean.getUserName());
+                    qiuBaiItemTempBean.setUserImage(qiuBaiItemBean.getUserImage());
+                    qiuBaiItemTempBean.setUserAge(qiuBaiItemBean.getUserAge());
+                    qiuBaiItemTempBean.setUserSex(qiuBaiItemBean.getUserSex());
 
-                    if(elementsAuthor.html().contains("manIcon")){
-                        qiuBaiItemBean.setUserSex("man");
-                    }else if(elementsAuthor.html().contains("womenIcon")){
-                        qiuBaiItemBean.setUserSex("women");
+                    qiuBaiItemTempBean.setItemContentUrl(HttpUrlUtil.QIU_BAI_HOME + elementsArticle.get(i).select(".user-article-text").select("a").attr("href"));
+                    qiuBaiItemTempBean.setItemContent(Util.replaceHtmlSign(elementsArticle.get(i).select(".user-article-text").select("a").text()));
+                    qiuBaiItemTempBean.setItemImage(elementsArticle.get(i).select(".user-article-pic").select("img").attr("src"));
+                    String text = elementsArticle.get(i).select(".user-article-stat").text();
+                    String smileCount = "";
+                    String commentCount = "";
+                    if (text != null) {
+                        smileCount = text.substring(0, text.indexOf("好笑")).trim();
+                        commentCount = text.substring(text.indexOf("⋅") + 1, text.indexOf("评论")).trim();
                     }
 
-                    qiuBaiItemBean.setItemContentUrl(HttpUrlUtil.QIU_BAI_HOME + elementsArticle.get(i).select(".contentHerf").attr("href"));
-                    qiuBaiItemBean.setItemContent(Util.replaceHtmlSign(elementsArticle.get(i).select(".content").select("span").html()));
-                    qiuBaiItemBean.setSmileCount(elementsArticle.get(i).select(".stats-vote").select(".number").html());
-                    qiuBaiItemBean.setCommentCount(elementsArticle.get(i).select(".stats-comments").select(".number").html());
-                    qiuBaiItemBean.setCommentGoodName(Util.replaceHtmlSign(elementsArticle.get(i).select(".cmt-name").html()));
-                    String likeNum = elementsArticle.get(i).select(".likenum").text();
-                    qiuBaiItemBean.setCommentGoodContent(Util.replaceHtmlSign(elementsArticle.get(i).select(".main-text").text().replace(" " + likeNum,"")));
-                    qiuBaiItemBean.setCommentGoodCount(elementsArticle.get(i).select(".likenum").text());
+                    qiuBaiItemTempBean.setSmileCount(smileCount);
+                    qiuBaiItemTempBean.setCommentCount(commentCount);
 
-                    qiuBaiItemBeanArrayList.add(qiuBaiItemBean);
+                    qiuBaiItemBeanArrayList.add(qiuBaiItemTempBean);
+                    loadMore = true;
                 }
+            }else{
+                loadMore = false;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -187,5 +205,4 @@ public class QiuBaiTextFragment extends BaseFragment {
             HtmlHandler.sendMessage(message);
         }
     }
-
 }

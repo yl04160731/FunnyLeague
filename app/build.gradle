@@ -39,4 +39,5 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:+'
     compile 'com.google.code.gson:gson:+'
     compile 'io.reactivex:rxandroid:+'
+    compile 'com.chanven.lib:cptr:1.1.0'
 }

@@ -12,6 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
+import com.chanven.lib.cptr.loadmore.SwipeRefreshHelper;
+import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -25,15 +29,20 @@ import league.funny.com.funnyleague.adapter.QiuBaiTextRecyclerAdapter;
 import league.funny.com.funnyleague.bean.QiuBaiItemBean;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
 import league.funny.com.funnyleague.util.Util;
+import league.funny.com.funnyleague.view.LoadMoreViewFooter;
 import league.funny.com.funnyleague.view.RecycleViewDivider;
 
 public class QiuBaiTextFragment extends BaseFragment {
 
     private View view = null;
     private int page = 1;
-    boolean isLoading;
     private ArrayList<QiuBaiItemBean> qiuBaiItemBeanArrayList = new ArrayList<>();
     private QiuBaiTextRecyclerAdapter adapter;
+
+    private boolean onFreshFlg = false;
+
+    private SwipeRefreshHelper mSwipeRefreshHelper;
+    private RecyclerAdapterWithHF mAdapter;
 
     @BindView(R.id.swipeRefreshLayout_text)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -62,89 +71,75 @@ public class QiuBaiTextFragment extends BaseFragment {
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         actionBar.setCustomView(R.layout.actionbar_main);//自定义ActionBar布局
 
-        adapter = new QiuBaiTextRecyclerAdapter(getActivity(), qiuBaiItemBeanArrayList);
-
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                Runnable networkTask = new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(true);
-
-                        page = 1;
-                        getData(true);
-                    }
-                };
-                new Thread(networkTask).start();
-            }
-        });
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(),RecycleViewDivider.VERTICAL_LIST,R.drawable.divider));
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-                if (lastVisibleItemPosition + 1 == adapter.getItemCount()) {
-
-                    boolean isRefreshing = swipeRefreshLayout.isRefreshing();
-                    if (isRefreshing) {
-//                        adapter.notifyItemRemoved(adapter.getItemCount());
-                        return;
-                    }
-                    if (!isLoading) {
-                        isLoading = true;
-                        Runnable networkTask = new Runnable() {
-                            @Override
-                            public void run() {
-                                page = page + 1;
-                                getData(false);
-                                isLoading = false;
-                            }
-                        };
-                        new Thread(networkTask).start();
-                    }
-                }
-            }
-        });
     }
 
     public void initData() {
-        Runnable networkTask = new Runnable() {
+        adapter = new QiuBaiTextRecyclerAdapter(getActivity(), qiuBaiItemBeanArrayList);
+        mAdapter = new RecyclerAdapterWithHF(adapter);
+        recyclerView.setAdapter(mAdapter);
+        mSwipeRefreshHelper = new SwipeRefreshHelper(swipeRefreshLayout);
+        mSwipeRefreshHelper.setFooterView(new LoadMoreViewFooter());
+
+        swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                getData(false);
+                mSwipeRefreshHelper.autoRefresh();
             }
-        };
+        });
 
-        new Thread(networkTask).start();
+        mSwipeRefreshHelper.setOnSwipeRefreshListener(new SwipeRefreshHelper.OnSwipeRefreshListener() {
+            @Override
+            public void onfresh() {
+                Runnable networkTask = new Runnable() {
+                    @Override
+                    public void run() {
+                        page = 1;
+                        onFreshFlg = true;
+                        getData();
+                    }
+                };
+
+                new Thread(networkTask).start();
+            }
+        });
+
+        mSwipeRefreshHelper.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void loadMore() {
+                Runnable networkTask = new Runnable() {
+                    @Override
+                    public void run() {
+                        page = page + 1;
+                        onFreshFlg = false;
+                        getData();
+                    }
+                };
+
+                new Thread(networkTask).start();
+            }
+        });
     }
 
     Handler HtmlHandler = new Handler() {
         public void handleMessage(Message msg) {
-            adapter.notifyDataSetChanged();
-            swipeRefreshLayout.setRefreshing(false);
-            adapter.notifyItemRemoved(adapter.getItemCount());
+            mAdapter.notifyDataSetChanged();
+            if(onFreshFlg) {
+                mSwipeRefreshHelper.refreshComplete();
+                mSwipeRefreshHelper.setLoadMoreEnable(true);
+            }else{
+                mSwipeRefreshHelper.loadMoreComplete(true);
+            }
         }
     };
 
     /**
      * 获取测试数据
      */
-    private void getData(boolean clearFlg) {
+    private void getData() {
         try {
             String URL = HttpUrlUtil.QIU_BAI_TEXT_PAGE + page + HttpUrlUtil.SPRIT;
             Document doc = Jsoup.connect(URL)
@@ -156,7 +151,7 @@ public class QiuBaiTextFragment extends BaseFragment {
                 return;
             }
 
-            if(clearFlg) qiuBaiItemBeanArrayList.clear();
+            if(onFreshFlg) qiuBaiItemBeanArrayList.clear();
 
             for (int i = 0; i < elementsArticle.size(); i++) {
                 QiuBaiItemBean qiuBaiItemBean = new QiuBaiItemBean();

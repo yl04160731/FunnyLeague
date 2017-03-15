@@ -28,11 +28,8 @@ import league.funny.com.funnyleague.util.HttpUrlUtil;
 
 public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
 
-    private static final int TYPE_ITEM = 0;
-    private static final int TYPE_FOOTER = 1;
     private Context context;
     private ArrayList<QiuBaiItemBean> qiuBaiItemBeanArrayList;
-
 
     public QiuBaiTextRecyclerAdapter(Context context, ArrayList<QiuBaiItemBean> qiuBaiItemBeanArrayList) {
         this.context = context;
@@ -41,108 +38,90 @@ public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return qiuBaiItemBeanArrayList.size() == 0 ? 0 : qiuBaiItemBeanArrayList.size() + 1;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (position + 1 == getItemCount()) {
-            return TYPE_FOOTER;
-        } else {
-            return TYPE_ITEM;
-        }
+        return qiuBaiItemBeanArrayList.size();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == TYPE_ITEM) {
-            View view = LayoutInflater.from(context).inflate(R.layout.recycler_text_item_qiubai, parent,
-                    false);
-            return new ItemViewHolder(view);
-        } else if (viewType == TYPE_FOOTER) {
-            View view = LayoutInflater.from(context).inflate(R.layout.item_foot, parent,
-                    false);
-            return new FootViewHolder(view);
-        }
-        return null;
+        View view = LayoutInflater.from(context).inflate(R.layout.recycler_text_item_qiubai, parent,
+                false);
+        return new ItemViewHolder(view);
     }
 
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        if (holder instanceof ItemViewHolder) {
-            final QiuBaiItemBean qiuBaiItemBean = qiuBaiItemBeanArrayList.get(position);
-            ((ItemViewHolder) holder).userName.setText(qiuBaiItemBean.getUserName());
+        final QiuBaiItemBean qiuBaiItemBean = qiuBaiItemBeanArrayList.get(position);
+        ((ItemViewHolder) holder).userName.setText(qiuBaiItemBean.getUserName());
 
-            if (!qiuBaiItemBean.getUserImage().contains("qiushibaike")) {
-                qiuBaiItemBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
-            }
-            Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 40)).into(((ItemViewHolder) holder).userImage);
-            ((ItemViewHolder) holder).itemContent.setText(qiuBaiItemBean.getItemContent());
-            if (qiuBaiItemBean.getUserSex() != null && !"".equals(qiuBaiItemBean.getUserSex())
-                    && qiuBaiItemBean.getUserAge() != null && !"".equals(qiuBaiItemBean.getUserAge())) {
-                ((ItemViewHolder) holder).userSex.setBackgroundResource("man".equals(qiuBaiItemBean.getUserSex()) ? R.drawable.man : R.drawable.women);
-                ((ItemViewHolder) holder).userAge.setText(qiuBaiItemBean.getUserAge());
-                ((ItemViewHolder) holder).userSex.setVisibility(View.VISIBLE);
-            }else{
-                ((ItemViewHolder) holder).userSex.setVisibility(View.GONE);
-            }
-            ((ItemViewHolder) holder).smileCount.setText(qiuBaiItemBean.getSmileCount());
-            ((ItemViewHolder) holder).commentCount.setText(qiuBaiItemBean.getCommentCount());
-            ((ItemViewHolder) holder).commentGood.setText(qiuBaiItemBean.getCommentGoodName() + qiuBaiItemBean.getCommentGoodContent());
-
-            if (qiuBaiItemBean.getCommentGoodName() == null || "".equals(qiuBaiItemBean.getCommentGoodName())) {
-                ((ItemViewHolder) holder).commentLayout.setVisibility(View.GONE);
-            }
-
-            ((ItemViewHolder) holder).userName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toQiuBaiUserActivity(qiuBaiItemBean);
-                }
-            });
-
-            ((ItemViewHolder) holder).userImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toQiuBaiUserActivity(qiuBaiItemBean);
-                }
-            });
-
-            ((ItemViewHolder) holder).itemContent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toQiuBaiContentActivity(position);
-                }
-            });
-
-            ((ItemViewHolder) holder).commentGood.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toQiuBaiContentActivity(position);
-                }
-            });
+        if (!qiuBaiItemBean.getUserImage().contains("qiushibaike")) {
+            qiuBaiItemBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
         }
+        Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 40)).into(((ItemViewHolder) holder).userImage);
+        ((ItemViewHolder) holder).itemContent.setText(qiuBaiItemBean.getItemContent());
+        if (qiuBaiItemBean.getUserSex() != null && !"".equals(qiuBaiItemBean.getUserSex())
+                && qiuBaiItemBean.getUserAge() != null && !"".equals(qiuBaiItemBean.getUserAge())) {
+            ((ItemViewHolder) holder).userSex.setBackgroundResource("man".equals(qiuBaiItemBean.getUserSex()) ? R.drawable.man : R.drawable.women);
+            ((ItemViewHolder) holder).userAge.setText(qiuBaiItemBean.getUserAge());
+            ((ItemViewHolder) holder).userSex.setVisibility(View.VISIBLE);
+        } else {
+            ((ItemViewHolder) holder).userSex.setVisibility(View.GONE);
+        }
+        ((ItemViewHolder) holder).smileCount.setText(qiuBaiItemBean.getSmileCount());
+        ((ItemViewHolder) holder).commentCount.setText(qiuBaiItemBean.getCommentCount());
+        ((ItemViewHolder) holder).commentGood.setText(qiuBaiItemBean.getCommentGoodName() + qiuBaiItemBean.getCommentGoodContent());
+
+        if (qiuBaiItemBean.getCommentGoodName() == null || "".equals(qiuBaiItemBean.getCommentGoodName())) {
+            ((ItemViewHolder) holder).commentLayout.setVisibility(View.GONE);
+        }
+
+        ((ItemViewHolder) holder).userName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toQiuBaiUserActivity(qiuBaiItemBean);
+            }
+        });
+
+        ((ItemViewHolder) holder).userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toQiuBaiUserActivity(qiuBaiItemBean);
+            }
+        });
+
+        ((ItemViewHolder) holder).itemContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toQiuBaiContentActivity(position);
+            }
+        });
+
+        ((ItemViewHolder) holder).commentGood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toQiuBaiContentActivity(position);
+            }
+        });
     }
 
-    public void toQiuBaiContentActivity(int position){
+    public void toQiuBaiContentActivity(int position) {
         Intent intent = new Intent();
         intent.setClass(context, QiuBaiContentActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("qiuBaiItemBeanArrayList", qiuBaiItemBeanArrayList);
-        bundle.putInt("qiubaiContentIndex",position);
+        bundle.putInt("qiubaiContentIndex", position);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
 
-    public void toQiuBaiUserActivity(QiuBaiItemBean qiuBaiItemBean){
-        if(qiuBaiItemBean.getUserUrl() == null || "".equals(qiuBaiItemBean.getUserUrl().replace(HttpUrlUtil.QIU_BAI_HOME,""))){
+    public void toQiuBaiUserActivity(QiuBaiItemBean qiuBaiItemBean) {
+        if (qiuBaiItemBean.getUserUrl() == null || "".equals(qiuBaiItemBean.getUserUrl().replace(HttpUrlUtil.QIU_BAI_HOME, ""))) {
             return;
         }
         Intent intent = new Intent();
         intent.setClass(context, QiuBaiUserActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("qiuBaiItemBean",qiuBaiItemBean);
+        bundle.putSerializable("qiuBaiItemBean", qiuBaiItemBean);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
@@ -178,14 +157,7 @@ public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
 
         public ItemViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this,view);
-        }
-    }
-
-    public static class FootViewHolder extends ViewHolder {
-
-        public FootViewHolder(View view) {
-            super(view);
+            ButterKnife.bind(this, view);
         }
     }
 }

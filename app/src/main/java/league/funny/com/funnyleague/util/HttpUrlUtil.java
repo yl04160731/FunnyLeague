@@ -25,5 +25,6 @@ public class HttpUrlUtil {
     // 捧腹网
     public static String PENG_FU_HOME = "http://www.pengfu.com";
     public static String PENG_FU_TEXT = "http://www.pengfu.com/xiaohua_";
+    public static String PENG_FU_USER = "http://www.pengfu.com/u/";
 
 }

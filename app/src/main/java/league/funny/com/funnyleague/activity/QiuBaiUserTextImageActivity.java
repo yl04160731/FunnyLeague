@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -25,6 +24,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import league.funny.com.funnyleague.FunnyLeagueApplication;
 import league.funny.com.funnyleague.R;
 import league.funny.com.funnyleague.adapter.QiuBaiUserTextImageRecyclerAdapter;
 import league.funny.com.funnyleague.bean.ItemBean;
@@ -33,7 +33,7 @@ import league.funny.com.funnyleague.util.Util;
 import league.funny.com.funnyleague.view.LoadMoreViewFooter;
 import league.funny.com.funnyleague.view.RecycleViewDivider;
 
-public class QiuBaiUserTextImageActivity extends AppCompatActivity {
+public class QiuBaiUserTextImageActivity extends BaseActivity {
 
     private int page = 1;
     private String userUrl;
@@ -58,6 +58,7 @@ public class QiuBaiUserTextImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_text_image_user_qiubai);
         ButterKnife.bind(this);
+        ((FunnyLeagueApplication)FunnyLeagueApplication.getContext()).addActivity(this);
         initView();
         initData();
         if (Build.VERSION.SDK_INT >= 21) {

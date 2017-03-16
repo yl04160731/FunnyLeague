@@ -40,6 +40,12 @@
         <item name="android:lineSpacingMultiplier">1.2</item>
     </style>
 
+    <style name="BigTextView">
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:textSize">@dimen/textSize_big</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+    </style>
+
     <style name="SmallTextView">
         <item name="android:textColor">@color/dark</item>
         <item name="android:textSize">@dimen/textSize_small_2</item>

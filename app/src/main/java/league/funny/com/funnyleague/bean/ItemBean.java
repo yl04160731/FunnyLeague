@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Created by inno-y on 2017/2/21.
  */
 
-public class QiuBaiItemBean implements Serializable {
+public class ItemBean implements Serializable {
     private int id;
     private String userId;
     private String userName;
@@ -15,6 +15,7 @@ public class QiuBaiItemBean implements Serializable {
     private String userUrl;
     private String userAge;
     private String userSex;
+    private String itemContentTitle;
     private String itemContent;
     private String itemImage;
     private String itemContentUrl;
@@ -23,7 +24,33 @@ public class QiuBaiItemBean implements Serializable {
     private String commentGoodName;
     private String commentGoodContent;
     private String commentGoodCount;
-    private ArrayList<QiuBaiCommentBean> qbcbList = new ArrayList<>();
+    private String ding;
+    private String cai;
+    private ArrayList<CommentBean> qbcbList = new ArrayList<>();
+
+    public String getDing() {
+        return ding;
+    }
+
+    public void setDing(String ding) {
+        this.ding = ding;
+    }
+
+    public String getCai() {
+        return cai;
+    }
+
+    public void setCai(String cai) {
+        this.cai = cai;
+    }
+
+    public String getItemContentTitle() {
+        return itemContentTitle;
+    }
+
+    public void setItemContentTitle(String itemContentTitle) {
+        this.itemContentTitle = itemContentTitle;
+    }
 
     public String getItemImage() {
         return itemImage;
@@ -129,11 +156,11 @@ public class QiuBaiItemBean implements Serializable {
         this.commentGoodCount = commentGoodCount;
     }
 
-    public ArrayList<QiuBaiCommentBean> getQbcbList() {
+    public ArrayList<CommentBean> getQbcbList() {
         return qbcbList;
     }
 
-    public void setQbcbList(ArrayList<QiuBaiCommentBean> qbcbList) {
+    public void setQbcbList(ArrayList<CommentBean> qbcbList) {
         this.qbcbList = qbcbList;
     }
 

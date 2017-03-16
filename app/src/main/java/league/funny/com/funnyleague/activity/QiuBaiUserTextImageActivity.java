@@ -27,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.R;
 import league.funny.com.funnyleague.adapter.QiuBaiUserTextImageRecyclerAdapter;
-import league.funny.com.funnyleague.bean.QiuBaiItemBean;
+import league.funny.com.funnyleague.bean.ItemBean;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
 import league.funny.com.funnyleague.util.Util;
 import league.funny.com.funnyleague.view.LoadMoreViewFooter;
@@ -37,8 +37,8 @@ public class QiuBaiUserTextImageActivity extends AppCompatActivity {
 
     private int page = 1;
     private String userUrl;
-    private QiuBaiItemBean qiuBaiItemBean;
-    private ArrayList<QiuBaiItemBean> qiuBaiItemBeanArrayList = new ArrayList<>();
+    private ItemBean itemBean;
+    private ArrayList<ItemBean> itemBeanArrayList = new ArrayList<>();
     private QiuBaiUserTextImageRecyclerAdapter adapter;
 
     private boolean onFreshFlg = false;
@@ -85,15 +85,15 @@ public class QiuBaiUserTextImageActivity extends AppCompatActivity {
     }
 
     public void initData() {
-        adapter = new QiuBaiUserTextImageRecyclerAdapter(this, qiuBaiItemBeanArrayList);
+        adapter = new QiuBaiUserTextImageRecyclerAdapter(this, itemBeanArrayList);
         mAdapter = new RecyclerAdapterWithHF(adapter);
         recyclerView.setAdapter(mAdapter);
         mSwipeRefreshHelper = new SwipeRefreshHelper(swipeRefreshLayout);
         mSwipeRefreshHelper.setFooterView(new LoadMoreViewFooter());
 
         Intent intent = this.getIntent();
-        qiuBaiItemBean = (QiuBaiItemBean) intent.getSerializableExtra("qiuBaiItemBean");
-        userUrl = qiuBaiItemBean.getUserUrl() + HttpUrlUtil.QIU_BAI_USER_ARTICLES;
+        itemBean = (ItemBean) intent.getSerializableExtra("itemBean");
+        userUrl = itemBean.getUserUrl() + HttpUrlUtil.QIU_BAI_USER_ARTICLES;
 
         swipeRefreshLayout.post(new Runnable() {
             @Override
@@ -163,19 +163,19 @@ public class QiuBaiUserTextImageActivity extends AppCompatActivity {
 
             Elements elementsArticle = doc.select(".user-block").select(".user-article");
             if (elementsArticle != null && elementsArticle.size() > 0) {
-                if (onFreshFlg) qiuBaiItemBeanArrayList.clear();
+                if (onFreshFlg) itemBeanArrayList.clear();
 
                 page = page + 1;
 
                 for (int i = 0; i < elementsArticle.size(); i++) {
-                    QiuBaiItemBean qiuBaiItemTempBean = new QiuBaiItemBean();
+                    ItemBean qiuBaiItemTempBean = new ItemBean();
 
-                    qiuBaiItemTempBean.setUserId(qiuBaiItemBean.getUserId());
-                    qiuBaiItemTempBean.setUserUrl(qiuBaiItemBean.getUserUrl());
-                    qiuBaiItemTempBean.setUserName(qiuBaiItemBean.getUserName());
-                    qiuBaiItemTempBean.setUserImage(qiuBaiItemBean.getUserImage());
-                    qiuBaiItemTempBean.setUserAge(qiuBaiItemBean.getUserAge());
-                    qiuBaiItemTempBean.setUserSex(qiuBaiItemBean.getUserSex());
+                    qiuBaiItemTempBean.setUserId(itemBean.getUserId());
+                    qiuBaiItemTempBean.setUserUrl(itemBean.getUserUrl());
+                    qiuBaiItemTempBean.setUserName(itemBean.getUserName());
+                    qiuBaiItemTempBean.setUserImage(itemBean.getUserImage());
+                    qiuBaiItemTempBean.setUserAge(itemBean.getUserAge());
+                    qiuBaiItemTempBean.setUserSex(itemBean.getUserSex());
 
                     qiuBaiItemTempBean.setItemContentUrl(HttpUrlUtil.QIU_BAI_HOME + elementsArticle.get(i).select(".user-article-text").select("a").attr("href"));
                     qiuBaiItemTempBean.setItemContent(Util.replaceHtmlSign(elementsArticle.get(i).select(".user-article-text").select("a").text()));
@@ -191,7 +191,7 @@ public class QiuBaiUserTextImageActivity extends AppCompatActivity {
                     qiuBaiItemTempBean.setSmileCount(smileCount);
                     qiuBaiItemTempBean.setCommentCount(commentCount);
 
-                    qiuBaiItemBeanArrayList.add(qiuBaiItemTempBean);
+                    itemBeanArrayList.add(qiuBaiItemTempBean);
                     loadMore = true;
                 }
             }else{

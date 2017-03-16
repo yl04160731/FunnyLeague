@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by inno-y on 2017/2/21.
  */
 
-public class QiuBaiCommentBean implements Serializable {
+public class CommentBean implements Serializable {
     private int id;
     private String userId;
     private String userUrl;

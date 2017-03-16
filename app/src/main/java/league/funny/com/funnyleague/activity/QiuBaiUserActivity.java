@@ -32,8 +32,8 @@ import butterknife.OnClick;
 import league.funny.com.funnyleague.FunnyLeagueApplication;
 import league.funny.com.funnyleague.R;
 import league.funny.com.funnyleague.bean.GlobleBean;
-import league.funny.com.funnyleague.bean.QiuBaiItemBean;
-import league.funny.com.funnyleague.bean.QiuBaiUserBean;
+import league.funny.com.funnyleague.bean.ItemBean;
+import league.funny.com.funnyleague.bean.UserBean;
 import league.funny.com.funnyleague.bean.image.ImageResponse;
 import league.funny.com.funnyleague.util.GlideCircleTransform;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
@@ -43,10 +43,10 @@ import static league.funny.com.funnyleague.R.id.userName_qiubai;
 
 public class QiuBaiUserActivity extends BaseActivity {
 
-    private QiuBaiItemBean qiuBaiItemBean;
-    private QiuBaiUserBean qiuBaiUserBean;
-    private ArrayList<QiuBaiUserBean> followUserList = new ArrayList<QiuBaiUserBean>();
-    private ArrayList<QiuBaiUserBean> fansUserList = new ArrayList<QiuBaiUserBean>();
+    private ItemBean itemBean;
+    private UserBean userBean;
+    private ArrayList<UserBean> followUserList = new ArrayList<UserBean>();
+    private ArrayList<UserBean> fansUserList = new ArrayList<UserBean>();
 
     @BindView(userName_qiubai)
     public TextView userName;
@@ -167,20 +167,20 @@ public class QiuBaiUserActivity extends BaseActivity {
         });
 
         Intent intent = this.getIntent();
-        qiuBaiItemBean = (QiuBaiItemBean) intent.getSerializableExtra("qiuBaiItemBean");
+        itemBean = (ItemBean) intent.getSerializableExtra("itemBean");
 
         glideBackground(GlobleBean.imageResponse);
 
-        qiuBaiUserBean = new QiuBaiUserBean();
-        qiuBaiUserBean.setUserId(qiuBaiItemBean.getUserId());
-        qiuBaiUserBean.setUserName(qiuBaiItemBean.getUserName());
-        qiuBaiUserBean.setUserImage(qiuBaiItemBean.getUserImage());
-        qiuBaiUserBean.setUserAge(qiuBaiItemBean.getUserAge());
-        qiuBaiUserBean.setUserSex(qiuBaiItemBean.getUserSex());
-        qiuBaiUserBean.setUserUrl(qiuBaiItemBean.getUserUrl());
+        userBean = new UserBean();
+        userBean.setUserId(itemBean.getUserId());
+        userBean.setUserName(itemBean.getUserName());
+        userBean.setUserImage(itemBean.getUserImage());
+        userBean.setUserAge(itemBean.getUserAge());
+        userBean.setUserSex(itemBean.getUserSex());
+        userBean.setUserUrl(itemBean.getUserUrl());
 
-        final String userUrl = qiuBaiItemBean.getUserUrl() + HttpUrlUtil.QIU_BAI_USER_ARTICLES;
-        final String friendUrl = qiuBaiItemBean.getUserUrl() + HttpUrlUtil.QIU_BAI_USER_FOLLOWERS;
+        final String userUrl = itemBean.getUserUrl() + HttpUrlUtil.QIU_BAI_USER_ARTICLES;
+        final String friendUrl = itemBean.getUserUrl() + HttpUrlUtil.QIU_BAI_USER_FOLLOWERS;
 
         Runnable networkTask = new Runnable() {
             @Override
@@ -207,25 +207,25 @@ public class QiuBaiUserActivity extends BaseActivity {
                     .timeout(15000).get();
             String user_col = doc.select(".user-col-all").select("h3").text();
             if (user_col != null && !"".equals(user_col)) {
-                qiuBaiUserBean = null;
+                userBean = null;
             } else {
 
                 Elements elementsUserStatis = doc.select(".user-statis");
                 if (elementsUserStatis != null && elementsUserStatis.size() == 3) {
                     Elements userStatis = elementsUserStatis.get(0).select("ul").select("li");
-                    qiuBaiUserBean.setFansCount(Util.replaceHtmlSign(userStatis.get(0).ownText()));
-                    qiuBaiUserBean.setFollowCount(Util.replaceHtmlSign(userStatis.get(1).ownText()));
-                    qiuBaiUserBean.setArticlesCount(Util.replaceHtmlSign(userStatis.get(2).ownText()));
-                    qiuBaiUserBean.setCommentCount(Util.replaceHtmlSign(userStatis.get(3).ownText()));
-                    qiuBaiUserBean.setSmileCount(Util.replaceHtmlSign(userStatis.get(4).ownText()));
-                    qiuBaiUserBean.setBestCount(Util.replaceHtmlSign(userStatis.get(5).ownText()));
+                    userBean.setFansCount(Util.replaceHtmlSign(userStatis.get(0).ownText()));
+                    userBean.setFollowCount(Util.replaceHtmlSign(userStatis.get(1).ownText()));
+                    userBean.setArticlesCount(Util.replaceHtmlSign(userStatis.get(2).ownText()));
+                    userBean.setCommentCount(Util.replaceHtmlSign(userStatis.get(3).ownText()));
+                    userBean.setSmileCount(Util.replaceHtmlSign(userStatis.get(4).ownText()));
+                    userBean.setBestCount(Util.replaceHtmlSign(userStatis.get(5).ownText()));
 
                     userStatis = elementsUserStatis.get(1).select("ul").select("li");
-                    qiuBaiUserBean.setMarriage(Util.replaceHtmlSign(userStatis.get(0).ownText()));
-                    qiuBaiUserBean.setConstellation(Util.replaceHtmlSign(userStatis.get(1).ownText()));
-                    qiuBaiUserBean.setOccupation(Util.replaceHtmlSign(userStatis.get(2).ownText()));
-                    qiuBaiUserBean.setHometown(Util.replaceHtmlSign(userStatis.get(3).ownText()));
-                    qiuBaiUserBean.setQiuAge(Util.replaceHtmlSign(userStatis.get(4).ownText()));
+                    userBean.setMarriage(Util.replaceHtmlSign(userStatis.get(0).ownText()));
+                    userBean.setConstellation(Util.replaceHtmlSign(userStatis.get(1).ownText()));
+                    userBean.setOccupation(Util.replaceHtmlSign(userStatis.get(2).ownText()));
+                    userBean.setHometown(Util.replaceHtmlSign(userStatis.get(3).ownText()));
+                    userBean.setQiuAge(Util.replaceHtmlSign(userStatis.get(4).ownText()));
 
                     Elements userQius = doc.select(".user-block");
                     ArrayList<String> stringList = new ArrayList<String>();
@@ -240,7 +240,7 @@ public class QiuBaiUserActivity extends BaseActivity {
                             break;
                         }
                     }
-                    qiuBaiUserBean.setStringList(stringList);
+                    userBean.setStringList(stringList);
                 }
             }
 
@@ -267,14 +267,14 @@ public class QiuBaiUserActivity extends BaseActivity {
                 if (elementsStatis != null) {
                     Elements elementsFollowStatis = elementsStatis.get(0).select("ul").select("li");
                     for (int i = 0; i < elementsFollowStatis.size(); i++) {
-                        QiuBaiUserBean followBean = new QiuBaiUserBean();
+                        UserBean followBean = new UserBean();
                         followBean.setUserImage(elementsFollowStatis.get(i).select("img").attr("src"));
                         followUserList.add(followBean);
                     }
 
                     Elements elementsFansStatis = elementsStatis.get(1).select("ul").select("li");
                     for (int i = 0; i < elementsFansStatis.size(); i++) {
-                        QiuBaiUserBean fansBean = new QiuBaiUserBean();
+                        UserBean fansBean = new UserBean();
                         fansBean.setUserImage(elementsFansStatis.get(i).select("img").attr("src"));
                         fansUserList.add(fansBean);
                     }
@@ -294,25 +294,25 @@ public class QiuBaiUserActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             if (msg.what == 1) {
 
-                if(qiuBaiUserBean == null){
+                if(userBean == null){
                     smileIcon.setVisibility(View.GONE);
                     message.setText(getResources().getString(R.string.user_info_no));
                     return;
                 }
 
-                if (qiuBaiUserBean.getConstellation() != null && !"".equals(qiuBaiUserBean.getConstellation())) {
-                    constellation.setText(qiuBaiUserBean.getConstellation());
+                if (userBean.getConstellation() != null && !"".equals(userBean.getConstellation())) {
+                    constellation.setText(userBean.getConstellation());
                     constellation.setVisibility(View.VISIBLE);
                 } else {
                     constellation.setVisibility(View.GONE);
                 }
 
-                if (qiuBaiUserBean.getMarriage() != null && !"".equals(qiuBaiUserBean.getMarriage())) {
+                if (userBean.getMarriage() != null && !"".equals(userBean.getMarriage())) {
 
-                    if (qiuBaiUserBean.getConstellation() != null && !"".equals(qiuBaiUserBean.getConstellation())) {
-                        marriage.setText(" | " + qiuBaiUserBean.getMarriage());
+                    if (userBean.getConstellation() != null && !"".equals(userBean.getConstellation())) {
+                        marriage.setText(" | " + userBean.getMarriage());
                     } else {
-                        marriage.setText(qiuBaiUserBean.getMarriage());
+                        marriage.setText(userBean.getMarriage());
                     }
 
                     marriage.setVisibility(View.VISIBLE);
@@ -320,16 +320,16 @@ public class QiuBaiUserActivity extends BaseActivity {
                     marriage.setVisibility(View.GONE);
                 }
 
-                if (qiuBaiUserBean.getStringList() != null && qiuBaiUserBean.getStringList().size() > 0) {
-                    text1.setText(qiuBaiUserBean.getStringList().get(0));
-                    if (qiuBaiUserBean.getStringList().size() > 1) {
-                        text2.setText(qiuBaiUserBean.getStringList().get(1));
+                if (userBean.getStringList() != null && userBean.getStringList().size() > 0) {
+                    text1.setText(userBean.getStringList().get(0));
+                    if (userBean.getStringList().size() > 1) {
+                        text2.setText(userBean.getStringList().get(1));
                     } else {
                         text2.setVisibility(View.INVISIBLE);
                         text3.setVisibility(View.INVISIBLE);
                     }
-                    if (qiuBaiUserBean.getStringList().size() > 2) {
-                        text3.setText(qiuBaiUserBean.getStringList().get(2));
+                    if (userBean.getStringList().size() > 2) {
+                        text3.setText(userBean.getStringList().get(2));
                     } else {
                         text3.setVisibility(View.INVISIBLE);
                     }
@@ -340,20 +340,20 @@ public class QiuBaiUserActivity extends BaseActivity {
                     text_forward.setVisibility(View.INVISIBLE);
                 }
 
-                if (qiuBaiUserBean.getArticlesCount() != null && !"".equals(qiuBaiUserBean.getArticlesCount())) {
-                    qiushiCount.setText(qiuBaiUserBean.getArticlesCount());
+                if (userBean.getArticlesCount() != null && !"".equals(userBean.getArticlesCount())) {
+                    qiushiCount.setText(userBean.getArticlesCount());
                 } else {
                     qiushiCount.setText("0");
                 }
 
-                smileCount.setText(qiuBaiUserBean.getSmileCount() == null ? "0" : qiuBaiUserBean.getSmileCount());
-                commentCount.setText(qiuBaiUserBean.getCommentCount() == null ? "0" : qiuBaiUserBean.getCommentCount());
-                zhiye.setText(qiuBaiUserBean.getOccupation());
-                guxiang.setText(qiuBaiUserBean.getHometown());
-                qiuling.setText(qiuBaiUserBean.getQiuAge());
-                qiushijingxuan.setText(qiuBaiUserBean.getBestCount());
-                followCount.setText(qiuBaiUserBean.getFollowCount());
-                fansCount.setText(qiuBaiUserBean.getFansCount());
+                smileCount.setText(userBean.getSmileCount() == null ? "0" : userBean.getSmileCount());
+                commentCount.setText(userBean.getCommentCount() == null ? "0" : userBean.getCommentCount());
+                zhiye.setText(userBean.getOccupation());
+                guxiang.setText(userBean.getHometown());
+                qiuling.setText(userBean.getQiuAge());
+                qiushijingxuan.setText(userBean.getBestCount());
+                followCount.setText(userBean.getFollowCount());
+                fansCount.setText(userBean.getFansCount());
 
                 user_info_wait.setVisibility(View.GONE);
                 user_info_table.setVisibility(View.VISIBLE);
@@ -405,16 +405,16 @@ public class QiuBaiUserActivity extends BaseActivity {
 
     public void glideBackground(ImageResponse imageReponse) {
 
-        userName.setText(qiuBaiItemBean.getUserName());
+        userName.setText(itemBean.getUserName());
 
-        if (!qiuBaiItemBean.getUserImage().contains("qiushibaike")) {
-            qiuBaiItemBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
+        if (!itemBean.getUserImage().contains("qiushibaike")) {
+            itemBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
         }
-        Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 55)).into(userImage);
-        if (qiuBaiItemBean.getUserSex() != null && !"".equals(qiuBaiItemBean.getUserSex())
-                && qiuBaiItemBean.getUserAge() != null && !"".equals(qiuBaiItemBean.getUserAge())) {
-            userSex.setBackgroundResource("man".equals(qiuBaiItemBean.getUserSex()) ? R.drawable.man : R.drawable.women);
-            userAge.setText(qiuBaiItemBean.getUserAge());
+        Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 55)).into(userImage);
+        if (itemBean.getUserSex() != null && !"".equals(itemBean.getUserSex())
+                && itemBean.getUserAge() != null && !"".equals(itemBean.getUserAge())) {
+            userSex.setBackgroundResource("man".equals(itemBean.getUserSex()) ? R.drawable.man : R.drawable.women);
+            userAge.setText(itemBean.getUserAge());
             userSex.setVisibility(View.VISIBLE);
         } else {
             userSex.setVisibility(View.GONE);
@@ -469,7 +469,7 @@ public class QiuBaiUserActivity extends BaseActivity {
         Intent intent = new Intent();
         intent.setClass(this, QiuBaiUserTextImageActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("qiuBaiItemBean", qiuBaiItemBean);
+        bundle.putSerializable("itemBean", itemBean);
         intent.putExtras(bundle);
         this.startActivity(intent);
     }

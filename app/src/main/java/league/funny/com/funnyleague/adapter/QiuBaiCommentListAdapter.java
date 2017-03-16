@@ -17,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.FunnyLeagueApplication;
 import league.funny.com.funnyleague.R;
-import league.funny.com.funnyleague.bean.QiuBaiCommentBean;
+import league.funny.com.funnyleague.bean.CommentBean;
 import league.funny.com.funnyleague.util.GlideCircleTransform;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
 
@@ -29,14 +29,14 @@ public class QiuBaiCommentListAdapter extends BaseAdapter {
 
     private Context context;
 
-    private List<QiuBaiCommentBean> qiuBaiCommentBeanList;
+    private List<CommentBean> commentBeanList;
 
     private LayoutInflater inflater;
 
-    public QiuBaiCommentListAdapter(Context context, List<QiuBaiCommentBean> qiuBaiCommentBeanList) {
+    public QiuBaiCommentListAdapter(Context context, List<CommentBean> commentBeanList) {
         super();
         this.context = context;
-        this.qiuBaiCommentBeanList = qiuBaiCommentBeanList;
+        this.commentBeanList = commentBeanList;
         inflater = LayoutInflater.from(context);
 
     }
@@ -71,7 +71,7 @@ public class QiuBaiCommentListAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position) {
 
-        return qiuBaiCommentBeanList.get(position);
+        return commentBeanList.get(position);
     }
 
     @Override
@@ -91,33 +91,33 @@ public class QiuBaiCommentListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        QiuBaiCommentBean qiuBaiCommentBean = qiuBaiCommentBeanList.get(position);
+        CommentBean commentBean = commentBeanList.get(position);
 
-        holder.userName.setText(qiuBaiCommentBean.getUserName());
+        holder.userName.setText(commentBean.getUserName());
 
-        if (!qiuBaiCommentBean.getUserImage().contains("qiushibaike")) {
-            qiuBaiCommentBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
+        if (!commentBean.getUserImage().contains("qiushibaike")) {
+            commentBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
         }
 
-        Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiCommentBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 40)).into(holder.userImage);
-        if (qiuBaiCommentBean.getUserSex() != null && !"".equals(qiuBaiCommentBean.getUserSex())
-                && qiuBaiCommentBean.getUserAge() != null && !"".equals(qiuBaiCommentBean.getUserAge())) {
-            holder.userSex.setBackgroundResource("man".equals(qiuBaiCommentBean.getUserSex()) ? R.drawable.man : R.drawable.women);
-            holder.userAge.setText(qiuBaiCommentBean.getUserAge());
+        Glide.with(FunnyLeagueApplication.getApplication()).load(commentBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 40)).into(holder.userImage);
+        if (commentBean.getUserSex() != null && !"".equals(commentBean.getUserSex())
+                && commentBean.getUserAge() != null && !"".equals(commentBean.getUserAge())) {
+            holder.userSex.setBackgroundResource("man".equals(commentBean.getUserSex()) ? R.drawable.man : R.drawable.women);
+            holder.userAge.setText(commentBean.getUserAge());
             holder.userSex.setVisibility(View.VISIBLE);
         }else{
             holder.userSex.setVisibility(View.GONE);
         }
 
-        if(qiuBaiCommentBean.getGoodCount() == null || "".equals(qiuBaiCommentBean.getGoodCount())){
+        if(commentBean.getGoodCount() == null || "".equals(commentBean.getGoodCount())){
             holder.goodImage.setVisibility(View.GONE);
-            holder.goodCount.setText(qiuBaiCommentBean.getFloor());
+            holder.goodCount.setText(commentBean.getFloor());
         }else{
             holder.goodImage.setVisibility(View.VISIBLE);
-            holder.goodCount.setText(qiuBaiCommentBean.getGoodCount());
+            holder.goodCount.setText(commentBean.getGoodCount());
         }
 
-        holder.commentContent.setText(qiuBaiCommentBean.getCommentContent());
+        holder.commentContent.setText(commentBean.getCommentContent());
 
 
 
@@ -133,6 +133,6 @@ public class QiuBaiCommentListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return qiuBaiCommentBeanList.size();
+        return commentBeanList.size();
     }
 }

@@ -32,8 +32,8 @@ import league.funny.com.funnyleague.FunnyLeagueApplication;
 import league.funny.com.funnyleague.R;
 import league.funny.com.funnyleague.activity.QiuBaiUserActivity;
 import league.funny.com.funnyleague.adapter.QiuBaiCommentRecyclerAdapter;
-import league.funny.com.funnyleague.bean.QiuBaiCommentBean;
-import league.funny.com.funnyleague.bean.QiuBaiItemBean;
+import league.funny.com.funnyleague.bean.ItemBean;
+import league.funny.com.funnyleague.bean.CommentBean;
 import league.funny.com.funnyleague.util.GlideCircleTransform;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
 import league.funny.com.funnyleague.util.Util;
@@ -94,9 +94,9 @@ public class QiuBaiContentFragment extends BaseFragment {
 
     private View view = null;
     private QiuBaiCommentRecyclerAdapter qiuBaiCommentRecyclerAdapter;
-    private ArrayList<QiuBaiCommentBean> shenCommentList = new ArrayList<>();
-    private ArrayList<QiuBaiCommentBean> CommentList = new ArrayList<>();
-    private QiuBaiItemBean qiuBaiItemBean;
+    private ArrayList<CommentBean> shenCommentList = new ArrayList<>();
+    private ArrayList<CommentBean> CommentList = new ArrayList<>();
+    private ItemBean itemBean;
 
     public QiuBaiContentFragment() {
     }
@@ -141,19 +141,19 @@ public class QiuBaiContentFragment extends BaseFragment {
     }
 
     public void toUserInfo(){
-        if(qiuBaiItemBean.getUserUrl() == null || "".equals(qiuBaiItemBean.getUserUrl().replace(HttpUrlUtil.QIU_BAI_HOME,""))){
+        if(itemBean.getUserUrl() == null || "".equals(itemBean.getUserUrl().replace(HttpUrlUtil.QIU_BAI_HOME,""))){
             return;
         }
         Intent intent = new Intent();
         intent.setClass(getActivity(), QiuBaiUserActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("qiuBaiItemBean",qiuBaiItemBean);
+        bundle.putSerializable("itemBean", itemBean);
         intent.putExtras(bundle);
         getActivity().startActivity(intent);
     }
 
-    public void setQiuBaiItemBean(QiuBaiItemBean qiuBaiItemBean){
-        this.qiuBaiItemBean = qiuBaiItemBean;
+    public void setItemBean(ItemBean itemBean){
+        this.itemBean = itemBean;
     }
 
     public void initData(){
@@ -167,29 +167,29 @@ public class QiuBaiContentFragment extends BaseFragment {
 
         new Thread(networkTask).start();
 
-        userName.setText(qiuBaiItemBean.getUserName());
+        userName.setText(itemBean.getUserName());
 
-        if (!qiuBaiItemBean.getUserImage().contains("qiushibaike")) {
-            qiuBaiItemBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
+        if (!itemBean.getUserImage().contains("qiushibaike")) {
+            itemBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
         }
-        Glide.with(FunnyLeagueApplication.getApplication()).load(qiuBaiItemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 45)).into(userImage);
-        if (qiuBaiItemBean.getUserSex() != null && !"".equals(qiuBaiItemBean.getUserSex())
-                && qiuBaiItemBean.getUserAge() != null && !"".equals(qiuBaiItemBean.getUserAge())) {
-            userSex.setBackgroundResource("man".equals(qiuBaiItemBean.getUserSex()) ? R.drawable.man : R.drawable.women);
-            userAge.setText(qiuBaiItemBean.getUserAge());
+        Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 45)).into(userImage);
+        if (itemBean.getUserSex() != null && !"".equals(itemBean.getUserSex())
+                && itemBean.getUserAge() != null && !"".equals(itemBean.getUserAge())) {
+            userSex.setBackgroundResource("man".equals(itemBean.getUserSex()) ? R.drawable.man : R.drawable.women);
+            userAge.setText(itemBean.getUserAge());
             userSex.setVisibility(View.VISIBLE);
         }else{
             userSex.setVisibility(View.GONE);
         }
 
-        itemContent.setText(qiuBaiItemBean.getItemContent());
-        smileCount.setText(qiuBaiItemBean.getSmileCount());
-        commentCount.setText(qiuBaiItemBean.getCommentCount());
+        itemContent.setText(itemBean.getItemContent());
+        smileCount.setText(itemBean.getSmileCount());
+        commentCount.setText(itemBean.getCommentCount());
     }
 
     private void getData() {
         try {
-            Document doc = Jsoup.connect(qiuBaiItemBean.getItemContentUrl())
+            Document doc = Jsoup.connect(itemBean.getItemContentUrl())
                     .userAgent(HttpUrlUtil.USER_AGENT)
                     .timeout(15000).get();
 
@@ -197,23 +197,23 @@ public class QiuBaiContentFragment extends BaseFragment {
 
             if(elementsShenComments != null && !"".equals(elementsShenComments)){
                 for(int i = 0;i < elementsShenComments.size();i++){
-                    QiuBaiCommentBean qiuBaiCommentBean = new QiuBaiCommentBean();
+                    CommentBean commentBean = new CommentBean();
                     String userUrl = elementsShenComments.get(i).select(".comments-table-main").attr("href");
-                    qiuBaiCommentBean.setUserUrl(HttpUrlUtil.QIU_BAI_HOME + userUrl);
-                    qiuBaiCommentBean.setUserId(userUrl.replace("/","").replace("users",""));
+                    commentBean.setUserUrl(HttpUrlUtil.QIU_BAI_HOME + userUrl);
+                    commentBean.setUserId(userUrl.replace("/","").replace("users",""));
 
-                    qiuBaiCommentBean.setUserName(Util.replaceHtmlSign(elementsShenComments.get(i).select(".cmt-name").html()));
-                    qiuBaiCommentBean.setUserImage(elementsShenComments.get(i).select(".avatar").attr("src"));
-                    qiuBaiCommentBean.setUserAge(elementsShenComments.get(i).select(".articleGender").html());
+                    commentBean.setUserName(Util.replaceHtmlSign(elementsShenComments.get(i).select(".cmt-name").html()));
+                    commentBean.setUserImage(elementsShenComments.get(i).select(".avatar").attr("src"));
+                    commentBean.setUserAge(elementsShenComments.get(i).select(".articleGender").html());
                     if(elementsShenComments.get(i).html().contains("manIcon")){
-                        qiuBaiCommentBean.setUserSex("man");
+                        commentBean.setUserSex("man");
                     }else if(elementsShenComments.get(i).html().contains("womenIcon")){
-                        qiuBaiCommentBean.setUserSex("women");
+                        commentBean.setUserSex("women");
                     }
 
-                    qiuBaiCommentBean.setCommentContent(Util.replaceHtmlSign(elementsShenComments.get(i).select(".main-text").html()));
-                    qiuBaiCommentBean.setGoodCount(elementsShenComments.get(i).select(".likenum").text());
-                    shenCommentList.add(qiuBaiCommentBean);
+                    commentBean.setCommentContent(Util.replaceHtmlSign(elementsShenComments.get(i).select(".main-text").html()));
+                    commentBean.setGoodCount(elementsShenComments.get(i).select(".likenum").text());
+                    shenCommentList.add(commentBean);
                 }
             }
 
@@ -223,25 +223,25 @@ public class QiuBaiContentFragment extends BaseFragment {
 
             if(elementsComments != null && !"".equals(elementsComments)){
                 for(int i = 0;i < elementsComments.size();i++){
-                    QiuBaiCommentBean qiuBaiCommentBean = new QiuBaiCommentBean();
+                    CommentBean commentBean = new CommentBean();
                     String userUrl = elementsComments.get(i).select(".avatars").select("a").attr("href");
-                    qiuBaiCommentBean.setUserId(userUrl.replace("/","").replace("users",""));
-                    qiuBaiCommentBean.setUserUrl(HttpUrlUtil.QIU_BAI_HOME + userUrl);
+                    commentBean.setUserId(userUrl.replace("/","").replace("users",""));
+                    commentBean.setUserUrl(HttpUrlUtil.QIU_BAI_HOME + userUrl);
 
                     String age = elementsComments.get(i).select(".articleCommentGender").html();
-                    qiuBaiCommentBean.setUserAge(age);
-                    qiuBaiCommentBean.setUserName(Util.replaceHtmlSign(elementsComments.get(i).select(".userlogin").text().replace(" " + age,"")));
-                    qiuBaiCommentBean.setUserImage(elementsComments.get(i).select(".avatars").select("img").attr("src"));
+                    commentBean.setUserAge(age);
+                    commentBean.setUserName(Util.replaceHtmlSign(elementsComments.get(i).select(".userlogin").text().replace(" " + age,"")));
+                    commentBean.setUserImage(elementsComments.get(i).select(".avatars").select("img").attr("src"));
 
                     if(elementsComments.get(i).html().contains("manIcon")){
-                        qiuBaiCommentBean.setUserSex("man");
+                        commentBean.setUserSex("man");
                     }else if(elementsComments.get(i).html().contains("womenIcon")){
-                        qiuBaiCommentBean.setUserSex("women");
+                        commentBean.setUserSex("women");
                     }
 
-                    qiuBaiCommentBean.setFloor(elementsComments.get(i).select(".report").text());
-                    qiuBaiCommentBean.setCommentContent(Util.replaceHtmlSign(elementsComments.get(i).select(".replay").select(".body").text()));
-                    CommentList.add(qiuBaiCommentBean);
+                    commentBean.setFloor(elementsComments.get(i).select(".report").text());
+                    commentBean.setCommentContent(Util.replaceHtmlSign(elementsComments.get(i).select(".replay").select(".body").text()));
+                    CommentList.add(commentBean);
                 }
             }
         } catch (Exception e) {

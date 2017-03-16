@@ -18,12 +18,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.FunnyLeagueApplication;
 import league.funny.com.funnyleague.R;
-import league.funny.com.funnyleague.bean.QiuBaiItemBean;
+import league.funny.com.funnyleague.bean.ItemBean;
 import league.funny.com.funnyleague.fragment.QiuBaiContentFragment;
 
 public class QiuBaiContentActivity extends BaseActivity {
 
-    private ArrayList<QiuBaiItemBean> qiuBaiItemBeanArrayList;
+    private ArrayList<ItemBean> itemBeanArrayList;
 
     @BindView(R.id.viewPager_qiubai)
     ViewPager viewPager;
@@ -57,7 +57,7 @@ public class QiuBaiContentActivity extends BaseActivity {
         });
 
         Intent intent = this.getIntent();
-        qiuBaiItemBeanArrayList = (ArrayList<QiuBaiItemBean>) intent.getSerializableExtra("qiuBaiItemBeanArrayList");
+        itemBeanArrayList = (ArrayList<ItemBean>) intent.getSerializableExtra("itemBeanArrayList");
         int qiubaiContentIndex = intent.getIntExtra("qiubaiContentIndex", 0);
         final QiuBaiPagerAdapter qiuBaiPagerAdapter = new QiuBaiPagerAdapter(
                 getSupportFragmentManager());
@@ -73,13 +73,13 @@ public class QiuBaiContentActivity extends BaseActivity {
         @Override
         public Fragment getItem(int position) {
             QiuBaiContentFragment qiuBaiContentFragment = new QiuBaiContentFragment();
-            qiuBaiContentFragment.setQiuBaiItemBean(qiuBaiItemBeanArrayList.get(position));
+            qiuBaiContentFragment.setItemBean(itemBeanArrayList.get(position));
             return qiuBaiContentFragment;
         }
 
         @Override
         public int getCount() {
-            return qiuBaiItemBeanArrayList.size();
+            return itemBeanArrayList.size();
         }
 
         @Override

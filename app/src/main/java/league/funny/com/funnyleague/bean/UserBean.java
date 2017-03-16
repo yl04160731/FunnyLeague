@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Created by inno-y on 2017/3/6.
  */
 
-public class QiuBaiUserBean {
+public class UserBean {
     private int id;
     private String userImage;
     private String userId;

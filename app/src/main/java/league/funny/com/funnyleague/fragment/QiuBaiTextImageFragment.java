@@ -25,19 +25,21 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.R;
-import league.funny.com.funnyleague.adapter.QiuBaiTextRecyclerAdapter;
+import league.funny.com.funnyleague.adapter.QiuBaiTextImageRecyclerAdapter;
 import league.funny.com.funnyleague.bean.ItemBean;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
 import league.funny.com.funnyleague.util.Util;
 import league.funny.com.funnyleague.view.LoadMoreViewFooter;
 import league.funny.com.funnyleague.view.RecycleViewDivider;
 
-public class QiuBaiTextFragment extends BaseFragment {
+public class QiuBaiTextImageFragment extends BaseFragment {
 
     private View view = null;
     private int page = 1;
     private ArrayList<ItemBean> itemBeanArrayList = new ArrayList<>();
-    private QiuBaiTextRecyclerAdapter adapter;
+    private QiuBaiTextImageRecyclerAdapter adapter;
+
+    private int type = 0;
 
     private boolean onFreshFlg = false;
 
@@ -50,8 +52,12 @@ public class QiuBaiTextFragment extends BaseFragment {
     @BindView(R.id.recyclerView_text)
     RecyclerView recyclerView;
 
-    public QiuBaiTextFragment() {
+    public QiuBaiTextImageFragment() {
         // Required empty public constructor
+    }
+
+    public void setType(int type){
+        this.type = type;
     }
 
     @Override
@@ -78,7 +84,7 @@ public class QiuBaiTextFragment extends BaseFragment {
     }
 
     public void initData() {
-        adapter = new QiuBaiTextRecyclerAdapter(getActivity(), itemBeanArrayList);
+        adapter = new QiuBaiTextImageRecyclerAdapter(getActivity(), itemBeanArrayList);
         mAdapter = new RecyclerAdapterWithHF(adapter);
         recyclerView.setAdapter(mAdapter);
         mSwipeRefreshHelper = new SwipeRefreshHelper(swipeRefreshLayout);
@@ -129,7 +135,11 @@ public class QiuBaiTextFragment extends BaseFragment {
             mAdapter.notifyDataSetChanged();
             if(onFreshFlg) {
                 mSwipeRefreshHelper.refreshComplete();
-                mSwipeRefreshHelper.setLoadMoreEnable(true);
+                if(itemBeanArrayList == null || itemBeanArrayList.size() <= 0){
+                    mSwipeRefreshHelper.setLoadMoreEnable(false);
+                }else{
+                    mSwipeRefreshHelper.setLoadMoreEnable(true);
+                }
             }else{
                 mSwipeRefreshHelper.loadMoreComplete(true);
             }
@@ -141,7 +151,13 @@ public class QiuBaiTextFragment extends BaseFragment {
      */
     private void getData() {
         try {
-            String URL = HttpUrlUtil.QIU_BAI_TEXT_PAGE + page + HttpUrlUtil.SPRIT;
+            String URL = null;
+            if(type == HttpUrlUtil.TYPE_TEXT){
+                URL = HttpUrlUtil.QIU_BAI_TEXT_PAGE + page + HttpUrlUtil.SPRIT;
+            }else{
+                URL = HttpUrlUtil.QIU_BAI_IMAGE_PAGE + page + HttpUrlUtil.SPRIT;
+            }
+
             Document doc = Jsoup.connect(URL)
                     .userAgent(HttpUrlUtil.USER_AGENT)
                     .timeout(15000).get();
@@ -169,6 +185,7 @@ public class QiuBaiTextFragment extends BaseFragment {
 
                     itemBean.setItemContentUrl(HttpUrlUtil.QIU_BAI_HOME + elementsArticle.get(i).select(".contentHerf").attr("href"));
                     itemBean.setItemContent(Util.replaceHtmlSign(elementsArticle.get(i).select(".content").select("span").html()));
+                    itemBean.setItemImage(elementsArticle.get(i).select(".thumb").select("img").attr("src"));
                     itemBean.setSmileCount(elementsArticle.get(i).select(".stats-vote").select(".number").html());
                     itemBean.setCommentCount(elementsArticle.get(i).select(".stats-comments").select(".number").html());
                     itemBean.setCommentGoodName(Util.replaceHtmlSign(elementsArticle.get(i).select(".cmt-name").html()));

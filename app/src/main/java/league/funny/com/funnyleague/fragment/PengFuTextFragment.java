@@ -129,7 +129,11 @@ public class PengFuTextFragment extends BaseFragment {
             mAdapter.notifyDataSetChanged();
             if(onFreshFlg) {
                 mSwipeRefreshHelper.refreshComplete();
-                mSwipeRefreshHelper.setLoadMoreEnable(true);
+                if(pengFuItemBeanArrayList == null || pengFuItemBeanArrayList.size() <= 0){
+                    mSwipeRefreshHelper.setLoadMoreEnable(false);
+                }else{
+                    mSwipeRefreshHelper.setLoadMoreEnable(true);
+                }
             }else{
                 mSwipeRefreshHelper.loadMoreComplete(true);
             }

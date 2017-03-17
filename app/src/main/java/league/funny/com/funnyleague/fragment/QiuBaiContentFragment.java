@@ -193,13 +193,13 @@ public class QiuBaiContentFragment extends BaseFragment {
             itemImage_qiubai.setVisibility(View.VISIBLE);
             ViewGroup.LayoutParams params = itemImage_qiubai.getLayoutParams();
             int screenWidth = getScreenWidth(FunnyLeagueApplication.getApplication());
-            params.width = screenWidth;
+            params.width = screenWidth * 11 / 12;
             params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             itemImage_qiubai.setLayoutParams(params);
             itemImage_qiubai.setMaxWidth(screenWidth);
 
             Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getItemImage())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .dontAnimate().error(R.drawable.imageload).placeholder(R.drawable.imageload)
                     .into(itemImage_qiubai);
 
@@ -277,8 +277,6 @@ public class QiuBaiContentFragment extends BaseFragment {
             HtmlHandler.sendMessage(message);
         }
     }
-
-
 
     Handler HtmlHandler = new Handler() {
         public void handleMessage(Message msg) {

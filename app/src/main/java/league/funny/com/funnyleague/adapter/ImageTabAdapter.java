@@ -11,12 +11,12 @@ import league.funny.com.funnyleague.fragment.PengFuTextFragment;
 import league.funny.com.funnyleague.fragment.QiuBaiTextImageFragment;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
 
-public class TextTabAdapter extends FragmentPagerAdapter {
+public class ImageTabAdapter extends FragmentPagerAdapter {
     // 内容标题
     public static final String[] Video_TITLE = new String[]{"糗事百科",
             "捧腹网", "内涵段子", "百思姐"};
 
-    public TextTabAdapter(FragmentManager fm) {
+    public ImageTabAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -27,7 +27,7 @@ public class TextTabAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 textFragment = new QiuBaiTextImageFragment();
-                ((QiuBaiTextImageFragment)textFragment).setType(HttpUrlUtil.TYPE_TEXT);
+                ((QiuBaiTextImageFragment)textFragment).setType(HttpUrlUtil.TYPE_IMAGE);
                 return textFragment;
             case 1:
                 textFragment = new PengFuTextFragment();

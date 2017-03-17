@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
@@ -26,12 +27,14 @@ import league.funny.com.funnyleague.bean.ItemBean;
 import league.funny.com.funnyleague.util.GlideCircleTransform;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
 
-public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
+import static com.ashokvarma.bottomnavigation.utils.Utils.getScreenWidth;
+
+public class QiuBaiTextImageRecyclerAdapter extends Adapter<ViewHolder> {
 
     private Context context;
     private ArrayList<ItemBean> itemBeanArrayList;
 
-    public QiuBaiTextRecyclerAdapter(Context context, ArrayList<ItemBean> itemBeanArrayList) {
+    public QiuBaiTextImageRecyclerAdapter(Context context, ArrayList<ItemBean> itemBeanArrayList) {
         this.context = context;
         this.itemBeanArrayList = itemBeanArrayList;
     }
@@ -58,7 +61,32 @@ public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
             itemBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
         }
         Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 40)).into(((ItemViewHolder) holder).userImage);
-        ((ItemViewHolder) holder).itemContent.setText(itemBean.getItemContent());
+
+        if(itemBean.getItemContent() != null && !"".equals(itemBean.getItemContent())){
+            ((ItemViewHolder) holder).itemContent.setVisibility(View.VISIBLE);
+            ((ItemViewHolder) holder).itemContent.setText(itemBean.getItemContent());
+        }else{
+            ((ItemViewHolder) holder).itemContent.setVisibility(View.GONE);
+        }
+
+        if (itemBean.getItemImage() != null && !"".equals(itemBean.getItemImage())) {
+            ((ItemViewHolder) holder).itemImage_qiubai.setVisibility(View.VISIBLE);
+            ViewGroup.LayoutParams params = ((ItemViewHolder) holder).itemImage_qiubai.getLayoutParams();
+            int screenWidth = getScreenWidth(FunnyLeagueApplication.getApplication());
+            params.width = screenWidth * 11 / 12;
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            ((ItemViewHolder) holder).itemImage_qiubai.setLayoutParams(params);
+            ((ItemViewHolder) holder).itemImage_qiubai.setMaxWidth(screenWidth);
+
+            Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getItemImage())
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .dontAnimate().error(R.drawable.imageload).placeholder(R.drawable.imageload)
+                    .into(((ItemViewHolder) holder).itemImage_qiubai);
+
+        } else {
+            ((ItemViewHolder) holder).itemImage_qiubai.setVisibility(View.GONE);
+        }
+
         if (itemBean.getUserSex() != null && !"".equals(itemBean.getUserSex())
                 && itemBean.getUserAge() != null && !"".equals(itemBean.getUserAge())) {
             ((ItemViewHolder) holder).userSex.setBackgroundResource("man".equals(itemBean.getUserSex()) ? R.drawable.man : R.drawable.women);
@@ -97,6 +125,13 @@ public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
         });
 
         ((ItemViewHolder) holder).commentGood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toQiuBaiContentActivity(position);
+            }
+        });
+
+        ((ItemViewHolder) holder).itemImage_qiubai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toQiuBaiContentActivity(position);
@@ -154,6 +189,9 @@ public class QiuBaiTextRecyclerAdapter extends Adapter<ViewHolder> {
 
         @BindView(R.id.commentLayout_qiubai)
         LinearLayout commentLayout;
+
+        @BindView(R.id.itemImage_qiubai)
+        ImageView itemImage_qiubai;
 
         public ItemViewHolder(View view) {
             super(view);

@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.FunnyLeagueApplication;
 import league.funny.com.funnyleague.R;
-import league.funny.com.funnyleague.activity.QiuBaiUserActivity;
+import league.funny.com.funnyleague.activity.PengFuUserActivity;
 import league.funny.com.funnyleague.bean.CommentBean;
 import league.funny.com.funnyleague.bean.ItemBean;
 import league.funny.com.funnyleague.util.GlideCircleTransform;
@@ -64,33 +64,33 @@ public class PengFuCommentRecyclerAdapter extends Adapter<ViewHolder> {
             ((ItemViewHolder) holder).userName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toQiuBaiUserActivity(position);
+                    toPengFuUserActivity(position);
                 }
             });
             ((ItemViewHolder) holder).userImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toQiuBaiUserActivity(position);
+                    toPengFuUserActivity(position);
                 }
             });
         }
     }
 
-    public void toQiuBaiUserActivity(int position){
+    public void toPengFuUserActivity(int position){
         if(commentBeanList.get(position).getUserUrl() == null || "".equals(commentBeanList.get(position).getUserUrl().replace(HttpUrlUtil.QIU_BAI_HOME,""))){
             return;
         }
         Intent intent = new Intent();
-        intent.setClass(context, QiuBaiUserActivity.class);
+        intent.setClass(context, PengFuUserActivity.class);
         Bundle bundle = new Bundle();
         ItemBean itemBean = new ItemBean();
-        CommentBean iuBaiCommentBean = commentBeanList.get(position);
-        itemBean.setUserAge(iuBaiCommentBean.getUserAge());
-        itemBean.setUserImage(iuBaiCommentBean.getUserImage());
-        itemBean.setUserId(iuBaiCommentBean.getUserId());
-        itemBean.setUserSex(iuBaiCommentBean.getUserSex());
-        itemBean.setUserName(iuBaiCommentBean.getUserName());
-        itemBean.setUserUrl(iuBaiCommentBean.getUserUrl());
+        CommentBean commentBean = commentBeanList.get(position);
+        itemBean.setUserAge(commentBean.getUserAge());
+        itemBean.setUserImage(commentBean.getUserImage());
+        itemBean.setUserId(commentBean.getUserId());
+        itemBean.setUserSex(commentBean.getUserSex());
+        itemBean.setUserName(commentBean.getUserName());
+        itemBean.setUserUrl(commentBean.getUserUrl());
         bundle.putSerializable("itemBean", itemBean);
         intent.putExtras(bundle);
         context.startActivity(intent);

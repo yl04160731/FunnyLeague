@@ -274,7 +274,7 @@ public class PengFuUserActivity extends BaseActivity {
 
     public void toUserContent() {
         Intent intent = new Intent();
-        intent.setClass(this, QiuBaiUserTextImageActivity.class);
+        intent.setClass(this, PengFuUserTextImageActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("itemBean", itemBean);
         intent.putExtras(bundle);

@@ -42,13 +42,16 @@
             android:name=".activity.QiuBaiUserTextImageActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.PengFuContentActivity"
+        <activity
+            android:name=".activity.PengFuContentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.PengFuUserActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PengFuUserActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.PengFuUserTextImageActivity"></activity>
     </application>
 
 </manifest>

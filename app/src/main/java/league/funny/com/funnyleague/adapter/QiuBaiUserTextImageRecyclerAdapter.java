@@ -63,18 +63,25 @@ public class QiuBaiUserTextImageRecyclerAdapter extends Adapter<ViewHolder> {
             itemBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
         }
         Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 40)).into(((ItemViewHolder) holder).userImage);
-        ((ItemViewHolder) holder).itemContent.setText(itemBean.getItemContent() == null ? "" : itemBean.getItemContent());
+
+        if(itemBean.getItemContent() != null && !"".equals(itemBean.getItemContent())){
+            ((ItemViewHolder) holder).itemContent.setVisibility(View.VISIBLE);
+            ((ItemViewHolder) holder).itemContent.setText(itemBean.getItemContent());
+        }else{
+            ((ItemViewHolder) holder).itemContent.setVisibility(View.GONE);
+        }
+
         if (itemBean.getItemImage() != null && !"".equals(itemBean.getItemImage())) {
             ((ItemViewHolder) holder).itemImage_qiubai.setVisibility(View.VISIBLE);
             ViewGroup.LayoutParams params = ((ItemViewHolder) holder).itemImage_qiubai.getLayoutParams();
             int screenWidth = getScreenWidth(FunnyLeagueApplication.getApplication());
-            params.width = screenWidth;
+            params.width = screenWidth * 11 / 12;
             params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             ((ItemViewHolder) holder).itemImage_qiubai.setLayoutParams(params);
             ((ItemViewHolder) holder).itemImage_qiubai.setMaxWidth(screenWidth);
 
             Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getItemImage())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .dontAnimate().error(R.drawable.imageload).placeholder(R.drawable.imageload)
                     .into(((ItemViewHolder) holder).itemImage_qiubai);
 

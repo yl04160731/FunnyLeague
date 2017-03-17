@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -38,6 +39,8 @@ import league.funny.com.funnyleague.util.GlideCircleTransform;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
 import league.funny.com.funnyleague.util.Util;
 import league.funny.com.funnyleague.view.RecycleViewDivider;
+
+import static com.ashokvarma.bottomnavigation.utils.Utils.getScreenWidth;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,6 +83,9 @@ public class PengFuContentFragment extends Fragment {
 
     @BindView(R.id.comment)
     TextView comment;
+
+    @BindView(R.id.itemImage_pengfu)
+    public ImageView itemImage_pengfu;
 
     private View view = null;
     private PengFuCommentRecyclerAdapter pengFuCommentRecyclerAdapter;
@@ -156,6 +162,31 @@ public class PengFuContentFragment extends Fragment {
         ding.setText(itemBean.getDing());
         cai.setText(itemBean.getCai());
         comment.setText(itemBean.getCommentCount());
+
+        if(itemBean.getItemContent() != null && !"".equals(itemBean.getItemContent())){
+            itemContent.setVisibility(View.VISIBLE);
+            itemContent.setText(itemBean.getItemContent());
+        }else{
+            itemContent.setVisibility(View.GONE);
+        }
+
+        if (itemBean.getItemImage() != null && !"".equals(itemBean.getItemImage())) {
+            itemImage_pengfu.setVisibility(View.VISIBLE);
+            ViewGroup.LayoutParams params = itemImage_pengfu.getLayoutParams();
+            int screenWidth = getScreenWidth(FunnyLeagueApplication.getApplication());
+            params.width = screenWidth * 11 / 12;
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            itemImage_pengfu.setLayoutParams(params);
+            itemImage_pengfu.setMaxWidth(screenWidth);
+
+            Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getItemImage())
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .dontAnimate().error(R.drawable.imageload).placeholder(R.drawable.imageload)
+                    .into(itemImage_pengfu);
+
+        } else {
+            itemImage_pengfu.setVisibility(View.GONE);
+        }
     }
 
     private void getData() {

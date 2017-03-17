@@ -12,9 +12,13 @@ public class HttpUrlUtil {
     public static String SPRIT = "/";
     public static String HTML = ".html";
 
+    public static int TYPE_TEXT = 0;
+    public static int TYPE_IMAGE = 1;
+
     // 糗事百科
     public static String QIU_BAI_HOME = "http://www.qiushibaike.com";
     public static String QIU_BAI_TEXT = "http://www.qiushibaike.com/text/";
+    public static String QIU_BAI_IMAGE_PAGE = "http://www.qiushibaike.com/imgrank/page/";
     public static String QIU_BAI_TEXT_PAGE = "http://www.qiushibaike.com/text/page/"; // page/n/
     public static String QIU_BAI_USER_ARTICLES = "articles/";
     public static String QIU_BAI_USER_FOLLOWERS = "followers/";
@@ -26,5 +30,5 @@ public class HttpUrlUtil {
     public static String PENG_FU_HOME = "http://www.pengfu.com";
     public static String PENG_FU_TEXT = "http://www.pengfu.com/xiaohua_";
     public static String PENG_FU_USER = "http://www.pengfu.com/u/";
-
+    public static String PENG_FU_USER_PAGE = "/posthumor_";
 }

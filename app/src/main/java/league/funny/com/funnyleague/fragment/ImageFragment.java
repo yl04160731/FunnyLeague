@@ -2,18 +2,32 @@ package league.funny.com.funnyleague.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.viewpagerindicator.PageIndicator;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import league.funny.com.funnyleague.R;
+import league.funny.com.funnyleague.adapter.ImageTabAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ImageFragment extends BaseFragment {
 
+    private View view = null;
+    @BindView(R.id.pager)
+    ViewPager pager;
+
+    @BindView(R.id.indicator)
+    PageIndicator indicator;
 
     public ImageFragment() {
         // Required empty public constructor
@@ -23,8 +37,33 @@ public class ImageFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_image, container, false);
+        setRetainInstance(true);
+        view = inflater.inflate(R.layout.fragment_image, container, false);
+        ButterKnife.bind(this, view);
+        setHasOptionsMenu(true);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        initDate();
+        initView();
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    public void initDate(){
+        FragmentPagerAdapter adapter = new ImageTabAdapter(
+                getChildFragmentManager());
+        // 视图切换器
+        pager.setOffscreenPageLimit(ImageTabAdapter.Video_TITLE.length);
+        pager.setAdapter(adapter);
+
+        // 页面指示器
+        indicator.setViewPager(pager);
+    }
+
+    public void initView(){
+
     }
 
 }

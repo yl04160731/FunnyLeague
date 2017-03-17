@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 import league.funny.com.funnyleague.FunnyLeagueApplication;
 import league.funny.com.funnyleague.R;
 import league.funny.com.funnyleague.activity.PengFuContentActivity;
-import league.funny.com.funnyleague.activity.QiuBaiUserActivity;
+import league.funny.com.funnyleague.activity.PengFuUserActivity;
 import league.funny.com.funnyleague.bean.ItemBean;
 import league.funny.com.funnyleague.util.GlideCircleTransform;
 
@@ -108,7 +108,7 @@ public class PengFuTextRecyclerAdapter extends Adapter<ViewHolder> {
             return;
         }
         Intent intent = new Intent();
-        intent.setClass(context, QiuBaiUserActivity.class);
+        intent.setClass(context, PengFuUserActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("itemBean", itemBean);
         intent.putExtras(bundle);

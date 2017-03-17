@@ -56,81 +56,61 @@ public class QiuBaiUserTextImageRecyclerAdapter extends Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-            final ItemBean itemBean = itemBeanArrayList.get(position);
+        final ItemBean itemBean = itemBeanArrayList.get(position);
 
-            ((ItemViewHolder) holder).userName.setText(itemBean.getUserName());
-            if (!itemBean.getUserImage().contains("qiushibaike")) {
-                itemBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
+        ((ItemViewHolder) holder).userName.setText(itemBean.getUserName());
+        if (!itemBean.getUserImage().contains("qiushibaike")) {
+            itemBean.setUserImage(HttpUrlUtil.QIU_BAI_DEFAULT_USER_IMAGE);
+        }
+        Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 40)).into(((ItemViewHolder) holder).userImage);
+        ((ItemViewHolder) holder).itemContent.setText(itemBean.getItemContent() == null ? "" : itemBean.getItemContent());
+        if (itemBean.getItemImage() != null && !"".equals(itemBean.getItemImage())) {
+            ((ItemViewHolder) holder).itemImage_qiubai.setVisibility(View.VISIBLE);
+            ViewGroup.LayoutParams params = ((ItemViewHolder) holder).itemImage_qiubai.getLayoutParams();
+            int screenWidth = getScreenWidth(FunnyLeagueApplication.getApplication());
+            params.width = screenWidth;
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            ((ItemViewHolder) holder).itemImage_qiubai.setLayoutParams(params);
+            ((ItemViewHolder) holder).itemImage_qiubai.setMaxWidth(screenWidth);
+
+            Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getItemImage())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .dontAnimate().error(R.drawable.imageload).placeholder(R.drawable.imageload)
+                    .into(((ItemViewHolder) holder).itemImage_qiubai);
+
+        } else {
+            ((ItemViewHolder) holder).itemImage_qiubai.setVisibility(View.GONE);
+        }
+
+        if (itemBean.getUserSex() != null && !"".equals(itemBean.getUserSex())
+                && itemBean.getUserAge() != null && !"".equals(itemBean.getUserAge())) {
+            ((ItemViewHolder) holder).userSex.setBackgroundResource("man".equals(itemBean.getUserSex()) ? R.drawable.man : R.drawable.women);
+            ((ItemViewHolder) holder).userAge.setText(itemBean.getUserAge());
+            ((ItemViewHolder) holder).userSex.setVisibility(View.VISIBLE);
+        } else {
+            ((ItemViewHolder) holder).userSex.setVisibility(View.GONE);
+        }
+        ((ItemViewHolder) holder).smileCount.setText(itemBean.getSmileCount());
+        ((ItemViewHolder) holder).commentCount.setText(itemBean.getCommentCount());
+        ((ItemViewHolder) holder).commentGood.setText(itemBean.getCommentGoodName() + itemBean.getCommentGoodContent());
+
+        if (itemBean.getCommentGoodName() == null || "".equals(itemBean.getCommentGoodName())) {
+            ((ItemViewHolder) holder).commentLayout.setVisibility(View.GONE);
+        }
+
+        ((ItemViewHolder) holder).itemContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toQiuBaiContentActivity(position);
             }
-            Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 40)).into(((ItemViewHolder) holder).userImage);
-            ((ItemViewHolder) holder).itemContent.setText(itemBean.getItemContent() == null ? "" : itemBean.getItemContent());
-            if (itemBean.getItemImage() != null && !"".equals(itemBean.getItemImage())) {
-                ((ItemViewHolder) holder).itemImage_qiubai.setVisibility(View.VISIBLE);
-//                ViewGroup.LayoutParams vglp = ((ItemViewHolder) holder).itemImage_qiubai.getLayoutParams();
-//                vglp.width = 10*position;
-//                vglp.height = 10*position;
-//                vglp.
-//                ((ItemViewHolder) holder).itemImage_qiubai.setLayoutParams(vglp);
+        });
 
-//                Glide.with(FunnyLeagueApplication.getApplication())
-//                        .load(itemBean.getItemImage()).diskCacheStrategy(DiskCacheStrategy.ALL)
-//                        .placeholder(R.drawable.imageload)
-//                        .error(R.drawable.imageload)
-//                        .dontAnimate()
-//                        .centerCrop()
-//                        .into(new SimpleTarget<GlideDrawable>() {
-//                            @Override
-//                            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-//                                ViewGroup.LayoutParams params = ((ItemViewHolder) holder).itemImage_qiubai.getLayoutParams();
-//                                int screenWidth = getScreenWidth(FunnyLeagueApplication.getApplication());
-//                                params.width = screenWidth;
-//                                params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-//                                ((ItemViewHolder) holder).itemImage_qiubai.setLayoutParams(params);
-//                                ((ItemViewHolder) holder).itemImage_qiubai.setMaxWidth(screenWidth);
-//                                ((ItemViewHolder) holder).itemImage_qiubai.setImageDrawable(resource);
-//                            }
-//                        });
-
-                ViewGroup.LayoutParams params = ((ItemViewHolder) holder).itemImage_qiubai.getLayoutParams();
-                int screenWidth = getScreenWidth(FunnyLeagueApplication.getApplication());
-                params.width = screenWidth;
-                params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                ((ItemViewHolder) holder).itemImage_qiubai.setLayoutParams(params);
-                ((ItemViewHolder) holder).itemImage_qiubai.setMaxWidth(screenWidth);
-
-                Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getItemImage())
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .dontAnimate().error(R.drawable.imageload).placeholder(R.drawable.imageload)
-                        .into(((ItemViewHolder) holder).itemImage_qiubai);
-
-//                Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getItemImage())
-//                        .placeholder(R.drawable.imageload).into(((ItemViewHolder) holder).itemImage_qiubai);
-            } else {
-                ((ItemViewHolder) holder).itemImage_qiubai.setVisibility(View.GONE);
+        ((ItemViewHolder) holder).itemImage_qiubai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toQiuBaiContentActivity(position);
             }
-
-            if (itemBean.getUserSex() != null && !"".equals(itemBean.getUserSex())
-                    && itemBean.getUserAge() != null && !"".equals(itemBean.getUserAge())) {
-                ((ItemViewHolder) holder).userSex.setBackgroundResource("man".equals(itemBean.getUserSex()) ? R.drawable.man : R.drawable.women);
-                ((ItemViewHolder) holder).userAge.setText(itemBean.getUserAge());
-                ((ItemViewHolder) holder).userSex.setVisibility(View.VISIBLE);
-            } else {
-                ((ItemViewHolder) holder).userSex.setVisibility(View.GONE);
-            }
-            ((ItemViewHolder) holder).smileCount.setText(itemBean.getSmileCount());
-            ((ItemViewHolder) holder).commentCount.setText(itemBean.getCommentCount());
-            ((ItemViewHolder) holder).commentGood.setText(itemBean.getCommentGoodName() + itemBean.getCommentGoodContent());
-
-            if (itemBean.getCommentGoodName() == null || "".equals(itemBean.getCommentGoodName())) {
-                ((ItemViewHolder) holder).commentLayout.setVisibility(View.GONE);
-            }
-
-            ((ItemViewHolder) holder).itemContent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toQiuBaiContentActivity(position);
-                }
-            });
+        });
     }
 
     public void toQiuBaiContentActivity(int position) {

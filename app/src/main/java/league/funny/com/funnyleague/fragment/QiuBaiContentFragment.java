@@ -18,6 +18,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -32,12 +33,14 @@ import league.funny.com.funnyleague.FunnyLeagueApplication;
 import league.funny.com.funnyleague.R;
 import league.funny.com.funnyleague.activity.QiuBaiUserActivity;
 import league.funny.com.funnyleague.adapter.QiuBaiCommentRecyclerAdapter;
-import league.funny.com.funnyleague.bean.ItemBean;
 import league.funny.com.funnyleague.bean.CommentBean;
+import league.funny.com.funnyleague.bean.ItemBean;
 import league.funny.com.funnyleague.util.GlideCircleTransform;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
 import league.funny.com.funnyleague.util.Util;
 import league.funny.com.funnyleague.view.RecycleViewDivider;
+
+import static com.ashokvarma.bottomnavigation.utils.Utils.getScreenWidth;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -91,6 +94,10 @@ public class QiuBaiContentFragment extends BaseFragment {
 
     @BindView(R.id.comment_wait)
     public RelativeLayout commentWait;
+
+    @BindView(R.id.itemImage_qiubai)
+    public ImageView itemImage_qiubai;
+
 
     private View view = null;
     private QiuBaiCommentRecyclerAdapter qiuBaiCommentRecyclerAdapter;
@@ -180,6 +187,24 @@ public class QiuBaiContentFragment extends BaseFragment {
             userSex.setVisibility(View.VISIBLE);
         }else{
             userSex.setVisibility(View.GONE);
+        }
+
+        if (itemBean.getItemImage() != null && !"".equals(itemBean.getItemImage())) {
+            itemImage_qiubai.setVisibility(View.VISIBLE);
+            ViewGroup.LayoutParams params = itemImage_qiubai.getLayoutParams();
+            int screenWidth = getScreenWidth(FunnyLeagueApplication.getApplication());
+            params.width = screenWidth;
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            itemImage_qiubai.setLayoutParams(params);
+            itemImage_qiubai.setMaxWidth(screenWidth);
+
+            Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getItemImage())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .dontAnimate().error(R.drawable.imageload).placeholder(R.drawable.imageload)
+                    .into(itemImage_qiubai);
+
+        } else {
+            itemImage_qiubai.setVisibility(View.GONE);
         }
 
         itemContent.setText(itemBean.getItemContent());

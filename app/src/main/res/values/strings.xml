@@ -32,6 +32,12 @@
     <string name="fensi">粉丝</string>
     <string name="qiushijingxuan">糗事精选</string>
 
+    <string name="tiezi">帖子</string>
+    <string name="fangwenliang">访问量</string>
+    <string name="dengji">等级</string>
+    <string name="jingyan">经验</string>
+    <string name="qianming">签名</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="action_settings">Settings</string>

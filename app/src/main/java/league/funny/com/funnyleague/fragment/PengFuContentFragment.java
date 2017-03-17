@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import league.funny.com.funnyleague.FunnyLeagueApplication;
 import league.funny.com.funnyleague.R;
-import league.funny.com.funnyleague.activity.QiuBaiUserActivity;
+import league.funny.com.funnyleague.activity.PengFuUserActivity;
 import league.funny.com.funnyleague.adapter.PengFuCommentRecyclerAdapter;
 import league.funny.com.funnyleague.bean.CommentBean;
 import league.funny.com.funnyleague.bean.ItemBean;
@@ -124,7 +124,7 @@ public class PengFuContentFragment extends Fragment {
             return;
         }
         Intent intent = new Intent();
-        intent.setClass(getActivity(), QiuBaiUserActivity.class);
+        intent.setClass(getActivity(), PengFuUserActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("itemBean", itemBean);
         intent.putExtras(bundle);

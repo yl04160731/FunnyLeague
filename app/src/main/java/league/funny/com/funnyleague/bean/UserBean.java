@@ -25,10 +25,55 @@ public class UserBean {
     private String occupation;
     private String hometown;
     private String QiuAge;
+    private String dengji;
+    private String fangwenliang;
+    private String jingyan;
+    private String qianming;
+    private String levelName;
     private ArrayList<String> stringList;
 
     public ArrayList<String> getStringList() {
         return stringList;
+    }
+
+    public String getDengji() {
+        return dengji;
+    }
+
+    public void setDengji(String dengji) {
+        this.dengji = dengji;
+    }
+
+    public String getFangwenliang() {
+        return fangwenliang;
+    }
+
+    public void setFangwenliang(String fangwenliang) {
+        this.fangwenliang = fangwenliang;
+    }
+
+    public String getJingyan() {
+        return jingyan;
+    }
+
+    public void setJingyan(String jingyan) {
+        this.jingyan = jingyan;
+    }
+
+    public String getQianming() {
+        return qianming;
+    }
+
+    public void setQianming(String qianming) {
+        this.qianming = qianming;
+    }
+
+    public String getLevelName() {
+        return levelName;
+    }
+
+    public void setLevelName(String levelName) {
+        this.levelName = levelName;
     }
 
     public void setStringList(ArrayList<String> stringList) {

@@ -48,7 +48,7 @@ public class QiuBaiUserTextImageRecyclerAdapter extends Adapter<ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.recycler_text_item_qiubai, parent,
+        View view = LayoutInflater.from(context).inflate(R.layout.recycler_text_image_item_qiubai, parent,
                 false);
         return new ItemViewHolder(view);
     }

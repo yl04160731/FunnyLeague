@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
@@ -25,12 +26,14 @@ import league.funny.com.funnyleague.activity.PengFuUserActivity;
 import league.funny.com.funnyleague.bean.ItemBean;
 import league.funny.com.funnyleague.util.GlideCircleTransform;
 
-public class PengFuTextRecyclerAdapter extends Adapter<ViewHolder> {
+import static com.ashokvarma.bottomnavigation.utils.Utils.getScreenWidth;
+
+public class PengFuTextImageRecyclerAdapter extends Adapter<ViewHolder> {
 
     private Context context;
     private ArrayList<ItemBean> itemBeanArrayList;
 
-    public PengFuTextRecyclerAdapter(Context context, ArrayList<ItemBean> itemBeanArrayList) {
+    public PengFuTextImageRecyclerAdapter(Context context, ArrayList<ItemBean> itemBeanArrayList) {
         this.context = context;
         this.itemBeanArrayList = itemBeanArrayList;
     }
@@ -42,7 +45,7 @@ public class PengFuTextRecyclerAdapter extends Adapter<ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.recycler_text_item_pengfu, parent,
+        View view = LayoutInflater.from(context).inflate(R.layout.recycler_text_image_item_pengfu, parent,
                 false);
         return new ItemViewHolder(view);
     }
@@ -54,7 +57,30 @@ public class PengFuTextRecyclerAdapter extends Adapter<ViewHolder> {
         ((ItemViewHolder) holder).userName.setText(itemBean.getUserName());
 
         Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 40)).into(((ItemViewHolder) holder).userImage);
-        ((ItemViewHolder) holder).itemContent.setText(itemBean.getItemContent());
+        if(itemBean.getItemContent() != null && !"".equals(itemBean.getItemContent())){
+            ((PengFuTextImageRecyclerAdapter.ItemViewHolder) holder).itemContent.setVisibility(View.VISIBLE);
+            ((PengFuTextImageRecyclerAdapter.ItemViewHolder) holder).itemContent.setText(itemBean.getItemContent());
+        }else{
+            ((PengFuTextImageRecyclerAdapter.ItemViewHolder) holder).itemContent.setVisibility(View.GONE);
+        }
+
+        if (itemBean.getItemImage() != null && !"".equals(itemBean.getItemImage())) {
+            ((PengFuTextImageRecyclerAdapter.ItemViewHolder) holder).itemImage.setVisibility(View.VISIBLE);
+            ViewGroup.LayoutParams params = ((PengFuTextImageRecyclerAdapter.ItemViewHolder) holder).itemImage.getLayoutParams();
+            int screenWidth = getScreenWidth(FunnyLeagueApplication.getApplication());
+            params.width = screenWidth * 11 / 12;
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            ((PengFuTextImageRecyclerAdapter.ItemViewHolder) holder).itemImage.setLayoutParams(params);
+            ((PengFuTextImageRecyclerAdapter.ItemViewHolder) holder).itemImage.setMaxWidth(screenWidth);
+
+            Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getItemImage())
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .dontAnimate().error(R.drawable.imageload).placeholder(R.drawable.imageload)
+                    .into(((PengFuTextImageRecyclerAdapter.ItemViewHolder) holder).itemImage);
+
+        } else {
+            ((PengFuTextImageRecyclerAdapter.ItemViewHolder) holder).itemImage.setVisibility(View.GONE);
+        }
         ((ItemViewHolder) holder).itemTitle.setText(itemBean.getItemContentTitle());
         TextPaint tp = ((ItemViewHolder) holder).itemTitle.getPaint();
         tp.setFakeBoldText(true);
@@ -85,6 +111,13 @@ public class PengFuTextRecyclerAdapter extends Adapter<ViewHolder> {
         });
 
         ((ItemViewHolder) holder).itemTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toPengFuContentActivity(position);
+            }
+        });
+
+        ((ItemViewHolder) holder).itemImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toPengFuContentActivity(position);

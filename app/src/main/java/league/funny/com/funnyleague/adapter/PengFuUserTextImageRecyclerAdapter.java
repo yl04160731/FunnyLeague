@@ -45,7 +45,7 @@ public class PengFuUserTextImageRecyclerAdapter extends Adapter<ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.recycler_text_item_pengfu, parent,
+        View view = LayoutInflater.from(context).inflate(R.layout.recycler_text_image_item_pengfu, parent,
                 false);
         return new ItemViewHolder(view);
     }

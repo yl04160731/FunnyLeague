@@ -29,6 +29,13 @@ public class HttpUrlUtil {
     // 捧腹网
     public static String PENG_FU_HOME = "http://www.pengfu.com";
     public static String PENG_FU_TEXT = "http://www.pengfu.com/xiaohua_";
+    public static String PENG_FU_IMAGE = "http://www.pengfu.com/qutu_";
     public static String PENG_FU_USER = "http://www.pengfu.com/u/";
     public static String PENG_FU_USER_PAGE = "/posthumor_";
+
+    // 内涵段子
+    public static String NEI_HAN_HOME = "http://neihanshequ.com";
+    public static String NEI_HAN_TEXT = "http://neihanshequ.com/joke/?is_json=1";
+    public static String NEI_HAN_IMAGE = "http://neihanshequ.com/pic/?is_json=1";
+
 }

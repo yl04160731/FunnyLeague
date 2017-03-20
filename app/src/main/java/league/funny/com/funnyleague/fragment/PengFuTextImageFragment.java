@@ -25,19 +25,21 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.R;
-import league.funny.com.funnyleague.adapter.PengFuTextRecyclerAdapter;
+import league.funny.com.funnyleague.adapter.PengFuTextImageRecyclerAdapter;
 import league.funny.com.funnyleague.bean.ItemBean;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
 import league.funny.com.funnyleague.util.Util;
 import league.funny.com.funnyleague.view.LoadMoreViewFooter;
 import league.funny.com.funnyleague.view.RecycleViewDivider;
 
-public class PengFuTextFragment extends BaseFragment {
+public class PengFuTextImageFragment extends BaseFragment {
 
     private View view = null;
     private int page = 1;
     private ArrayList<ItemBean> pengFuItemBeanArrayList = new ArrayList<>();
-    private PengFuTextRecyclerAdapter adapter;
+    private PengFuTextImageRecyclerAdapter adapter;
+
+    private int type = 0;
 
     private boolean onFreshFlg = false;
 
@@ -50,8 +52,12 @@ public class PengFuTextFragment extends BaseFragment {
     @BindView(R.id.recyclerView_text)
     RecyclerView recyclerView;
 
-    public PengFuTextFragment() {
+    public PengFuTextImageFragment() {
         // Required empty public constructor
+    }
+
+    public void setType(int type){
+        this.type = type;
     }
 
     @Override
@@ -78,7 +84,7 @@ public class PengFuTextFragment extends BaseFragment {
     }
 
     public void initData() {
-        adapter = new PengFuTextRecyclerAdapter(getActivity(), pengFuItemBeanArrayList);
+        adapter = new PengFuTextImageRecyclerAdapter(getActivity(), pengFuItemBeanArrayList);
         mAdapter = new RecyclerAdapterWithHF(adapter);
         recyclerView.setAdapter(mAdapter);
         mSwipeRefreshHelper = new SwipeRefreshHelper(swipeRefreshLayout);
@@ -145,7 +151,14 @@ public class PengFuTextFragment extends BaseFragment {
      */
     private void getData() {
         try {
-            String URL = HttpUrlUtil.PENG_FU_TEXT + page + HttpUrlUtil.HTML;
+            String URL = null;
+
+            if(type == HttpUrlUtil.TYPE_TEXT){
+                URL = HttpUrlUtil.PENG_FU_TEXT + page + HttpUrlUtil.HTML;
+            }else{
+                URL = HttpUrlUtil.PENG_FU_IMAGE + page + HttpUrlUtil.HTML;
+            }
+
             Document doc = Jsoup.connect(URL)
                     .userAgent(HttpUrlUtil.USER_AGENT)
                     .timeout(15000).get();
@@ -165,8 +178,13 @@ public class PengFuTextFragment extends BaseFragment {
                     itemBean.setUserUrl(userUrl);
                     itemBean.setUserName(Util.replaceHtmlSign(elementDt.select("a").select("img").attr("alt")));
                     itemBean.setUserImage(elementDt.select("img").attr("src"));
-
                     itemBean.setItemContentUrl(elementDd.select(".dp-b").select("a").attr("href"));
+                    String gifSrc = elementsArticle.get(i).select(".content-img").select("img").attr("gifsrc");
+                    if(gifSrc != null && !"".equals(gifSrc)){
+                        itemBean.setItemImage(gifSrc);
+                    }else{
+                        itemBean.setItemImage(elementsArticle.get(i).select(".content-img").select("img").attr("src"));
+                    }
                     itemBean.setItemContent(Util.replaceHtmlSign(elementDd.select(".content-img").text()));
                     itemBean.setItemContentTitle(Util.replaceHtmlSign(elementDd.select(".dp-b").select("a").text()));
 

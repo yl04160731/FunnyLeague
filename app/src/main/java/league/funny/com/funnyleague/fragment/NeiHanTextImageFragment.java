@@ -18,27 +18,16 @@ import com.chanven.lib.cptr.loadmore.OnLoadMoreListener;
 import com.chanven.lib.cptr.loadmore.SwipeRefreshHelper;
 import com.chanven.lib.cptr.recyclerview.RecyclerAdapterWithHF;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.R;
 import league.funny.com.funnyleague.adapter.NeiHanTextImageRecyclerAdapter;
-import league.funny.com.funnyleague.api.ApiManage;
 import league.funny.com.funnyleague.bean.ItemBean;
-import league.funny.com.funnyleague.bean.neihan.NeiHanResponse;
-import league.funny.com.funnyleague.util.HttpUrlUtil;
-import league.funny.com.funnyleague.util.Util;
 import league.funny.com.funnyleague.view.LoadMoreViewFooter;
 import league.funny.com.funnyleague.view.RecycleViewDivider;
-import rx.Observer;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -163,74 +152,73 @@ public class NeiHanTextImageFragment extends BaseFragment {
      */
     private void getData() {
 
-        subscription = ApiManage.getInstence().getNeiHanApiService().getImage()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<NeiHanResponse>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-
-                    @Override
-                    public void onNext(NeiHanResponse neiHanResponse) {
-                        if (neiHanResponse != null) {
-                        } else {
-                            return;
-                        }
-
-                    }
-                });
-
+//        subscription = ApiManage.getInstence().getNeiHanApiService().getImage()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<NeiHanResponse>() {
+//                    @Override
+//                    public void onCompleted() {
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                    }
+//
+//                    @Override
+//                    public void onNext(NeiHanResponse neiHanResponse) {
+//                        if (neiHanResponse != null) {
+//                        } else {
+//                            return;
+//                        }
+//
+//                    }
+//                });
 
 
         try {
-            String URL = null;
+//            String URL = null;
+//
+//            if(type == HttpUrlUtil.TYPE_TEXT){
+//                URL = HttpUrlUtil.NEI_HAN_TEXT + System.currentTimeMillis();
+//            }else{
+//                URL = HttpUrlUtil.NEI_HAN_IMAGE + System.currentTimeMillis();
+//            }
+//
+//            Document doc = Jsoup.connect(URL)
+//                    .userAgent(HttpUrlUtil.USER_AGENT)
+//                    .timeout(15000).get();
 
-            if(type == HttpUrlUtil.TYPE_TEXT){
-                URL = HttpUrlUtil.NEI_HAN_TEXT + System.currentTimeMillis();
-            }else{
-                URL = HttpUrlUtil.NEI_HAN_IMAGE + System.currentTimeMillis();
-            }
-
-            Document doc = Jsoup.connect(URL)
-                    .userAgent(HttpUrlUtil.USER_AGENT)
-                    .timeout(15000).get();
-
-            Elements elementsArticle = doc.select(".list-item");
-            if (elementsArticle != null && elementsArticle.size() > 0) {
-                if(onFreshFlg) neiHanItemBeanArrayList.clear();
-
-                for (int i = 0; i < elementsArticle.size(); i++) {
-                    ItemBean itemBean = new ItemBean();
-                    Elements elementsAuthor = elementsArticle.get(i).select("dl");
-                    Elements elementDt = elementsAuthor.select("dt");
-                    Elements elementDd = elementsAuthor.select("dd");
-
-                    String userUrl = elementDt.select("a").attr("href");
-                    itemBean.setUserId(elementDt.attr("id"));
-                    itemBean.setUserUrl(userUrl);
-                    itemBean.setUserName(Util.replaceHtmlSign(elementDt.select("a").select("img").attr("alt")));
-                    itemBean.setUserImage(elementDt.select("img").attr("src"));
-                    itemBean.setItemContentUrl(elementDd.select(".dp-b").select("a").attr("href"));
-                    String gifSrc = elementsArticle.get(i).select(".content-img").select("img").attr("gifsrc");
-                    if(gifSrc != null && !"".equals(gifSrc)){
-                        itemBean.setItemImage(gifSrc);
-                    }else{
-                        itemBean.setItemImage(elementsArticle.get(i).select(".content-img").select("img").attr("src"));
-                    }
-                    itemBean.setItemContent(Util.replaceHtmlSign(elementDd.select(".content-img").text()));
-                    itemBean.setItemContentTitle(Util.replaceHtmlSign(elementDd.select(".dp-b").select("a").text()));
-
-                    itemBean.setCommentCount(elementsArticle.get(i).select(".fl").select(".commentClick").select("em").text());
-                    itemBean.setDing(elementsArticle.get(i).select(".fl").select(".ding").select("em").text());
-                    itemBean.setCai(elementsArticle.get(i).select(".fl").select(".cai").select("em").text());
-                    neiHanItemBeanArrayList.add(itemBean);
-                }
-            }
+//            Elements elementsArticle = doc.select(".list-item");
+//            if (elementsArticle != null && elementsArticle.size() > 0) {
+//                if(onFreshFlg) neiHanItemBeanArrayList.clear();
+//
+//                for (int i = 0; i < elementsArticle.size(); i++) {
+//                    ItemBean itemBean = new ItemBean();
+//                    Elements elementsAuthor = elementsArticle.get(i).select("dl");
+//                    Elements elementDt = elementsAuthor.select("dt");
+//                    Elements elementDd = elementsAuthor.select("dd");
+//
+//                    String userUrl = elementDt.select("a").attr("href");
+//                    itemBean.setUserId(elementDt.attr("id"));
+//                    itemBean.setUserUrl(userUrl);
+//                    itemBean.setUserName(Util.replaceHtmlSign(elementDt.select("a").select("img").attr("alt")));
+//                    itemBean.setUserImage(elementDt.select("img").attr("src"));
+//                    itemBean.setItemContentUrl(elementDd.select(".dp-b").select("a").attr("href"));
+//                    String gifSrc = elementsArticle.get(i).select(".content-img").select("img").attr("gifsrc");
+//                    if(gifSrc != null && !"".equals(gifSrc)){
+//                        itemBean.setItemImage(gifSrc);
+//                    }else{
+//                        itemBean.setItemImage(elementsArticle.get(i).select(".content-img").select("img").attr("src"));
+//                    }
+//                    itemBean.setItemContent(Util.replaceHtmlSign(elementDd.select(".content-img").text()));
+//                    itemBean.setItemContentTitle(Util.replaceHtmlSign(elementDd.select(".dp-b").select("a").text()));
+//
+//                    itemBean.setCommentCount(elementsArticle.get(i).select(".fl").select(".commentClick").select("em").text());
+//                    itemBean.setDing(elementsArticle.get(i).select(".fl").select(".ding").select("em").text());
+//                    itemBean.setCai(elementsArticle.get(i).select(".fl").select(".cai").select("em").text());
+//                    neiHanItemBeanArrayList.add(itemBean);
+//                }
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

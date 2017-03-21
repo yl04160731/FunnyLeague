@@ -101,6 +101,8 @@ public class QiuBaiTextImageRecyclerAdapter extends Adapter<ViewHolder> {
 
         if (itemBean.getCommentGoodName() == null || "".equals(itemBean.getCommentGoodName())) {
             ((ItemViewHolder) holder).commentLayout.setVisibility(View.GONE);
+        }else{
+            ((ItemViewHolder) holder).commentLayout.setVisibility(View.VISIBLE);
         }
 
         ((ItemViewHolder) holder).userName.setOnClickListener(new View.OnClickListener() {

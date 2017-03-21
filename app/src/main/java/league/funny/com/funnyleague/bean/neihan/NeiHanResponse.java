@@ -2,17 +2,15 @@ package league.funny.com.funnyleague.bean.neihan;
 
 import com.google.gson.annotations.SerializedName;
 
-import league.funny.com.funnyleague.bean.image.ImageData;
-
 public class NeiHanResponse {
     @SerializedName("data")
-    private ImageData data;
+    private NeiHanData data;
 
-    public ImageData getData() {
+    public NeiHanData getData() {
         return data;
     }
 
-    public void setData(ImageData data) {
+    public void setData(NeiHanData data) {
         this.data = data;
     }
 }

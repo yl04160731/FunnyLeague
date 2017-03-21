@@ -53,6 +53,7 @@ public class ApiManage {
 
     private Object monitor = new Object();
     public ZuiMeiApi zuiMeiApi;
+    public NeiHanApi neiHanApi;
 
     public static ApiManage getInstence() {
         if (apiManage == null) {
@@ -80,6 +81,23 @@ public class ApiManage {
         }
 
         return zuiMeiApi;
+    }
+
+    public NeiHanApi getNeiHanApiService() {
+        if (neiHanApi == null) {
+            synchronized (monitor) {
+                if (neiHanApi == null) {
+                    neiHanApi = new Retrofit.Builder()
+                            .baseUrl("http://neihanshequ.com")
+                            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                            .client(client)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build().create(NeiHanApi.class);
+                }
+            }
+        }
+
+        return neiHanApi;
     }
 
 }

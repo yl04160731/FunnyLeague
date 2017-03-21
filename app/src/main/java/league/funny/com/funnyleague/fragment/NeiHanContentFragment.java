@@ -12,10 +12,10 @@ import league.funny.com.funnyleague.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NeiHanTextFragment extends BaseFragment {
+public class NeiHanContentFragment extends Fragment {
 
 
-    public NeiHanTextFragment() {
+    public NeiHanContentFragment() {
         // Required empty public constructor
     }
 
@@ -24,7 +24,7 @@ public class NeiHanTextFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_text_neihan, container, false);
+        return inflater.inflate(R.layout.fragment_content_neihan, container, false);
     }
 
 }

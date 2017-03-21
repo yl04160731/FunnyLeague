@@ -51,7 +51,10 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.PengFuUserTextImageActivity"></activity>
+        <activity android:name=".activity.PengFuUserTextImageActivity" />
+        <activity android:name=".activity.NeiHanContentActivity" />
+        <activity android:name=".activity.NeiHanUserTextImageActivity" />
+        <activity android:name=".activity.NeiHanUserActivity"></activity>
     </application>
 
 </manifest>

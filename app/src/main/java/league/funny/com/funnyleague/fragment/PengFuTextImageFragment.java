@@ -64,7 +64,7 @@ public class PengFuTextImageFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setRetainInstance(true);
-        view = inflater.inflate(R.layout.fragment_text_pengfu, container, false);
+        view = inflater.inflate(R.layout.fragment_text_image_pengfu, container, false);
         ButterKnife.bind(this, view);
         initView();
         initData();

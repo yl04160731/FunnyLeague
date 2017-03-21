@@ -24,7 +24,7 @@ public class ApiManage {
         public Response intercept(Chain chain) throws IOException {
             Response originalResponse = chain.proceed(chain.request());
             if (NetworkUtil.isNetWorkAvailable(FunnyLeagueApplication.getContext())) {
-                int maxAge = 60; // 在线缓存在1分钟内可读取
+                int maxAge = 1; // 在线缓存在1分钟内可读取
                 return originalResponse.newBuilder()
                         .removeHeader("Pragma")
                         .removeHeader("Cache-Control")
@@ -90,7 +90,7 @@ public class ApiManage {
                     neiHanApi = new Retrofit.Builder()
                             .baseUrl("http://neihanshequ.com")
                             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                            .client(client)
+                            .client(new OkHttpClient())
                             .addConverterFactory(GsonConverterFactory.create())
                             .build().create(NeiHanApi.class);
                 }

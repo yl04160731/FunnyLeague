@@ -35,7 +35,8 @@ public class HttpUrlUtil {
 
     // 内涵段子
     public static String NEI_HAN_HOME = "http://neihanshequ.com";
-    public static String NEI_HAN_TEXT = "http://neihanshequ.com/joke/?is_json=1&app_name=neihanshequ_web&max_time=";
-    public static String NEI_HAN_IMAGE = "http://neihanshequ.com/pic/?is_json=1&app_name=neihanshequ_web&max_time=";
-
+    public static String NEI_HAN_TEXT = "http://neihanshequ.com/joke/?is_json=1&app_name=neihanshequ_web&max_time=1490079800";
+    public static String NEI_HAN_IMAGE = "http://neihanshequ.com/pic/?is_json=1&app_name=neihanshequ_web&max_time=1490079800";
+    public static String NEI_HAN_USER = "http://neihanshequ.com/user/";
+    public static String NEI_HAN_CONTENT = "http://neihanshequ.com/p";
 }

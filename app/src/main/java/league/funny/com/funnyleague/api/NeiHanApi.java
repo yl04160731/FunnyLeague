@@ -6,10 +6,10 @@ import rx.Observable;
 
 public interface NeiHanApi {
 
-    @GET("/joke/?is_json=1&app_name=neihanshequ_web&max_time={time}")
+    @GET("/joke/?is_json=1")
     Observable<NeiHanResponse> getText();
 
-    @GET("/pic/?is_json=1&app_name=neihanshequ_web&max_time={time}")
+    @GET("/pic/?is_json=1")
     Observable<NeiHanResponse> getImage();
 
 }

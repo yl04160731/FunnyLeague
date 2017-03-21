@@ -5,14 +5,15 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 public class NeiHanData {
-    @SerializedName("group")
-    private ArrayList<NeiHanItem> groups;
 
-    public ArrayList<NeiHanItem> getGroups() {
-        return groups;
+    @SerializedName("data")
+    private ArrayList<NeiHanSubData> subData;
+
+    public ArrayList<NeiHanSubData> getSubData() {
+        return subData;
     }
 
-    public void setGroups(ArrayList<NeiHanItem> groups) {
-        this.groups = groups;
+    public void setSubData(ArrayList<NeiHanSubData> subData) {
+        this.subData = subData;
     }
 }

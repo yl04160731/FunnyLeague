@@ -26,6 +26,25 @@ public class ItemBean implements Serializable {
     private String commentGoodCount;
     private String ding;
     private String cai;
+    private String share;
+    private String repin;
+
+    public String getRepin() {
+        return repin;
+    }
+
+    public void setRepin(String repin) {
+        this.repin = repin;
+    }
+
+    public String getShare() {
+        return share;
+    }
+
+    public void setShare(String share) {
+        this.share = share;
+    }
+
     private ArrayList<CommentBean> qbcbList = new ArrayList<>();
 
     public String getDing() {

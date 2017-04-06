@@ -168,22 +168,6 @@ public class NeiHanTextImageFragment extends BaseFragment {
                     .getImage();
         }
 
-
-
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("http://neihanshequ.com")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .client(new OkHttpClient())
-//                .build();
-//        NeiHanApi gitHubService = retrofit.create(NeiHanApi.class);
-//        Call<NeiHanResponse> call = gitHubService.getText();
-//        try{
-//            Response<NeiHanResponse> response = call.execute(); // 同步
-//            Log.d("aaa", "response:" + response.body().toString());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
         subscription = obNeiHanResponse
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

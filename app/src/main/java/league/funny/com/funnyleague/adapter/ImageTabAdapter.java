@@ -14,7 +14,7 @@ import league.funny.com.funnyleague.util.HttpUrlUtil;
 public class ImageTabAdapter extends FragmentPagerAdapter {
     // 内容标题
     public static final String[] Video_TITLE = new String[]{"糗事百科",
-            "捧腹网", "内涵段子", "百思姐"};
+            "捧腹网", "犯贱志", "百思姐"};
 
     public ImageTabAdapter(FragmentManager fm) {
         super(fm);

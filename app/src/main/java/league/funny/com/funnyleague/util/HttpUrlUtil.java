@@ -33,10 +33,19 @@ public class HttpUrlUtil {
     public static String PENG_FU_USER = "http://www.pengfu.com/u/";
     public static String PENG_FU_USER_PAGE = "/posthumor_";
 
+    // 犯贱志
+    public static String FAN_JIAN_HOME = "http://www.fanjian.net";
+    public static String FAN_JIAN_TEXT = "http://www.fanjian.net/duanzi";
+    public static String FAN_JIAN_IMAGE = "http://www.fanjian.net/jiantu";
+
+
     // 内涵段子
     public static String NEI_HAN_HOME = "http://neihanshequ.com";
     public static String NEI_HAN_TEXT = "http://neihanshequ.com/joke/?is_json=1&app_name=neihanshequ_web&max_time=1490079800";
     public static String NEI_HAN_IMAGE = "http://neihanshequ.com/pic/?is_json=1&app_name=neihanshequ_web&max_time=1490079800";
     public static String NEI_HAN_USER = "http://neihanshequ.com/user/";
     public static String NEI_HAN_CONTENT = "http://neihanshequ.com/p";
+
+
+
 }

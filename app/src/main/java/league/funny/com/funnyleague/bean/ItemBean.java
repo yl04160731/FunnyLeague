@@ -28,6 +28,24 @@ public class ItemBean implements Serializable {
     private String cai;
     private String share;
     private String repin;
+    private String sortTag;
+    private String sortTagUrl;
+
+    public String getSortTagUrl() {
+        return sortTagUrl;
+    }
+
+    public void setSortTagUrl(String sortTagUrl) {
+        this.sortTagUrl = sortTagUrl;
+    }
+
+    public String getSortTag() {
+        return sortTag;
+    }
+
+    public void setSortTag(String sortTag) {
+        this.sortTag = sortTag;
+    }
 
     public String getRepin() {
         return repin;

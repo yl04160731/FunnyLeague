@@ -160,7 +160,7 @@ public class PengFuUserTextImageActivity extends BaseActivity {
             String URL = userUrl + HttpUrlUtil.PENG_FU_USER_PAGE + page + HttpUrlUtil.HTML;
             Document doc = Jsoup.connect(URL)
                     .userAgent(HttpUrlUtil.USER_AGENT)
-                    .timeout(15000).get();
+                    .timeout(HttpUrlUtil.TIMEOUT).get();
 
             Elements elementsArticle = doc.select(".list-item").select(".bg1");
             if (elementsArticle != null && elementsArticle.size() > 0) {

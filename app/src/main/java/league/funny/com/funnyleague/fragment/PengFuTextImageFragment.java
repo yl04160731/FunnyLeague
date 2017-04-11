@@ -161,7 +161,7 @@ public class PengFuTextImageFragment extends BaseFragment {
 
             Document doc = Jsoup.connect(URL)
                     .userAgent(HttpUrlUtil.USER_AGENT)
-                    .timeout(15000).get();
+                    .timeout(HttpUrlUtil.TIMEOUT).get();
 
             Elements elementsArticle = doc.select(".list-item");
             if (elementsArticle != null && elementsArticle.size() > 0) {

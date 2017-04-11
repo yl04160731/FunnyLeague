@@ -1,6 +1,7 @@
 package league.funny.com.funnyleague.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by inno-y on 2017/2/21.
@@ -17,6 +18,24 @@ public class CommentBean implements Serializable {
     private String commentContent;
     private String goodCount;
     private String floor;
+    private String replyUser;
+    private ArrayList<CommentBean> commentbeanList;
+
+    public String getReplyUser() {
+        return replyUser;
+    }
+
+    public void setReplyUser(String replyUser) {
+        this.replyUser = replyUser;
+    }
+
+    public ArrayList<CommentBean> getCommentbeanList() {
+        return commentbeanList;
+    }
+
+    public void setCommentbeanList(ArrayList<CommentBean> commentbeanList) {
+        this.commentbeanList = commentbeanList;
+    }
 
     public String getFloor() {
         return floor;

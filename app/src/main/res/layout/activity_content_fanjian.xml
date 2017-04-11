@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_content_pengfu"
+    android:id="@+id/activity_content_fanjian"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="league.funny.com.funnyleague.activity.PengFuContentActivity">
+    tools:context="league.funny.com.funnyleague.activity.FanJianContentActivity">
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager_pengfu"
+        android:id="@+id/viewPager_fanjian"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         />

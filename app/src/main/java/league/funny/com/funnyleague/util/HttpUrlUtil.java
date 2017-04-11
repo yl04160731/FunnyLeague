@@ -11,6 +11,9 @@ public class HttpUrlUtil {
 
     public static String SPRIT = "/";
     public static String HTML = ".html";
+    public static String HYPHEN = "-";
+
+    public static int TIMEOUT = 15000;
 
     public static int TYPE_TEXT = 0;
     public static int TYPE_IMAGE = 1;
@@ -37,6 +40,7 @@ public class HttpUrlUtil {
     public static String FAN_JIAN_HOME = "http://www.fanjian.net";
     public static String FAN_JIAN_TEXT = "http://www.fanjian.net/duanzi";
     public static String FAN_JIAN_IMAGE = "http://www.fanjian.net/jiantu";
+    public static String FAN_JIAN_USER = "http://www.fanjian.net/user/";
 
 
     // 内涵段子

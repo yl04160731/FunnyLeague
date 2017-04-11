@@ -216,7 +216,7 @@ public class QiuBaiContentFragment extends BaseFragment {
         try {
             Document doc = Jsoup.connect(itemBean.getItemContentUrl())
                     .userAgent(HttpUrlUtil.USER_AGENT)
-                    .timeout(15000).get();
+                    .timeout(HttpUrlUtil.TIMEOUT).get();
 
             Elements elementsShenComments = doc.select(".comments-table");
 

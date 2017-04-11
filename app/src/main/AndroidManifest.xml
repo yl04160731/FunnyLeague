@@ -54,7 +54,8 @@
         <activity android:name=".activity.PengFuUserTextImageActivity" />
         <activity android:name=".activity.NeiHanContentActivity" />
         <activity android:name=".activity.NeiHanUserTextImageActivity" />
-        <activity android:name=".activity.NeiHanUserActivity"></activity>
+        <activity android:name=".activity.NeiHanUserActivity" />
+        <activity android:name=".activity.FanJianContentActivity"></activity>
     </application>
 
 </manifest>

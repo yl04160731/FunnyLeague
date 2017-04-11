@@ -142,7 +142,7 @@ public class PengFuUserActivity extends BaseActivity {
         try {
             Document doc = Jsoup.connect(userUrl)
                     .userAgent(HttpUrlUtil.USER_AGENT)
-                    .timeout(15000).get();
+                    .timeout(HttpUrlUtil.TIMEOUT).get();
 
             Elements elementsUserStatis = doc.select(".fl").select(".level-txt").select(".mr10");
 

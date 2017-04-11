@@ -160,7 +160,7 @@ public class QiuBaiTextImageFragment extends BaseFragment {
 
             Document doc = Jsoup.connect(URL)
                     .userAgent(HttpUrlUtil.USER_AGENT)
-                    .timeout(1500000).get();
+                    .timeout(HttpUrlUtil.TIMEOUT).get();
 
             Elements elementsArticle = doc.select(".article").select(".block");
             if (elementsArticle != null && elementsArticle.size() > 0) {

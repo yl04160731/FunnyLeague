@@ -160,7 +160,7 @@ public class QiuBaiUserTextImageActivity extends BaseActivity {
             String URL = userUrl + HttpUrlUtil.QIU_BAI_USER_PAGE + page + HttpUrlUtil.SPRIT;
             Document doc = Jsoup.connect(URL)
                     .userAgent(HttpUrlUtil.USER_AGENT)
-                    .timeout(15000).get();
+                    .timeout(HttpUrlUtil.TIMEOUT).get();
 
             Elements elementsArticle = doc.select(".user-block").select(".user-article");
             if (elementsArticle != null && elementsArticle.size() > 0) {

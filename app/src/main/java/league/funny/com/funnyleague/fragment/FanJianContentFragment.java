@@ -1,7 +1,6 @@
 package league.funny.com.funnyleague.fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -28,11 +27,9 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import league.funny.com.funnyleague.FunnyLeagueApplication;
 import league.funny.com.funnyleague.R;
-import league.funny.com.funnyleague.activity.PengFuUserActivity;
-import league.funny.com.funnyleague.adapter.PengFuCommentRecyclerAdapter;
+import league.funny.com.funnyleague.adapter.FanJianCommentRecyclerAdapter;
 import league.funny.com.funnyleague.bean.CommentBean;
 import league.funny.com.funnyleague.bean.ItemBean;
 import league.funny.com.funnyleague.util.GlideCircleTransform;
@@ -45,19 +42,18 @@ import static com.ashokvarma.bottomnavigation.utils.Utils.getScreenWidth;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PengFuContentFragment extends Fragment {
+public class FanJianContentFragment extends Fragment {
 
-
-    @BindView(R.id.userName_pengfu)
+    @BindView(R.id.userName_fanjian)
     public TextView userName;
 
-    @BindView(R.id.userImage_pengfu)
+    @BindView(R.id.userImage_fanjian)
     public ImageView userImage;
 
-    @BindView(R.id.itemContent_pengfu)
+    @BindView(R.id.itemContent_fanjian)
     public TextView itemContent;
 
-    @BindView(R.id.PuTongCommentCount_pengfu)
+    @BindView(R.id.PuTongCommentCount_fanjian)
     public TextView puTongCommentCount;
 
     @BindView(R.id.putong_comment_layout)
@@ -66,13 +62,13 @@ public class PengFuContentFragment extends Fragment {
     @BindView(R.id.putong_comment_recyclerView)
     public RecyclerView putongCommentRecyclerView;
 
-    @BindView(R.id.commentLinearLayout_pengfu)
+    @BindView(R.id.commentLinearLayout_fanjian)
     public LinearLayout commentLinearLayout;
 
     @BindView(R.id.comment_wait)
     public RelativeLayout commentWait;
 
-    @BindView(R.id.itemTitle_pengfu)
+    @BindView(R.id.itemTitle_fanjian)
     TextView itemTitle;
 
     @BindView(R.id.ding)
@@ -84,22 +80,25 @@ public class PengFuContentFragment extends Fragment {
     @BindView(R.id.comment)
     TextView comment;
 
-    @BindView(R.id.itemImage_pengfu)
-    public ImageView itemImage_pengfu;
+    @BindView(R.id.itemImage_fanjian)
+    public ImageView itemImage_fanjian;
 
     private View view = null;
-    private PengFuCommentRecyclerAdapter pengFuCommentRecyclerAdapter;
+    private FanJianCommentRecyclerAdapter fanjianCommentRecyclerAdapter;
     private ArrayList<CommentBean> CommentList = new ArrayList<>();
     private ItemBean itemBean;
 
-    public PengFuContentFragment() {
+    private String commentCount = "0";
+
+    public FanJianContentFragment() {
+        // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setRetainInstance(true);
-        view = inflater.inflate(R.layout.fragment_content_pengfu, container, false);
+        view = inflater.inflate(R.layout.fragment_content_fanjian, container, false);
         ButterKnife.bind(this, view);
         initData();
 
@@ -113,28 +112,6 @@ public class PengFuContentFragment extends Fragment {
         putongCommentRecyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), RecycleViewDivider.VERTICAL_LIST, R.drawable.small_divider));
         putongCommentRecyclerView.setLayoutManager(linearLayoutManager);
         return view;
-    }
-
-    @OnClick(R.id.userImage_pengfu)
-    public void toHomeUser0() {
-        toUserInfo();
-    }
-
-    @OnClick(R.id.userName_pengfu)
-    public void toHomeUser1() {
-        toUserInfo();
-    }
-
-    public void toUserInfo() {
-        if (itemBean.getUserUrl() == null || "".equals(itemBean.getUserUrl().replace(HttpUrlUtil.QIU_BAI_HOME, ""))) {
-            return;
-        }
-        Intent intent = new Intent();
-        intent.setClass(getActivity(), PengFuUserActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("itemBean", itemBean);
-        intent.putExtras(bundle);
-        getActivity().startActivity(intent);
     }
 
     public void setItemBean(ItemBean itemBean) {
@@ -163,29 +140,29 @@ public class PengFuContentFragment extends Fragment {
         cai.setText(itemBean.getCai());
         comment.setText(itemBean.getCommentCount());
 
-        if(itemBean.getItemContent() != null && !"".equals(itemBean.getItemContent())){
+        if (itemBean.getItemContent() != null && !"".equals(itemBean.getItemContent())) {
             itemContent.setVisibility(View.VISIBLE);
             itemContent.setText(itemBean.getItemContent());
-        }else{
+        } else {
             itemContent.setVisibility(View.GONE);
         }
 
         if (itemBean.getItemImage() != null && !"".equals(itemBean.getItemImage())) {
-            itemImage_pengfu.setVisibility(View.VISIBLE);
-            ViewGroup.LayoutParams params = itemImage_pengfu.getLayoutParams();
+            itemImage_fanjian.setVisibility(View.VISIBLE);
+            ViewGroup.LayoutParams params = itemImage_fanjian.getLayoutParams();
             int screenWidth = getScreenWidth(FunnyLeagueApplication.getApplication());
             params.width = screenWidth * 11 / 12;
             params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            itemImage_pengfu.setLayoutParams(params);
-            itemImage_pengfu.setMaxWidth(screenWidth);
+            itemImage_fanjian.setLayoutParams(params);
+            itemImage_fanjian.setMaxWidth(screenWidth);
 
             Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getItemImage())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .dontAnimate().error(R.drawable.imageload).placeholder(R.drawable.imageload)
-                    .into(itemImage_pengfu);
+                    .into(itemImage_fanjian);
 
         } else {
-            itemImage_pengfu.setVisibility(View.GONE);
+            itemImage_fanjian.setVisibility(View.GONE);
         }
     }
 
@@ -195,26 +172,41 @@ public class PengFuContentFragment extends Fragment {
                     .userAgent(HttpUrlUtil.USER_AGENT)
                     .timeout(HttpUrlUtil.TIMEOUT).get();
 
-            String noComment = doc.select(".noComment").text();
+            Elements elements = doc.select(".comment-list");
 
-            if (noComment == null || "".equals(noComment)) {
+            if (elements.text() != null && !"".equals(elements.text())) {
+                commentCount = doc.getElementById("anchor-comment").select("i").text();
+                Elements elementsComments = elements.select(".comment-item");
 
-                Elements elementsComments = doc.select(".comment-list").select("li");
-
-                if (elementsComments != null && !"".equals(elementsComments)) {
-                    for (int i = 0; i < elementsComments.size(); i++) {
-                        CommentBean commentBean = new CommentBean();
-                        String userUrl = elementsComments.get(i).select(".mem-header").attr("href");
-                        commentBean.setUserId(userUrl.replace(HttpUrlUtil.PENG_FU_USER, ""));
-                        commentBean.setUserUrl(userUrl);
-
-                        commentBean.setUserName(Util.replaceHtmlSign(elementsComments.get(i).select(".mem-header").select("img").attr("alt")));
-                        commentBean.setUserImage(elementsComments.get(i).select(".mem-header").select("img").attr("src"));
-
-                        commentBean.setFloor(elementsComments.get(i).select(".f12").select(".gray2").select(".dp-i-b").text());
-                        commentBean.setCommentContent(Util.replaceHtmlSign(elementsComments.get(i).select(".comment-content").text()));
-                        CommentList.add(commentBean);
+                for (int i = 0; i < elementsComments.size(); i++) {
+                    CommentBean commentBean = new CommentBean();
+                    String userUrl = elementsComments.get(i).select(".comment-head").get(0).select("a").attr("href");
+                    commentBean.setUserId(userUrl.replace(HttpUrlUtil.FAN_JIAN_USER, ""));
+                    commentBean.setUserUrl(userUrl);
+                    commentBean.setUserName(Util.replaceHtmlSign(elementsComments.get(i).select(".comment-author").select(".fc-gblue").text()));
+                    commentBean.setUserImage(elementsComments.get(i).select(".comment-head").get(0).select("img").attr("data-src"));
+                    commentBean.setGoodCount(elementsComments.get(i).select(".clike").select(".fc-gray").select("i").text());
+                    commentBean.setCommentContent(Util.replaceHtmlSign(elementsComments.get(i).select(".comment-content").text()));
+                    commentBean.setFloor(elementsComments.get(i).select(".comment-floor").get(0).select("i").text());
+                    Elements elementsCommentReplys = elementsComments.get(i).select("comment-reply-item");
+                    if(elementsCommentReplys != null){
+                        ArrayList<CommentBean> commentSubBeanList = new ArrayList<CommentBean>();
+                        for(int j = 0; j < elementsCommentReplys.size(); j++){
+                            CommentBean commentSubBean = new CommentBean();
+                            userUrl = elementsCommentReplys.get(j).select("comment-reply-content").select("a").attr("href");
+                            commentSubBean.setUserId(userUrl.replace(HttpUrlUtil.FAN_JIAN_USER, ""));
+                            commentSubBean.setUserUrl(userUrl);
+                            commentSubBean.setUserName(Util.replaceHtmlSign(elementsComments.get(i).select(".comment-reply-content").select("comment-reply-author").text()));
+                            commentSubBean.setUserImage(elementsComments.get(i).select(".user-head").select("img").attr("data-src"));
+                            commentSubBean.setGoodCount(elementsComments.get(i).select(".clike").select(".fc-gray").select("i").text());
+                            commentSubBean.setCommentContent(Util.replaceHtmlSign(elementsComments.get(i).select(".comment-reply-txt").text()));
+                            commentSubBean.setReplyUser(Util.replaceHtmlSign(elementsComments.get(i).select(".comment-reply-who").text()));
+                            commentSubBeanList.add(commentSubBean);
+                        }
+                        commentBean.setCommentbeanList(commentSubBeanList);
                     }
+
+                    CommentList.add(commentBean);
                 }
             }
         } catch (Exception e) {
@@ -233,14 +225,15 @@ public class PengFuContentFragment extends Fragment {
                 putongCommentLayout.setVisibility(View.GONE);
             } else {
                 putongCommentLayout.setVisibility(View.VISIBLE);
-                pengFuCommentRecyclerAdapter = new PengFuCommentRecyclerAdapter(getActivity(), CommentList);
-                putongCommentRecyclerView.setAdapter(pengFuCommentRecyclerAdapter);
+                fanjianCommentRecyclerAdapter = new FanJianCommentRecyclerAdapter(getActivity(), CommentList);
+                putongCommentRecyclerView.setAdapter(fanjianCommentRecyclerAdapter);
                 puTongCommentCount.setText(getResources().getText(R.string.putong_comment)
-                        + "(" + CommentList.size() + ")");
+                        + "(" + commentCount + ")");
             }
 
             commentWait.setVisibility(View.GONE);
             commentLinearLayout.setVisibility(View.VISIBLE);
         }
     };
+
 }

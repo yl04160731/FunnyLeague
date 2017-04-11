@@ -204,7 +204,7 @@ public class QiuBaiUserActivity extends BaseActivity {
         try {
             Document doc = Jsoup.connect(userUrl)
                     .userAgent(HttpUrlUtil.USER_AGENT)
-                    .timeout(15000).get();
+                    .timeout(HttpUrlUtil.TIMEOUT).get();
             String user_col = doc.select(".user-col-all").select("h3").text();
             if (user_col != null && !"".equals(user_col)) {
                 userBean = null;
@@ -257,7 +257,7 @@ public class QiuBaiUserActivity extends BaseActivity {
         try {
             Document doc = Jsoup.connect(friendUrl)
                     .userAgent(HttpUrlUtil.USER_AGENT)
-                    .timeout(15000).get();
+                    .timeout(HttpUrlUtil.TIMEOUT).get();
 
             String user_col = doc.select(".user-col-all").select("h3").text();
             if (user_col != null && !"".equals(user_col)) {

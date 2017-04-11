@@ -224,7 +224,7 @@ public class FanJianTextImageFragment extends Fragment {
                             String tag = elementsArticle.get(i).select(".cont-list-tags").text();
 
                             if(tag != null && !"".equals(tag)){
-                                tag = tag.substring(1,tag.length() - 1);
+                                tag = tag.substring(1,tag.length());
                             }
 
                             itemBean.setSortTag(tag);

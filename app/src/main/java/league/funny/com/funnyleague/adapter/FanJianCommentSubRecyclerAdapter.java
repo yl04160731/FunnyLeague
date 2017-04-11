@@ -1,8 +1,6 @@
 package league.funny.com.funnyleague.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -21,15 +19,14 @@ import league.funny.com.funnyleague.FunnyLeagueApplication;
 import league.funny.com.funnyleague.R;
 import league.funny.com.funnyleague.bean.CommentBean;
 import league.funny.com.funnyleague.util.GlideCircleTransform;
-import league.funny.com.funnyleague.view.RecycleViewDivider;
 
-public class FanJianCommentRecyclerAdapter extends Adapter<ViewHolder> {
+public class FanJianCommentSubRecyclerAdapter extends Adapter<ViewHolder> {
 
     private Context context;
     private ArrayList<CommentBean> commentBeanList;
 
 
-    public FanJianCommentRecyclerAdapter(Context context, ArrayList<CommentBean> commentBeanList) {
+    public FanJianCommentSubRecyclerAdapter(Context context, ArrayList<CommentBean> commentBeanList) {
         this.context = context;
         this.commentBeanList = commentBeanList;
     }
@@ -41,7 +38,7 @@ public class FanJianCommentRecyclerAdapter extends Adapter<ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.comment_list_item_fanjian, parent,
+        View view = LayoutInflater.from(context).inflate(R.layout.comment_list_item_sub_fanjian, parent,
                 false);
         return new ItemViewHolder(view);
     }
@@ -51,20 +48,18 @@ public class FanJianCommentRecyclerAdapter extends Adapter<ViewHolder> {
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (holder instanceof ItemViewHolder) {
             CommentBean commentBean = commentBeanList.get(position);
+
             ((ItemViewHolder) holder).userName.setText(commentBean.getUserName());
-            Glide.with(FunnyLeagueApplication.getApplication()).load(commentBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 40)).into(((ItemViewHolder) holder).userImage);
-            ((ItemViewHolder) holder).goodCount.setText(commentBean.getFloor());
+
+            Glide.with(FunnyLeagueApplication.getApplication()).load(commentBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 30)).into(((ItemViewHolder) holder).userImage);
             ((ItemViewHolder) holder).commentContent.setText(commentBean.getCommentContent());
-            FanJianCommentSubRecyclerAdapter fanjianCommentSubRecyclerAdapter = new FanJianCommentSubRecyclerAdapter(context, commentBean.getCommentbeanList());
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context) {
-                @Override
-                public boolean canScrollVertically() {
-                    return false;
-                }
-            };
-            ((ItemViewHolder) holder).putong_comment_sub_recyclerView.addItemDecoration(new RecycleViewDivider(context, RecycleViewDivider.VERTICAL_LIST, R.drawable.small_divider));
-            ((ItemViewHolder) holder).putong_comment_sub_recyclerView.setLayoutManager(linearLayoutManager);
-            ((ItemViewHolder) holder).putong_comment_sub_recyclerView.setAdapter(fanjianCommentSubRecyclerAdapter);
+
+            if(commentBean.getReplyUser() == null || "".equals(commentBean.getReplyUser())){
+                ((ItemViewHolder) holder).replyUser.setVisibility(View.GONE);
+            }else{
+                ((ItemViewHolder) holder).replyUser.setVisibility(View.VISIBLE);
+                ((ItemViewHolder) holder).replyUser.setText("  回复  " + commentBean.getReplyUser());
+            }
         }
     }
 
@@ -76,14 +71,11 @@ public class FanJianCommentRecyclerAdapter extends Adapter<ViewHolder> {
         @BindView(R.id.userImage_fanjian)
         public ImageView userImage;
 
-        @BindView(R.id.goodCount)
-        public TextView goodCount;
-
         @BindView(R.id.commentContent)
         public TextView commentContent;
 
-        @BindView(R.id.putong_comment_sub_recyclerView)
-        public RecyclerView putong_comment_sub_recyclerView;
+        @BindView(R.id.replyUser)
+        public TextView replyUser;
 
         public ItemViewHolder(View view) {
             super(view);

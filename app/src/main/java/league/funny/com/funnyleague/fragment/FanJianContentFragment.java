@@ -132,9 +132,19 @@ public class FanJianContentFragment extends Fragment {
         userName.setText(itemBean.getUserName());
         Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 45)).into(userImage);
         itemContent.setText(itemBean.getItemContent());
-        itemTitle.setText(itemBean.getItemContentTitle());
-        TextPaint tp = itemTitle.getPaint();
-        tp.setFakeBoldText(true);
+        if(itemBean.getItemContentTitle() == null || "".equals(itemBean.getItemContentTitle())){
+            itemTitle.setVisibility(View.GONE);
+            RelativeLayout.LayoutParams layoutParams=
+                    new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
+            layoutParams.setMargins(Util.dp2px(getActivity(),10),0,0,0);
+            userName.setLayoutParams(layoutParams);
+        }else{
+            itemTitle.setVisibility(View.VISIBLE);
+            itemTitle.setText(itemBean.getItemContentTitle());
+            TextPaint tp = itemTitle.getPaint();
+            tp.setFakeBoldText(true);
+        }
 
         ding.setText(itemBean.getDing());
         cai.setText(itemBean.getCai());
@@ -188,7 +198,7 @@ public class FanJianContentFragment extends Fragment {
                     commentBean.setGoodCount(elementsComments.get(i).select(".clike").select(".fc-gray").select("i").text());
                     commentBean.setCommentContent(Util.replaceHtmlSign(elementsComments.get(i).select(".comment-content").text()));
                     commentBean.setFloor(elementsComments.get(i).select(".comment-floor").get(0).select("i").text());
-                    Elements elementsCommentReplys = elementsComments.get(i).select("comment-reply-item");
+                    Elements elementsCommentReplys = elementsComments.get(i).select(".comment-reply-item");
                     if(elementsCommentReplys != null){
                         ArrayList<CommentBean> commentSubBeanList = new ArrayList<CommentBean>();
                         for(int j = 0; j < elementsCommentReplys.size(); j++){
@@ -196,11 +206,11 @@ public class FanJianContentFragment extends Fragment {
                             userUrl = elementsCommentReplys.get(j).select("comment-reply-content").select("a").attr("href");
                             commentSubBean.setUserId(userUrl.replace(HttpUrlUtil.FAN_JIAN_USER, ""));
                             commentSubBean.setUserUrl(userUrl);
-                            commentSubBean.setUserName(Util.replaceHtmlSign(elementsComments.get(i).select(".comment-reply-content").select("comment-reply-author").text()));
-                            commentSubBean.setUserImage(elementsComments.get(i).select(".user-head").select("img").attr("data-src"));
-                            commentSubBean.setGoodCount(elementsComments.get(i).select(".clike").select(".fc-gray").select("i").text());
-                            commentSubBean.setCommentContent(Util.replaceHtmlSign(elementsComments.get(i).select(".comment-reply-txt").text()));
-                            commentSubBean.setReplyUser(Util.replaceHtmlSign(elementsComments.get(i).select(".comment-reply-who").text()));
+                            commentSubBean.setUserName(Util.replaceHtmlSign(elementsCommentReplys.get(j).select(".comment-reply-content").select(".comment-reply-author").text()));
+                            commentSubBean.setUserImage(elementsCommentReplys.get(j).select(".user-head").select("img").attr("data-src"));
+                            commentSubBean.setGoodCount(elementsCommentReplys.get(j).select(".clike").select(".fc-gray").select("i").text());
+                            commentSubBean.setCommentContent(Util.replaceHtmlSign(elementsCommentReplys.get(j).select(".comment-reply-txt").text()));
+                            commentSubBean.setReplyUser(Util.replaceHtmlSign(elementsCommentReplys.get(j).select(".comment-reply-who").text()));
                             commentSubBeanList.add(commentSubBean);
                         }
                         commentBean.setCommentbeanList(commentSubBeanList);

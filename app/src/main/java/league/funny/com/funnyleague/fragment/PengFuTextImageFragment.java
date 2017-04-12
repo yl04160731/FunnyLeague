@@ -73,10 +73,6 @@ public class PengFuTextImageFragment extends BaseFragment {
 
     public void initView() {
 
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        actionBar.setCustomView(R.layout.actionbar_main);//自定义ActionBar布局
-
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);

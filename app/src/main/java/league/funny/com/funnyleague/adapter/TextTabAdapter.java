@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
-import league.funny.com.funnyleague.fragment.BaiSiJieTextFragment;
+import league.funny.com.funnyleague.fragment.BaiSiJieTextImageFragment;
 import league.funny.com.funnyleague.fragment.FanJianTextImageFragment;
 import league.funny.com.funnyleague.fragment.PengFuTextImageFragment;
 import league.funny.com.funnyleague.fragment.QiuBaiTextImageFragment;
@@ -38,7 +38,8 @@ public class TextTabAdapter extends FragmentPagerAdapter {
                 ((FanJianTextImageFragment)textFragment).setType(HttpUrlUtil.TYPE_TEXT);
                 return textFragment;
             case 3:
-                textFragment = new BaiSiJieTextFragment();
+                textFragment = new BaiSiJieTextImageFragment();
+                ((BaiSiJieTextImageFragment)textFragment).setType(HttpUrlUtil.TYPE_TEXT);
                 return textFragment;
         }
         return textFragment;

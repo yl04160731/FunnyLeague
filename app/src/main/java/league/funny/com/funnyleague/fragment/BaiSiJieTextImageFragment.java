@@ -1,8 +1,10 @@
 package league.funny.com.funnyleague.fragment;
 
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,19 +27,22 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.R;
-import league.funny.com.funnyleague.adapter.QiuBaiTextImageRecyclerAdapter;
+import league.funny.com.funnyleague.adapter.BaiSiJieTextImageRecyclerAdapter;
 import league.funny.com.funnyleague.bean.ItemBean;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
 import league.funny.com.funnyleague.util.Util;
 import league.funny.com.funnyleague.view.LoadMoreViewFooter;
 import league.funny.com.funnyleague.view.RecycleViewDivider;
 
-public class QiuBaiTextImageFragment extends BaseFragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class BaiSiJieTextImageFragment extends BaseFragment {
 
     private View view = null;
     private int page = 1;
     private ArrayList<ItemBean> itemBeanArrayList = new ArrayList<>();
-    private QiuBaiTextImageRecyclerAdapter adapter;
+    private BaiSiJieTextImageRecyclerAdapter adapter;
 
     private int type = 0;
 
@@ -52,11 +57,11 @@ public class QiuBaiTextImageFragment extends BaseFragment {
     @BindView(R.id.recyclerView_text)
     RecyclerView recyclerView;
 
-    public QiuBaiTextImageFragment() {
+    public BaiSiJieTextImageFragment() {
         // Required empty public constructor
     }
 
-    public void setType(int type){
+    public void setType(int type) {
         this.type = type;
     }
 
@@ -64,7 +69,7 @@ public class QiuBaiTextImageFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setRetainInstance(true);
-        view = inflater.inflate(R.layout.fragment_text_image_qiubai, container, false);
+        view = inflater.inflate(R.layout.fragment_text_image_baisijie, container, false);
         ButterKnife.bind(this, view);
         initView();
         initData();
@@ -76,11 +81,11 @@ public class QiuBaiTextImageFragment extends BaseFragment {
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(),RecycleViewDivider.VERTICAL_LIST,R.drawable.divider));
+        recyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), RecycleViewDivider.VERTICAL_LIST, R.drawable.divider));
     }
 
     public void initData() {
-        adapter = new QiuBaiTextImageRecyclerAdapter(getActivity(), itemBeanArrayList);
+        adapter = new BaiSiJieTextImageRecyclerAdapter(getActivity(), itemBeanArrayList);
         mAdapter = new RecyclerAdapterWithHF(adapter);
         recyclerView.setAdapter(mAdapter);
         mSwipeRefreshHelper = new SwipeRefreshHelper(swipeRefreshLayout);
@@ -129,14 +134,14 @@ public class QiuBaiTextImageFragment extends BaseFragment {
     Handler HtmlHandler = new Handler() {
         public void handleMessage(Message msg) {
             mAdapter.notifyDataSetChanged();
-            if(onFreshFlg) {
+            if (onFreshFlg) {
                 mSwipeRefreshHelper.refreshComplete();
-                if(itemBeanArrayList == null || itemBeanArrayList.size() <= 0){
+                if (itemBeanArrayList == null || itemBeanArrayList.size() <= 0) {
                     mSwipeRefreshHelper.setLoadMoreEnable(false);
-                }else{
+                } else {
                     mSwipeRefreshHelper.setLoadMoreEnable(true);
                 }
-            }else{
+            } else {
                 mSwipeRefreshHelper.loadMoreComplete(true);
             }
         }
@@ -146,52 +151,52 @@ public class QiuBaiTextImageFragment extends BaseFragment {
      * 获取测试数据
      */
     private void getData() {
+
         try {
             String URL = null;
-            if(type == HttpUrlUtil.TYPE_TEXT){
-                URL = HttpUrlUtil.QIU_BAI_TEXT_PAGE + page + HttpUrlUtil.SPRIT;
-            }else{
-                URL = HttpUrlUtil.QIU_BAI_IMAGE_PAGE + page + HttpUrlUtil.SPRIT;
+            if (type == HttpUrlUtil.TYPE_TEXT) {
+                URL = HttpUrlUtil.BAI_SI_JIE_TEXT + page;
+            } else {
+                URL = HttpUrlUtil.BAI_SI_JIE_IMGAE + page;
             }
 
             Document doc = Jsoup.connect(URL)
                     .userAgent(HttpUrlUtil.USER_AGENT)
                     .timeout(HttpUrlUtil.TIMEOUT).get();
 
-            Elements elementsArticle = doc.select(".article").select(".block");
-            if (elementsArticle != null && elementsArticle.size() > 0) {
-                if(onFreshFlg) itemBeanArrayList.clear();
+            Elements elementsUser = doc.select(".j-list-user");
+            if (elementsUser != null && elementsUser.size() > 0) {
+                if (onFreshFlg) itemBeanArrayList.clear();
 
-                for (int i = 0; i < elementsArticle.size(); i++) {
+                Elements elementsContent = doc.select(".j-r-list-c-desc");
+                Elements elementsImage = doc.select(".j-r-list-c-img");
+                Elements elementsDingCai = doc.select(".j-r-list-tool-l");
+                Elements elementsComment = doc.select(".j-r-list-tool-r");
+
+                for (int i = 0; i < elementsUser.size(); i++) {
                     ItemBean itemBean = new ItemBean();
-                    Elements elementsAuthor = elementsArticle.get(i).select(".author");
+                    Elements elementsAuthor = elementsUser.get(i).select(".u-img");
 
                     String userUrl = elementsAuthor.select("a").attr("href");
-                    itemBean.setUserId(userUrl.replace("/","").replace("users",""));
-                    itemBean.setUserUrl(HttpUrlUtil.QIU_BAI_HOME + userUrl);
-                    itemBean.setUserName(Util.replaceHtmlSign(elementsAuthor.select("h2").html()));
-                    itemBean.setUserImage(elementsAuthor.select("img").attr("src"));
-                    itemBean.setUserAge(elementsAuthor.select(".articleGender").html());
+                    itemBean.setUserId(HttpUrlUtil.BAI_SI_JIE_HOME + userUrl);
+                    itemBean.setUserUrl(userUrl);
+                    itemBean.setUserName(Util.replaceHtmlSign(elementsAuthor.select("img").attr("alt")));
+                    itemBean.setUserImage(elementsAuthor.select("img").attr("data-original"));
 
-                    if(elementsAuthor.html().contains("manIcon")){
-                        itemBean.setUserSex("man");
-                    }else if(elementsAuthor.html().contains("womenIcon")){
-                        itemBean.setUserSex("women");
+                    if(elementsImage != null && elementsImage.size() > 0){
+                        itemBean.setItemImage(elementsImage.get(i).select("img").attr("data-original"));
                     }
 
-                    itemBean.setItemContentUrl(HttpUrlUtil.QIU_BAI_HOME + elementsArticle.get(i).select(".contentHerf").attr("href"));
-                    itemBean.setItemContent(Util.replaceHtmlSign(elementsArticle.get(i).select(".content").select("span").html()));
-                    itemBean.setItemImage(elementsArticle.get(i).select(".thumb").select("img").attr("src"));
-                    itemBean.setSmileCount(elementsArticle.get(i).select(".stats-vote").select(".number").html());
-                    itemBean.setCommentCount(elementsArticle.get(i).select(".stats-comments").select(".number").html());
-                    itemBean.setCommentGoodName(Util.replaceHtmlSign(elementsArticle.get(i).select(".cmt-name").html()));
-                    String likeNum = elementsArticle.get(i).select(".likenum").text();
-                    itemBean.setCommentGoodContent(Util.replaceHtmlSign(elementsArticle.get(i).select(".main-text").text().replace(" " + likeNum,"")));
-                    itemBean.setCommentGoodCount(elementsArticle.get(i).select(".likenum").text());
+                    itemBean.setItemContentUrl(HttpUrlUtil.BAI_SI_JIE_HOME + elementsContent.get(i).select("a").attr("href"));
+                    itemBean.setItemContent(Util.replaceHtmlSign(elementsContent.get(i).select("a").text()));
+                    itemBean.setCommentCount(elementsComment.get(i).select(".comment-counts").text());
+                    itemBean.setDing(elementsDingCai.get(i).select(".j-r-list-tool-l-up").select("span").text());
+                    itemBean.setCai(elementsDingCai.get(i).select(".j-r-list-tool-l-down").select("span").text());
 
                     itemBeanArrayList.add(itemBean);
                 }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

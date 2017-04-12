@@ -42,6 +42,11 @@ public class HttpUrlUtil {
     public static String FAN_JIAN_IMAGE = "http://www.fanjian.net/jiantu";
     public static String FAN_JIAN_USER = "http://www.fanjian.net/user/";
 
+    // 不得姐
+    public static String BAI_SI_JIE_HOME = "http://www.budejie.com";
+    public static String BAI_SI_JIE_TEXT = "http://www.budejie.com/text/";
+    public static String BAI_SI_JIE_IMGAE = "http://www.budejie.com/pic/";
+    public static String BAI_SI_JIE_USER = "http://www.budejie.com/others-";
 
     // 内涵段子
     public static String NEI_HAN_HOME = "http://neihanshequ.com";

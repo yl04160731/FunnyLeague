@@ -66,6 +66,15 @@ public class HttpUrlUtil {
     // zol爆笑男女
     public static String ZOL_NAN_NV_HOME = "http://xiaohua.zol.com.cn/baoxiaonannv/";
 
+    //有趣吧
+    public static String YOU_QU_CHENG_REN_HOME = "http://www.youqu.net/hsxh/list_33_";
+    public static String YOU_QU_NAN_NV_HOME = "http://www.youqu.net/wangwen/fuqixiaohua/list_216_";
+
+    public static String YOU_QU_XIE_E_HOME = "http://www.youqu.net/xieemanhua/list_13_";
+    public static String YOU_QU_NEI_HAN_HOME = "http://www.youqu.net/neihanmanhua/list_15_";
+    public static String YOU_QU_SE_XI_HOME = "http://www.youqu.net/sexijuntuan/list_18_";
+    public static String YOU_QU_KA_LIE_HOME = "http://www.youqu.net/kaliemanhua/list_250_";
+    public static String YOU_QU_HUAN_KEN_HOME = "http://www.youqu.net/huankenmanhua/list_258_";
 
 
 }

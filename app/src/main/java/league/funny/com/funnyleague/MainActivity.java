@@ -4,7 +4,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -18,7 +17,7 @@ import league.funny.com.funnyleague.activity.BaseActivity;
 import league.funny.com.funnyleague.api.ApiManage;
 import league.funny.com.funnyleague.bean.GlobleBean;
 import league.funny.com.funnyleague.bean.image.ImageResponse;
-import league.funny.com.funnyleague.fragment.ChengrenFragment;
+import league.funny.com.funnyleague.fragment.ChengFragment;
 import league.funny.com.funnyleague.fragment.ImageFragment;
 import league.funny.com.funnyleague.fragment.MoreFragment;
 import league.funny.com.funnyleague.fragment.TextFragment;
@@ -41,7 +40,7 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
     private TextFragment textFragment = null;
     private ImageFragment imageFragment = null;
     private VideoFragment videoFragment = null;
-    private ChengrenFragment chengrenFragment = null;
+    private ChengFragment chengrenFragment = null;
     private MoreFragment moreFragment = null;
 
     private Subscription subscription;
@@ -76,8 +75,8 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
         bottomNavigationBar
                 .addItem(new BottomNavigationItem(R.drawable.bottom_text, R.string.title_text))
                 .addItem(new BottomNavigationItem(R.drawable.bottom_image, R.string.title_image))
-                .addItem(new BottomNavigationItem(R.drawable.bottom_video, R.string.title_video))
                 .addItem(new BottomNavigationItem(R.drawable.bottom_chengren, R.string.title_chengren))
+                .addItem(new BottomNavigationItem(R.drawable.bottom_video, R.string.title_qingqutu))
                 .addItem(new BottomNavigationItem(R.drawable.bottom_more, R.string.title_more))
                 .initialise();
 
@@ -143,19 +142,19 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
                 }
                 break;
             case 2:
+                if (chengrenFragment == null) {
+                    chengrenFragment = new ChengFragment();
+                    fragment = chengrenFragment;
+                } else {
+                    fragment = chengrenFragment;
+                }
+                break;
+            case 3:
                 if (videoFragment == null) {
                     videoFragment = new VideoFragment();
                     fragment = videoFragment;
                 } else {
                     fragment = videoFragment;
-                }
-                break;
-            case 3:
-                if (chengrenFragment == null) {
-                    chengrenFragment = new ChengrenFragment();
-                    fragment = chengrenFragment;
-                } else {
-                    fragment = chengrenFragment;
                 }
                 break;
             case 4:

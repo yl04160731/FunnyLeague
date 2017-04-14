@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.R;
-import league.funny.com.funnyleague.adapter.ZOLTextRecyclerAdapter;
+import league.funny.com.funnyleague.adapter.ZOLYouQuTextRecyclerAdapter;
 import league.funny.com.funnyleague.bean.ItemBean;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
 import league.funny.com.funnyleague.util.Util;
@@ -35,12 +35,12 @@ import league.funny.com.funnyleague.view.RecycleViewDivider;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ZOLTextFragment extends BaseFragment {
+public class ZOLYouQuTextFragment extends BaseFragment {
 
     private View view = null;
     private int page = 1;
-    private ArrayList<ItemBean> ZOLItemBeanArrayList = new ArrayList<>();
-    private ZOLTextRecyclerAdapter adapter;
+    private ArrayList<ItemBean> ZOLYouQuItemBeanArrayList = new ArrayList<>();
+    private ZOLYouQuTextRecyclerAdapter adapter;
 
     private int type = 0;
 
@@ -55,7 +55,7 @@ public class ZOLTextFragment extends BaseFragment {
     @BindView(R.id.recyclerView_text)
     RecyclerView recyclerView;
 
-    public ZOLTextFragment() {
+    public ZOLYouQuTextFragment() {
         // Required empty public constructor
     }
 
@@ -67,7 +67,7 @@ public class ZOLTextFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setRetainInstance(true);
-        view = inflater.inflate(R.layout.fragment_text_zol, container, false);
+        view = inflater.inflate(R.layout.fragment_text_zol_youqu, container, false);
         ButterKnife.bind(this, view);
         initView();
         initData();
@@ -83,7 +83,7 @@ public class ZOLTextFragment extends BaseFragment {
     }
 
     public void initData() {
-        adapter = new ZOLTextRecyclerAdapter(getActivity(), ZOLItemBeanArrayList);
+        adapter = new ZOLYouQuTextRecyclerAdapter(getActivity(), ZOLYouQuItemBeanArrayList);
         mAdapter = new RecyclerAdapterWithHF(adapter);
         recyclerView.setAdapter(mAdapter);
         mSwipeRefreshHelper = new SwipeRefreshHelper(swipeRefreshLayout);
@@ -134,7 +134,7 @@ public class ZOLTextFragment extends BaseFragment {
             mAdapter.notifyDataSetChanged();
             if(onFreshFlg) {
                 mSwipeRefreshHelper.refreshComplete();
-                if(ZOLItemBeanArrayList == null || ZOLItemBeanArrayList.size() <= 0){
+                if(ZOLYouQuItemBeanArrayList == null || ZOLYouQuItemBeanArrayList.size() <= 0){
                     mSwipeRefreshHelper.setLoadMoreEnable(false);
                 }else{
                     mSwipeRefreshHelper.setLoadMoreEnable(true);
@@ -152,29 +152,57 @@ public class ZOLTextFragment extends BaseFragment {
         try {
             String URL = null;
 
-            if(type == HttpUrlUtil.TYPE_ZOL_CHENG_REN){
-                URL = HttpUrlUtil.ZOL_CHENG_REN_HOME + page + HttpUrlUtil.HTML;
-            }else{
-                URL = HttpUrlUtil.ZOL_NAN_NV_HOME + page + HttpUrlUtil.HTML;
-            }
+            if(type == HttpUrlUtil.TYPE_ZOL_CHENG_REN || type == HttpUrlUtil.TYPE_ZOL_NAN_NV){
+                if(type == HttpUrlUtil.TYPE_ZOL_CHENG_REN){
+                    URL = HttpUrlUtil.ZOL_CHENG_REN_HOME + page + HttpUrlUtil.HTML;
+                }else{
+                    URL = HttpUrlUtil.ZOL_NAN_NV_HOME + page + HttpUrlUtil.HTML;
+                }
 
-            Document doc = Jsoup.connect(URL)
-                    .userAgent(HttpUrlUtil.USER_AGENT)
-                    .timeout(HttpUrlUtil.TIMEOUT).get();
+                Document doc = Jsoup.connect(URL)
+                        .userAgent(HttpUrlUtil.USER_AGENT)
+                        .timeout(HttpUrlUtil.TIMEOUT).get();
 
-            Elements elementsArticle = doc.select(".article-summary");
-            if (elementsArticle != null && elementsArticle.size() > 0) {
-                if(onFreshFlg) ZOLItemBeanArrayList.clear();
+                Elements elementsArticle = doc.select(".article-summary");
+                if (elementsArticle != null && elementsArticle.size() > 0) {
+                    if(onFreshFlg) ZOLYouQuItemBeanArrayList.clear();
 
-                for (int i = 0; i < elementsArticle.size(); i++) {
-                    ItemBean itemBean = new ItemBean();
+                    for (int i = 0; i < elementsArticle.size(); i++) {
+                        ItemBean itemBean = new ItemBean();
 
-                    itemBean.setItemContentUrl(HttpUrlUtil.ZOL_HOME + elementsArticle.get(i).select(".article-title").select("a").attr("href"));
-                    itemBean.setItemContent(Util.replaceHtmlSign(elementsArticle.get(i).select(".summary-text").html()));
-                    itemBean.setItemContentTitle(Util.replaceHtmlSign(elementsArticle.get(i).select(".article-title").text()));
-                    ZOLItemBeanArrayList.add(itemBean);
+                        itemBean.setItemContentUrl(HttpUrlUtil.ZOL_HOME + elementsArticle.get(i).select(".article-title").select("a").attr("href"));
+                        itemBean.setItemContent(Util.replaceHtmlSign(elementsArticle.get(i).select(".summary-text").html()));
+                        itemBean.setItemContentTitle(Util.replaceHtmlSign(elementsArticle.get(i).select(".article-title").text()));
+                        ZOLYouQuItemBeanArrayList.add(itemBean);
+                    }
+                }
+            }else {
+                if(type == HttpUrlUtil.TYPE_YOU_QU_CHENG_REN){
+                    URL = HttpUrlUtil.YOU_QU_CHENG_REN_HOME + page + HttpUrlUtil.HTML;
+                }else{
+                    URL = HttpUrlUtil.YOU_QU_NAN_NV_HOME + page + HttpUrlUtil.HTML;
+                }
+
+                Document doc = Jsoup.connect(URL)
+                        .userAgent(HttpUrlUtil.USER_AGENT)
+                        .timeout(HttpUrlUtil.TIMEOUT).get();
+
+                Elements elementsArticle = doc.select(".jokebox");
+                if (elementsArticle != null && elementsArticle.size() > 0) {
+                    if(onFreshFlg) ZOLYouQuItemBeanArrayList.clear();
+
+                    for (int i = 0; i < elementsArticle.size(); i++) {
+                        ItemBean itemBean = new ItemBean();
+
+                        itemBean.setItemContentUrl(HttpUrlUtil.YOU_QU_HOME + elementsArticle.get(i).select(".jokebox_title").select("a").attr("href"));
+                        itemBean.setItemContent(Util.replaceHtmlSign(elementsArticle.get(i).select("p").text()));
+                        itemBean.setItemContentTitle(Util.replaceHtmlSign(elementsArticle.get(i).select(".jokebox_title").select("a").text()));
+                        ZOLYouQuItemBeanArrayList.add(itemBean);
+                    }
                 }
             }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

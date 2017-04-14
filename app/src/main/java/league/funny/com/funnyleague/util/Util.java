@@ -7,14 +7,14 @@ import android.content.Context;
  */
 
 public class Util {
-    public static String replaceHtmlSign(String arg){
-        if(arg == null){
+    public static String replaceHtmlSign(String arg) {
+        if (arg == null) {
             return null;
         }
-        arg = arg.replace("&lt;","<").replace("&gt;",">").replace("&amp;","&")
-                .replace("<br/>",System.getProperty("line.separator"))
-                .replace("<br>",System.getProperty("line.separator"))
-                .replace("<p>","").replace("</p>","");
+        arg = arg.replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&")
+                .replace("<br/>", System.getProperty("line.separator"))
+                .replace("<br />", System.getProperty("line.separator"))
+                .replace("<p>", "").replace("</p>", "");
         return arg;
     }
 

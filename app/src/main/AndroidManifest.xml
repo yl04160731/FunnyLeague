@@ -51,21 +51,27 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.PengFuUserTextImageActivity"
+        <activity
+            android:name=".activity.PengFuUserTextImageActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.NeiHanContentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.NeiHanContentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.NeiHanUserTextImageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.NeiHanUserTextImageActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.NeiHanUserActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.NeiHanUserActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activity.FanJianContentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.FanJianContentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.ZOLYouQuContentActivity"></activity>
     </application>
 
 </manifest>

@@ -16,15 +16,15 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.R;
-import league.funny.com.funnyleague.activity.PengFuContentActivity;
+import league.funny.com.funnyleague.activity.ZOLYouQuContentActivity;
 import league.funny.com.funnyleague.bean.ItemBean;
 
-public class ZOLTextRecyclerAdapter extends Adapter<ViewHolder> {
+public class ZOLYouQuTextRecyclerAdapter extends Adapter<ViewHolder> {
 
     private Context context;
     private ArrayList<ItemBean> itemBeanArrayList;
 
-    public ZOLTextRecyclerAdapter(Context context, ArrayList<ItemBean> itemBeanArrayList) {
+    public ZOLYouQuTextRecyclerAdapter(Context context, ArrayList<ItemBean> itemBeanArrayList) {
         this.context = context;
         this.itemBeanArrayList = itemBeanArrayList;
     }
@@ -36,7 +36,7 @@ public class ZOLTextRecyclerAdapter extends Adapter<ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.recycler_text_item_zol, parent,
+        View view = LayoutInflater.from(context).inflate(R.layout.recycler_text_item_zol_youqu, parent,
                 false);
         return new ItemViewHolder(view);
     }
@@ -60,35 +60,34 @@ public class ZOLTextRecyclerAdapter extends Adapter<ViewHolder> {
         ((ItemViewHolder) holder).itemContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toPengFuContentActivity(position);
+                toZOLYouQuContentActivity(position);
             }
         });
 
         ((ItemViewHolder) holder).itemTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toPengFuContentActivity(position);
+                toZOLYouQuContentActivity(position);
             }
         });
 
     }
 
-    public void toPengFuContentActivity(int position) {
+    public void toZOLYouQuContentActivity(int position) {
         Intent intent = new Intent();
-        intent.setClass(context, PengFuContentActivity.class);
+        intent.setClass(context, ZOLYouQuContentActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("itemBeanArrayList", itemBeanArrayList);
-        bundle.putInt("pengFuContentIndex", position);
+        bundle.putString("ZOLYouQuUrl", itemBeanArrayList.get(position).getItemContentUrl());
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
 
     public static class ItemViewHolder extends ViewHolder {
 
-        @BindView(R.id.itemContent_zol)
+        @BindView(R.id.itemContent_zol_youqu)
         TextView itemContent;
 
-        @BindView(R.id.itemTitle_zol)
+        @BindView(R.id.itemTitle_zol_youqu)
         TextView itemTitle;
 
         public ItemViewHolder(View view) {

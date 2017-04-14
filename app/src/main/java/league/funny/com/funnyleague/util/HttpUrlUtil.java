@@ -19,6 +19,8 @@ public class HttpUrlUtil {
     public static int TYPE_IMAGE = 1;
     public static int TYPE_ZOL_CHENG_REN = 0;
     public static int TYPE_ZOL_NAN_NV = 1;
+    public static int TYPE_YOU_QU_CHENG_REN = 2;
+    public static int TYPE_YOU_QU_NAN_NV = 3;
 
     // 糗事百科
     public static String QIU_BAI_HOME = "http://www.qiushibaike.com";
@@ -58,7 +60,7 @@ public class HttpUrlUtil {
     public static String NEI_HAN_CONTENT = "http://neihanshequ.com/p";
 
     // zol主页
-    public static String ZOL_HOME = "http://xiaohua.zol.com.cn/";
+    public static String ZOL_HOME = "http://xiaohua.zol.com.cn";
 
     // zol成人
     public static String ZOL_CHENG_REN_HOME = "http://xiaohua.zol.com.cn/chengren/";
@@ -67,6 +69,7 @@ public class HttpUrlUtil {
     public static String ZOL_NAN_NV_HOME = "http://xiaohua.zol.com.cn/baoxiaonannv/";
 
     //有趣吧
+    public static String YOU_QU_HOME = "http://www.youqu.net";
     public static String YOU_QU_CHENG_REN_HOME = "http://www.youqu.net/hsxh/list_33_";
     public static String YOU_QU_NAN_NV_HOME = "http://www.youqu.net/wangwen/fuqixiaohua/list_216_";
 

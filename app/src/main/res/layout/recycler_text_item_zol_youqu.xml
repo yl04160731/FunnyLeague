@@ -11,7 +11,7 @@
         android:layout_marginBottom="10dp">
 
             <TextView
-                android:id="@+id/itemTitle_zol"
+                android:id="@+id/itemTitle_zol_youqu"
                 style="@style/BigTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -19,7 +19,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/itemContent_zol"
+        android:id="@+id/itemContent_zol_youqu"
         style="@style/NormalTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

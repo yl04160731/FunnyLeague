@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
-import league.funny.com.funnyleague.fragment.ZOLTextFragment;
+import league.funny.com.funnyleague.fragment.ZOLYouQuTextFragment;
 import league.funny.com.funnyleague.util.HttpUrlUtil;
 
 public class ChengRenTabAdapter extends FragmentPagerAdapter {
@@ -23,20 +23,20 @@ public class ChengRenTabAdapter extends FragmentPagerAdapter {
         Fragment textFragment = null;
         switch (position) {
             case 0:
-                textFragment = new ZOLTextFragment();
-                ((ZOLTextFragment)textFragment).setType(HttpUrlUtil.TYPE_ZOL_CHENG_REN);
+                textFragment = new ZOLYouQuTextFragment();
+                ((ZOLYouQuTextFragment)textFragment).setType(HttpUrlUtil.TYPE_ZOL_CHENG_REN);
                 return textFragment;
             case 1:
-                textFragment = new ZOLTextFragment();
-                ((ZOLTextFragment)textFragment).setType(HttpUrlUtil.TYPE_ZOL_NAN_NV);
+                textFragment = new ZOLYouQuTextFragment();
+                ((ZOLYouQuTextFragment)textFragment).setType(HttpUrlUtil.TYPE_ZOL_NAN_NV);
                 return textFragment;
             case 2:
-                textFragment = new ZOLTextFragment();
-                ((ZOLTextFragment)textFragment).setType(HttpUrlUtil.TYPE_ZOL_NAN_NV);
+                textFragment = new ZOLYouQuTextFragment();
+                ((ZOLYouQuTextFragment)textFragment).setType(HttpUrlUtil.TYPE_YOU_QU_CHENG_REN);
                 return textFragment;
             case 3:
-                textFragment = new ZOLTextFragment();
-                ((ZOLTextFragment)textFragment).setType(HttpUrlUtil.TYPE_ZOL_NAN_NV);
+                textFragment = new ZOLYouQuTextFragment();
+                ((ZOLYouQuTextFragment)textFragment).setType(HttpUrlUtil.TYPE_YOU_QU_NAN_NV);
                 return textFragment;
         }
         return textFragment;

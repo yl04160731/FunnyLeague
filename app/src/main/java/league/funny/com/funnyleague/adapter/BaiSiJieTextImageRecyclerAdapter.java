@@ -1,8 +1,6 @@
 package league.funny.com.funnyleague.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.text.TextPaint;
@@ -46,47 +44,47 @@ public class BaiSiJieTextImageRecyclerAdapter extends Adapter<ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.recycler_text_image_item_baisijie, parent,
                 false);
-        return new BaiSiJieTextImageRecyclerAdapter.ItemViewHolder(view);
+        return new ItemViewHolder(view);
     }
 
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final ItemBean itemBean = itemBeanArrayList.get(position);
-        ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).userName.setText(itemBean.getUserName());
+        ((ItemViewHolder) holder).userName.setText(itemBean.getUserName());
 
-        Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 40)).into(((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).userImage);
+        Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getUserImage()).transform(new GlideCircleTransform(FunnyLeagueApplication.getApplication(), 40)).into(((ItemViewHolder) holder).userImage);
         if(itemBean.getItemContent() != null && !"".equals(itemBean.getItemContent())){
-            ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemContent.setVisibility(View.VISIBLE);
-            ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemContent.setText(itemBean.getItemContent());
+            ((ItemViewHolder) holder).itemContent.setVisibility(View.VISIBLE);
+            ((ItemViewHolder) holder).itemContent.setText(itemBean.getItemContent());
         }else{
-            ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemContent.setVisibility(View.GONE);
+            ((ItemViewHolder) holder).itemContent.setVisibility(View.GONE);
         }
 
         if (itemBean.getItemImage() != null && !"".equals(itemBean.getItemImage())) {
-            ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemImage.setVisibility(View.VISIBLE);
-            ViewGroup.LayoutParams params = ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemImage.getLayoutParams();
+            ((ItemViewHolder) holder).itemImage.setVisibility(View.VISIBLE);
+            ViewGroup.LayoutParams params = ((ItemViewHolder) holder).itemImage.getLayoutParams();
             int screenWidth = getScreenWidth(FunnyLeagueApplication.getApplication());
             params.width = screenWidth * 11 / 12;
             params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemImage.setLayoutParams(params);
-            ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemImage.setMaxWidth(screenWidth);
+            ((ItemViewHolder) holder).itemImage.setLayoutParams(params);
+            ((ItemViewHolder) holder).itemImage.setMaxWidth(screenWidth);
 
             Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getItemImage())
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .dontAnimate().error(R.drawable.imageload).placeholder(R.drawable.imageload)
-                    .into(((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemImage);
+                    .into(((ItemViewHolder) holder).itemImage);
 
         } else {
-            ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemImage.setVisibility(View.GONE);
+            ((ItemViewHolder) holder).itemImage.setVisibility(View.GONE);
         }
 
         if(itemBean.getItemContentTitle() == null || "".equals(itemBean.getItemContentTitle())){
-            ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemTitle.setVisibility(View.GONE);
+            ((ItemViewHolder) holder).itemTitle.setVisibility(View.GONE);
         }else{
-            ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemTitle.setVisibility(View.VISIBLE);
-            ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemTitle.setText(itemBean.getItemContentTitle());
-            TextPaint tp = ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemTitle.getPaint();
+            ((ItemViewHolder) holder).itemTitle.setVisibility(View.VISIBLE);
+            ((ItemViewHolder) holder).itemTitle.setText(itemBean.getItemContentTitle());
+            TextPaint tp = ((ItemViewHolder) holder).itemTitle.getPaint();
             tp.setFakeBoldText(true);
         }
 
@@ -97,41 +95,41 @@ public class BaiSiJieTextImageRecyclerAdapter extends Adapter<ViewHolder> {
             ((ItemViewHolder) holder).tag.setText(itemBean.getSortTag());
         }
 
-        ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).ding.setText(itemBean.getDing());
-        ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).cai.setText(itemBean.getCai());
-        ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).comment.setText(itemBean.getCommentCount());
+        ((ItemViewHolder) holder).ding.setText(itemBean.getDing());
+        ((ItemViewHolder) holder).cai.setText(itemBean.getCai());
+        ((ItemViewHolder) holder).comment.setText(itemBean.getCommentCount());
 
-        ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toFanJianContentActivity(position);
-            }
-        });
-
-        ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toFanJianContentActivity(position);
-            }
-        });
-        ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toFanJianContentActivity(position);
-            }
-        });
+//        ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemContent.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                toFanJianContentActivity(position);
+//            }
+//        });
+//
+//        ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                toFanJianContentActivity(position);
+//            }
+//        });
+//        ((BaiSiJieTextImageRecyclerAdapter.ItemViewHolder) holder).itemTitle.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                toFanJianContentActivity(position);
+//            }
+//        });
 
     }
 
-    public void toFanJianContentActivity(int position) {
-        Intent intent = new Intent();
-//        intent.setClass(context, BaiSiJieContentActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("itemBeanArrayList", itemBeanArrayList);
-        bundle.putInt("BaiSiJieContentIndex", position);
-        intent.putExtras(bundle);
-        context.startActivity(intent);
-    }
+//    public void toFanJianContentActivity(int position) {
+//        Intent intent = new Intent();
+////        intent.setClass(context, BaiSiJieContentActivity.class);
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("itemBeanArrayList", itemBeanArrayList);
+//        bundle.putInt("BaiSiJieContentIndex", position);
+//        intent.putExtras(bundle);
+//        context.startActivity(intent);
+//    }
 
 //    public void toFanJianUserActivity(ItemBean itemBean) {
 //        if (itemBean.getUserUrl() == null || "".equals(itemBean.getUserUrl())) {

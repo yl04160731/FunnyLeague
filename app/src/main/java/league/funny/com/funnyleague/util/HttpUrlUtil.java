@@ -17,6 +17,8 @@ public class HttpUrlUtil {
 
     public static int TYPE_TEXT = 0;
     public static int TYPE_IMAGE = 1;
+    public static int TYPE_ZOL_CHENG_REN = 0;
+    public static int TYPE_ZOL_NAN_NV = 1;
 
     // 糗事百科
     public static String QIU_BAI_HOME = "http://www.qiushibaike.com";
@@ -54,6 +56,15 @@ public class HttpUrlUtil {
     public static String NEI_HAN_IMAGE = "http://neihanshequ.com/pic/?is_json=1&app_name=neihanshequ_web&max_time=1490079800";
     public static String NEI_HAN_USER = "http://neihanshequ.com/user/";
     public static String NEI_HAN_CONTENT = "http://neihanshequ.com/p";
+
+    // zol主页
+    public static String ZOL_HOME = "http://xiaohua.zol.com.cn/";
+
+    // zol成人
+    public static String ZOL_CHENG_REN_HOME = "http://xiaohua.zol.com.cn/chengren/";
+
+    // zol爆笑男女
+    public static String ZOL_NAN_NV_HOME = "http://xiaohua.zol.com.cn/baoxiaonannv/";
 
 
 

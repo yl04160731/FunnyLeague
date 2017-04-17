@@ -77,7 +77,8 @@ public class ZOLYouQuTextRecyclerAdapter extends Adapter<ViewHolder> {
         Intent intent = new Intent();
         intent.setClass(context, ZOLYouQuContentActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("ZOLYouQuUrl", itemBeanArrayList.get(position).getItemContentUrl());
+        bundle.putSerializable("itemBeanArrayList", itemBeanArrayList);
+        bundle.putInt("ZOLYouQuContentIndex", position);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }

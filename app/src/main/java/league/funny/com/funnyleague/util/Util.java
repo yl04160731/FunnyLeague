@@ -11,9 +11,10 @@ public class Util {
         if (arg == null) {
             return null;
         }
-        arg = arg.replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&")
+        arg = arg.replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&").replace("&nbsp;", "")
                 .replace("<br/>", System.getProperty("line.separator"))
                 .replace("<br />", System.getProperty("line.separator"))
+                .replace("<br>", System.getProperty("line.separator"))
                 .replace("<p>", "").replace("</p>", "");
         return arg;
     }

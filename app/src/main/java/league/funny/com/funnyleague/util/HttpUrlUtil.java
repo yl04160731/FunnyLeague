@@ -22,6 +22,12 @@ public class HttpUrlUtil {
     public static int TYPE_YOU_QU_CHENG_REN = 2;
     public static int TYPE_YOU_QU_NAN_NV = 3;
 
+    public static int TYPE_YOU_QU_XIE_E = 0;
+    public static int TYPE_YOU_QU_NEI_HAN = 1;
+    public static int TYPE_YOU_QU_SE_XI = 2;
+    public static int TYPE_YOU_QU_KA_LIE = 3;
+    public static int TYPE_YOU_QU_HUAN_KEN = 4;
+
     // 糗事百科
     public static String QIU_BAI_HOME = "http://www.qiushibaike.com";
     public static String QIU_BAI_TEXT = "http://www.qiushibaike.com/text/";

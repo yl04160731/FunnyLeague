@@ -71,7 +71,8 @@
             android:name=".activity.FanJianContentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.ZOLYouQuContentActivity"></activity>
+        <activity android:name=".activity.ZOLYouQuContentActivity" />
+        <activity android:name=".activity.ManHuaContentActivity"></activity>
     </application>
 
 </manifest>

@@ -21,7 +21,7 @@ import league.funny.com.funnyleague.fragment.ChengFragment;
 import league.funny.com.funnyleague.fragment.ImageFragment;
 import league.funny.com.funnyleague.fragment.MoreFragment;
 import league.funny.com.funnyleague.fragment.TextFragment;
-import league.funny.com.funnyleague.fragment.VideoFragment;
+import league.funny.com.funnyleague.fragment.ManHuaFragment;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -39,7 +39,7 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
 
     private TextFragment textFragment = null;
     private ImageFragment imageFragment = null;
-    private VideoFragment videoFragment = null;
+    private ManHuaFragment manHuaFragment = null;
     private ChengFragment chengrenFragment = null;
     private MoreFragment moreFragment = null;
 
@@ -150,11 +150,11 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
                 }
                 break;
             case 3:
-                if (videoFragment == null) {
-                    videoFragment = new VideoFragment();
-                    fragment = videoFragment;
+                if (manHuaFragment == null) {
+                    manHuaFragment = new ManHuaFragment();
+                    fragment = manHuaFragment;
                 } else {
-                    fragment = videoFragment;
+                    fragment = manHuaFragment;
                 }
                 break;
             case 4:

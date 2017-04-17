@@ -15,6 +15,7 @@ public class Util {
                 .replace("<br/>", System.getProperty("line.separator"))
                 .replace("<br />", System.getProperty("line.separator"))
                 .replace("<br>", System.getProperty("line.separator"))
+                .replace("<b>", "").replace("</b>", "")
                 .replace("<p>", "").replace("</p>", "");
         return arg;
     }

@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="league.funny.com.funnyleague.fragment.ZOLYouQuTextFragment">
+    tools:context="league.funny.com.funnyleague.fragment.ManHuaImageFragment">
+
     <View
         android:background="@color/lightGrey"
         android:layout_width="match_parent"

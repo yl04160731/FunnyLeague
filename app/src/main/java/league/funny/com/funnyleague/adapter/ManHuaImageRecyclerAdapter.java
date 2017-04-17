@@ -73,6 +73,13 @@ public class ManHuaImageRecyclerAdapter extends Adapter<ViewHolder> {
             }
         });
 
+        ((ItemViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toManHuaContentActivity(position);
+            }
+        });
+
     }
 
     public void toManHuaContentActivity(int position) {

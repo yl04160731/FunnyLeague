@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,8 +35,10 @@ import static com.ashokvarma.bottomnavigation.utils.Utils.getScreenWidth;
  */
 public class ManHuaContentFragment extends Fragment {
 
-    @BindView(R.id.itemContent_manhua)
-    ImageView itemContent;
+//    @BindView(R.id.itemContent_manhua)
+//    ImageView itemContent;
+    @BindView(R.id.viewGroup)
+    LinearLayout viewGroup;
 
     @BindView(R.id.itemTitle_manhua)
     TextView itemTitle;
@@ -51,6 +54,8 @@ public class ManHuaContentFragment extends Fragment {
     private ItemBean itemBean;
 
     private View view = null;
+
+    private String[] imageViewString;
 
     public void setItemBean(ItemBean itemBean) {
         this.itemBean = itemBean;
@@ -86,19 +91,26 @@ public class ManHuaContentFragment extends Fragment {
     Handler HtmlHandler = new Handler() {
         public void handleMessage(Message msg) {
 
-            ViewGroup.LayoutParams params = itemContent.getLayoutParams();
-            int screenWidth = getScreenWidth(FunnyLeagueApplication.getApplication());
-            params.width = screenWidth * 11 / 12;
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            itemContent.setLayoutParams(params);
-            itemContent.setMaxWidth(screenWidth);
-            
             itemTitle.setText(itemBean.getItemContentTitle());
 
-            Glide.with(FunnyLeagueApplication.getApplication()).load(itemBean.getItemContent())
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .dontAnimate().error(R.drawable.imageload).placeholder(R.drawable.imageload)
-                    .into(itemContent);
+            for (int i = 0; i < imageViewString.length; i++) {
+                ImageView imageView = new ImageView(getActivity());
+                int screenWidth = getScreenWidth(FunnyLeagueApplication.getApplication());
+                imageView.setLayoutParams(new ViewGroup.LayoutParams(screenWidth * 11 / 12,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
+                imageView.setMaxWidth(screenWidth);
+                imageView.setPadding(Util.dp2px(getActivity(),4),
+                        Util.dp2px(getActivity(),4),Util.dp2px(getActivity(),4),
+                        Util.dp2px(getActivity(),4));
+                imageView.setAdjustViewBounds(true);
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+
+                Glide.with(FunnyLeagueApplication.getApplication()).load(imageViewString[i])
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .dontAnimate().error(R.drawable.imageload).placeholder(R.drawable.imageload)
+                        .into(imageView);
+                viewGroup.addView(imageView);
+            }
 
             ContentWait.setVisibility(View.GONE);
             contentLayout.setVisibility(View.VISIBLE);
@@ -116,7 +128,11 @@ public class ManHuaContentFragment extends Fragment {
             Elements elementsText = doc.select("td");
             if (elementsArticle != null && elementsArticle.size() > 0) {
                 itemBean.setItemContentTitle(Util.replaceHtmlSign(elementsArticle.select("h1").text()));
-                itemBean.setItemContent(elementsText.select("img").attr("src"));
+                Elements elementsImage = elementsText.select("img");
+                imageViewString = new String[elementsImage.size()];
+                for(int i = 0; i < elementsImage.size();i++){
+                    imageViewString[i] = elementsImage.get(i).attr("src");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

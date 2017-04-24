@@ -228,7 +228,7 @@ public class QiuBaiContentFragment extends BaseFragment {
                     commentBean.setUserId(userUrl.replace("/","").replace("users",""));
 
                     commentBean.setUserName(Util.replaceHtmlSign(elementsShenComments.get(i).select(".cmt-name").html()));
-                    commentBean.setUserImage(elementsShenComments.get(i).select(".avatar").attr("src"));
+                    commentBean.setUserImage("http://" + elementsShenComments.get(i).select(".avatar").attr("src").substring(2));
                     commentBean.setUserAge(elementsShenComments.get(i).select(".articleGender").html());
                     if(elementsShenComments.get(i).html().contains("manIcon")){
                         commentBean.setUserSex("man");
@@ -256,7 +256,7 @@ public class QiuBaiContentFragment extends BaseFragment {
                     String age = elementsComments.get(i).select(".articleCommentGender").html();
                     commentBean.setUserAge(age);
                     commentBean.setUserName(Util.replaceHtmlSign(elementsComments.get(i).select(".userlogin").text().replace(" " + age,"")));
-                    commentBean.setUserImage(elementsComments.get(i).select(".avatars").select("img").attr("src"));
+                    commentBean.setUserImage("http://" + elementsComments.get(i).select(".avatars").select("img").attr("src").substring(2));
 
                     if(elementsComments.get(i).html().contains("manIcon")){
                         commentBean.setUserSex("man");

@@ -180,7 +180,13 @@ public class QiuBaiUserTextImageActivity extends BaseActivity {
 
                     qiuBaiItemTempBean.setItemContentUrl(HttpUrlUtil.QIU_BAI_HOME + elementsArticle.get(i).select(".user-article-text").select("a").attr("href"));
                     qiuBaiItemTempBean.setItemContent(Util.replaceHtmlSign(elementsArticle.get(i).select(".user-article-text").select("a").text()));
-                    qiuBaiItemTempBean.setItemImage(elementsArticle.get(i).select(".user-article-pic").select("img").attr("src"));
+
+                    if(elementsArticle.get(i).select(".user-article-pic").select("img").attr("src") != null &&
+                            !"".equals(elementsArticle.get(i).select(".user-article-pic").select("img").attr("src"))){
+                        qiuBaiItemTempBean.setItemImage("http://" + elementsArticle.get(i).select(".user-article-pic").select("img").attr("src").substring(2));
+                    }
+
+
                     String text = elementsArticle.get(i).select(".user-article-stat").text();
                     String smileCount = "";
                     String commentCount = "";

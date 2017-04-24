@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -170,7 +168,7 @@ public class QiuBaiTextImageFragment extends BaseFragment {
                     itemBean.setUserId(userUrl.replace("/","").replace("users",""));
                     itemBean.setUserUrl(HttpUrlUtil.QIU_BAI_HOME + userUrl);
                     itemBean.setUserName(Util.replaceHtmlSign(elementsAuthor.select("h2").html()));
-                    itemBean.setUserImage(elementsAuthor.select("img").attr("src"));
+                    itemBean.setUserImage("http://" + elementsAuthor.select("img").attr("src").substring(2));
                     itemBean.setUserAge(elementsAuthor.select(".articleGender").html());
 
                     if(elementsAuthor.html().contains("manIcon")){
@@ -181,7 +179,10 @@ public class QiuBaiTextImageFragment extends BaseFragment {
 
                     itemBean.setItemContentUrl(HttpUrlUtil.QIU_BAI_HOME + elementsArticle.get(i).select(".contentHerf").attr("href"));
                     itemBean.setItemContent(Util.replaceHtmlSign(elementsArticle.get(i).select(".content").select("span").html()));
-                    itemBean.setItemImage(elementsArticle.get(i).select(".thumb").select("img").attr("src"));
+                    if(elementsArticle.get(i).select(".thumb").select("img").attr("src") != null &&
+                            !"".equals(elementsArticle.get(i).select(".thumb").select("img").attr("src"))){
+                        itemBean.setItemImage("http://" + elementsArticle.get(i).select(".thumb").select("img").attr("src").substring(2));
+                    }
                     itemBean.setSmileCount(elementsArticle.get(i).select(".stats-vote").select(".number").html());
                     itemBean.setCommentCount(elementsArticle.get(i).select(".stats-comments").select(".number").html());
                     itemBean.setCommentGoodName(Util.replaceHtmlSign(elementsArticle.get(i).select(".cmt-name").html()));

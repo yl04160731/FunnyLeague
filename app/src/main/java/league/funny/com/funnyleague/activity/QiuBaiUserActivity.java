@@ -268,14 +268,20 @@ public class QiuBaiUserActivity extends BaseActivity {
                     Elements elementsFollowStatis = elementsStatis.get(0).select("ul").select("li");
                     for (int i = 0; i < elementsFollowStatis.size(); i++) {
                         UserBean followBean = new UserBean();
-                        followBean.setUserImage(elementsFollowStatis.get(i).select("img").attr("src"));
+                        if(elementsFollowStatis.get(i).select("img").attr("src") != null &&
+                                !"".equals(elementsFollowStatis.get(i).select("img").attr("src"))){
+                            followBean.setUserImage("http://" + elementsFollowStatis.get(i).select("img").attr("src").substring(2));
+                        }
                         followUserList.add(followBean);
                     }
 
                     Elements elementsFansStatis = elementsStatis.get(1).select("ul").select("li");
                     for (int i = 0; i < elementsFansStatis.size(); i++) {
                         UserBean fansBean = new UserBean();
-                        fansBean.setUserImage(elementsFansStatis.get(i).select("img").attr("src"));
+                        if(elementsFansStatis.get(i).select("img").attr("src") != null &&
+                                !"".equals(elementsFansStatis.get(i).select("img").attr("src"))){
+                            fansBean.setUserImage("http://" + elementsFansStatis.get(i).select("img").attr("src").substring(2));
+                        }
                         fansUserList.add(fansBean);
                     }
                 }

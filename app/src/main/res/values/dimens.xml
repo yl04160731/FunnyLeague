@@ -12,4 +12,5 @@
     <dimen name="textSize_smaller">12sp</dimen>
     <dimen name="app_bar_height">248dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="margin_7">7dp</dimen>
 </resources>

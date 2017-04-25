@@ -72,7 +72,8 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.ZOLYouQuContentActivity" />
-        <activity android:name=".activity.ManHuaContentActivity"></activity>
+        <activity android:name=".activity.ManHuaContentActivity" />
+        <activity android:name=".activity.WebViewAcitivity"></activity>
     </application>
 
 </manifest>

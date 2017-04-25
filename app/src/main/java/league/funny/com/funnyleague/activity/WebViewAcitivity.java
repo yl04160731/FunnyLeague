@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
@@ -52,6 +53,11 @@ public class WebViewAcitivity extends BaseActivity {
         Intent intent = this.getIntent();
         String url = intent.getStringExtra("url");
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setBlockNetworkImage(false);
+
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP)
+            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+
         webView.loadUrl(url);
         webView.setWebViewClient(new WebViewClient() {
             @Override

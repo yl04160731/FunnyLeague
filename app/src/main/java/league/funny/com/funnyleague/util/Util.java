@@ -1,7 +1,11 @@
 package league.funny.com.funnyleague.util;
 
 import android.content.Context;
+import android.os.Looper;
+import android.text.TextUtils;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.cache.ExternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 
 import java.io.File;
@@ -41,7 +45,7 @@ public class Util {
         return (int) (pxValue / scale + 0.5f);
     }
 
-    public String getCacheSize(Context context) {
+    public static String getCacheSize(Context context) {
         try {
             return getFormatSize(getFolderSize(new File(context.getCacheDir() + "/"+ InternalCacheDiskCacheFactory.DEFAULT_DISK_CACHE_DIR)));
         } catch (Exception e) {
@@ -50,7 +54,7 @@ public class Util {
         return "";
     }
 
-    private long getFolderSize(File file) throws Exception {
+    private static long getFolderSize(File file) throws Exception {
         long size = 0;
         try {
             File[] fileList = file.listFiles();
@@ -94,6 +98,71 @@ public class Util {
         BigDecimal result4 = new BigDecimal(teraBytes);
 
         return result4.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "TB";
+    }
+
+    public static void clearImageMemoryCache(Context context) {
+        try {
+            if (Looper.myLooper() == Looper.getMainLooper()) { //只能在主线程执行
+                Glide.get(context).clearMemory();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 清除图片所有缓存
+     */
+    public static void clearImageAllCache(Context context) {
+        clearImageDiskCache(context);
+        clearImageMemoryCache(context);
+        String ImageExternalCatchDir=context.getExternalCacheDir()+ ExternalCacheDiskCacheFactory.DEFAULT_DISK_CACHE_DIR;
+        deleteFolderFile(ImageExternalCatchDir, true);
+    }
+
+    /**
+     * 清除图片磁盘缓存
+     */
+    public static void clearImageDiskCache(final Context context) {
+        try {
+            if (Looper.myLooper() == Looper.getMainLooper()) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Glide.get(context).clearDiskCache();
+                    }
+                }).start();
+            } else {
+                Glide.get(context).clearDiskCache();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void deleteFolderFile(String filePath, boolean deleteThisPath) {
+        if (!TextUtils.isEmpty(filePath)) {
+            try {
+                File file = new File(filePath);
+                if (file.isDirectory()) {
+                    File files[] = file.listFiles();
+                    for (File file1 : files) {
+                        deleteFolderFile(file1.getAbsolutePath(), true);
+                    }
+                }
+                if (deleteThisPath) {
+                    if (!file.isDirectory()) {
+                        file.delete();
+                    } else {
+                        if (file.listFiles().length == 0) {
+                            file.delete();
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

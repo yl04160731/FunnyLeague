@@ -1,5 +1,7 @@
 package league.funny.com.funnyleague;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,10 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar.OnTabSelectedListener;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import league.funny.com.funnyleague.activity.BaseActivity;
@@ -19,9 +25,11 @@ import league.funny.com.funnyleague.bean.GlobleBean;
 import league.funny.com.funnyleague.bean.image.ImageResponse;
 import league.funny.com.funnyleague.fragment.ChengFragment;
 import league.funny.com.funnyleague.fragment.ImageFragment;
-import league.funny.com.funnyleague.fragment.MoreFragment;
-import league.funny.com.funnyleague.fragment.TextFragment;
 import league.funny.com.funnyleague.fragment.ManHuaFragment;
+import league.funny.com.funnyleague.fragment.MoreFragment;
+import league.funny.com.funnyleague.fragment.NoChengRenFragment;
+import league.funny.com.funnyleague.fragment.NoManHuaFragment;
+import league.funny.com.funnyleague.fragment.TextFragment;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -42,6 +50,9 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
     private ManHuaFragment manHuaFragment = null;
     private ChengFragment chengrenFragment = null;
     private MoreFragment moreFragment = null;
+
+    private NoChengRenFragment noChengRenFragment = null;
+    private NoManHuaFragment noManHuaFragment = null;
 
     private Subscription subscription;
 
@@ -124,6 +135,9 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
 
     private Fragment getFragmentById(int position) {
         Fragment fragment = null;
+        SharedPreferences preferences = getSharedPreferences("DuanZiLianMeng", Context.MODE_PRIVATE);
+        DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+        String NowTime = df.format(new Date());
         switch (position) {
             case 0:
                 if (textFragment == null) {
@@ -142,19 +156,41 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
                 }
                 break;
             case 2:
-                if (chengrenFragment == null) {
-                    chengrenFragment = new ChengFragment();
-                    fragment = chengrenFragment;
+                int type_chengren = preferences.getInt("type_chengren",0);
+                String date_chengren = preferences.getString("date_chengren","");
+                if(type_chengren == 0 || "".equals(date_chengren) || date_chengren.compareTo(NowTime) < 0) {
+                    if (noChengRenFragment == null) {
+                        noChengRenFragment = new NoChengRenFragment();
+                        fragment = noChengRenFragment;
+                    } else {
+                        fragment = noChengRenFragment;
+                    }
                 } else {
-                    fragment = chengrenFragment;
+                    if (chengrenFragment == null) {
+                        chengrenFragment = new ChengFragment();
+                        fragment = chengrenFragment;
+                    } else {
+                        fragment = chengrenFragment;
+                    }
                 }
                 break;
             case 3:
-                if (manHuaFragment == null) {
-                    manHuaFragment = new ManHuaFragment();
-                    fragment = manHuaFragment;
-                } else {
-                    fragment = manHuaFragment;
+                int type_manhua = preferences.getInt("type_manhua",0);
+                String date_manhua = preferences.getString("date_manhua","");
+                if(type_manhua == 0 || "".equals(date_manhua) || date_manhua.compareTo(NowTime) < 0) {
+                    if (noManHuaFragment == null) {
+                        noManHuaFragment = new NoManHuaFragment();
+                        fragment = noManHuaFragment;
+                    } else {
+                        fragment = noManHuaFragment;
+                    }
+                }else {
+                    if (manHuaFragment == null) {
+                        manHuaFragment = new ManHuaFragment();
+                        fragment = manHuaFragment;
+                    } else {
+                        fragment = manHuaFragment;
+                    }
                 }
                 break;
             case 4:

@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <application
         android:name=".FunnyLeagueApplication"
@@ -71,9 +72,17 @@
             android:name=".activity.FanJianContentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.ZOLYouQuContentActivity" />
-        <activity android:name=".activity.ManHuaContentActivity" />
-        <activity android:name=".activity.WebViewAcitivity"></activity>
+        <activity android:name=".activity.ZOLYouQuContentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.ManHuaContentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.WebViewAcitivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"></activity>
+        <meta-data android:name="APP_ID" android:value="0362f8a8abd0db6cf12826cfe5ff7357" />
+        <meta-data android:name="APP_PID" android:value="default" />
     </application>
 
 </manifest>

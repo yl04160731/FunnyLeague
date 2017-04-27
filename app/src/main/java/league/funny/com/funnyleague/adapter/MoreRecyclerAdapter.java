@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.waps.AppConnect;
 import league.funny.com.funnyleague.FunnyLeagueApplication;
 import league.funny.com.funnyleague.R;
 import league.funny.com.funnyleague.activity.WebViewAcitivity;
@@ -80,12 +81,16 @@ public class MoreRecyclerAdapter extends Adapter<ViewHolder> {
     }
 
     public void toMoreContentActivity(int position) {
-        Intent intent = new Intent();
-        intent.setClass(context, WebViewAcitivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("url", itemBeanArrayList.get(position).getItemContentUrl());
-        intent.putExtras(bundle);
-        context.startActivity(intent);
+        if(position == 0){
+            AppConnect.getInstance(context).showOffers(context);
+        }else {
+            Intent intent = new Intent();
+            intent.setClass(context, WebViewAcitivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("url", itemBeanArrayList.get(position).getItemContentUrl());
+            intent.putExtras(bundle);
+            context.startActivity(intent);
+        }
     }
 
     public static class ItemViewHolder extends ViewHolder {

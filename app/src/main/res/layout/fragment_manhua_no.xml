@@ -22,11 +22,11 @@
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:stretchColumns="0,1"
             android:layout_marginTop="15dp">
             <TableRow>
                 <TextView
                     style="@style/NormalTextView"
-                    android:layout_weight="5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -34,11 +34,10 @@
 
                 <TextView
                     style="@style/SmallTextView"
-                    android:layout_weight="5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorAccent"
-                    android:text="50积分" />
+                    android:text="60积分" />
 
                 <Button
                     android:layout_width="wrap_content"
@@ -46,7 +45,6 @@
                     android:background="@color/colorAccent"
                     android:textColor="@color/white"
                     android:id="@+id/manhua_7"
-                    android:layout_weight="1"
                     android:layout_alignParentRight="true"
                     android:text="开通"/>
             </TableRow>
@@ -55,7 +53,6 @@
                 android:layout_marginTop="30dp">
                 <TextView
                     style="@style/NormalTextView"
-                    android:layout_weight="5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -63,11 +60,10 @@
 
                 <TextView
                     style="@style/SmallTextView"
-                    android:layout_weight="5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorAccent"
-                    android:text="100积分" />
+                    android:text="110积分" />
 
                 <Button
                     android:layout_width="wrap_content"
@@ -75,7 +71,6 @@
                     android:background="@color/colorAccent"
                     android:textColor="@color/white"
                     android:id="@+id/manhua_30"
-                    android:layout_weight="1"
                     android:layout_alignParentRight="true"
                     android:text="开通"/>
             </TableRow>
@@ -110,7 +105,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:textColor="@color/colorAccent"
-                android:text="300" />
+                android:id="@+id/jifenCount"
+                android:text="" />
 
         </RelativeLayout>
 

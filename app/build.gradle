@@ -40,4 +40,5 @@ dependencies {
     compile 'com.chanven.lib:cptr:1.1.0'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile files('libs/AppOffer_3.0.1.jar')
 }

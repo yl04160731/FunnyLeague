@@ -19,6 +19,7 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.waps.AppConnect;
 import league.funny.com.funnyleague.activity.BaseActivity;
 import league.funny.com.funnyleague.api.ApiManage;
 import league.funny.com.funnyleague.bean.GlobleBean;
@@ -56,12 +57,31 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
 
     private Subscription subscription;
 
+    public ChengFragment getChengrenFragment() {
+        return chengrenFragment;
+    }
+
+    public void setChengrenFragment(ChengFragment chengrenFragment) {
+        this.chengrenFragment = chengrenFragment;
+    }
+
+    public ManHuaFragment getManHuaFragment() {
+        return manHuaFragment;
+    }
+
+    public void setManHuaFragment(ManHuaFragment manHuaFragment) {
+        this.manHuaFragment = manHuaFragment;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ((FunnyLeagueApplication) FunnyLeagueApplication.getContext()).addActivity(this);
         ButterKnife.bind(this);
+        AppConnect.getInstance(this); // 广告
+        AppConnect.getInstance(this).initPopAd(this); // 广告
+        AppConnect.getInstance(this).showPopAd(this); // 广告
         getBackground();
         if (Build.VERSION.SDK_INT >= 21) {
             getSupportActionBar().setElevation(0);
@@ -156,9 +176,8 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
                 }
                 break;
             case 2:
-                int type_chengren = preferences.getInt("type_chengren",0);
                 String date_chengren = preferences.getString("date_chengren","");
-                if(type_chengren == 0 || "".equals(date_chengren) || date_chengren.compareTo(NowTime) < 0) {
+                if(date_chengren.compareTo(NowTime) < 0) {
                     if (noChengRenFragment == null) {
                         noChengRenFragment = new NoChengRenFragment();
                         fragment = noChengRenFragment;
@@ -175,9 +194,8 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
                 }
                 break;
             case 3:
-                int type_manhua = preferences.getInt("type_manhua",0);
                 String date_manhua = preferences.getString("date_manhua","");
-                if(type_manhua == 0 || "".equals(date_manhua) || date_manhua.compareTo(NowTime) < 0) {
+                if(date_manhua.compareTo(NowTime) < 0) {
                     if (noManHuaFragment == null) {
                         noManHuaFragment = new NoManHuaFragment();
                         fragment = noManHuaFragment;
@@ -214,6 +232,7 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
                 Toast.makeText(getApplicationContext(), this.getResources().getString(R.string.out_app), Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
+                AppConnect.getInstance(this).close(); // 广告
                 FunnyLeagueApplication.quiteApplication();
             }
             return true;

@@ -1,7 +1,7 @@
 package league.funny.com.funnyleague.fragment;
 
-
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.waps.AppConnect;
+import cn.waps.UpdatePointsListener;
 import league.funny.com.funnyleague.R;
 import league.funny.com.funnyleague.adapter.MoreRecyclerAdapter;
 import league.funny.com.funnyleague.bean.ItemBean;
@@ -25,7 +27,7 @@ import league.funny.com.funnyleague.view.RecycleViewDivider;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MoreFragment extends BaseFragment {
+public class MoreFragment extends BaseFragment implements UpdatePointsListener {
 
     private View view = null;
     @BindView(R.id.grid_recyclerView)
@@ -34,7 +36,12 @@ public class MoreFragment extends BaseFragment {
     @BindView(R.id.cacheCount)
     TextView cacheCount;
 
+    @BindView(R.id.jifenCount)
+    TextView jifenCount;
 
+    private String displayPointsText;
+
+    final Handler mHandler = new Handler();
 
     private ArrayList<ItemBean> itemBeanArrayList = new ArrayList<ItemBean>();
     private MoreRecyclerAdapter adapter;
@@ -60,6 +67,7 @@ public class MoreFragment extends BaseFragment {
         initView();
         initData();
         setHasOptionsMenu(true);
+//        AppConnect.getInstance(getActivity()).awardPoints(500,this);
         return view;
     }
 
@@ -123,6 +131,7 @@ public class MoreFragment extends BaseFragment {
         // TODO Auto-generated method stub
         super.onResume();
         cacheCount.setText(Util.getCacheSize(getActivity()));
+        AppConnect.getInstance(getActivity()).getPoints(this);
     }
 
     @OnClick(R.id.clearCache)
@@ -130,5 +139,43 @@ public class MoreFragment extends BaseFragment {
         Util.clearImageAllCache(getActivity());
         Toast.makeText(getActivity(),"清除缓存成功",Toast.LENGTH_SHORT).show();
         cacheCount.setText(Util.getCacheSize(getActivity()));
+    }
+
+    @OnClick(R.id.OfferRelativeLayout)
+    public void toOffer(){
+        AppConnect.getInstance(getActivity()).showOffers(getActivity());
+    }
+
+    // 创建一个线程
+    final Runnable mUpdateResults = new Runnable() {
+        public void run() {
+            if (jifenCount != null) {
+                jifenCount.setText(displayPointsText);
+            }
+        }
+    };
+
+    /**
+     * AppConnect.getPoints()方法的实现，必须实现
+     *
+     * @param currencyName
+     *            虚拟货币名称.
+     * @param pointTotal
+     *            虚拟货币余额.
+     */
+    public void getUpdatePoints(String currencyName, int pointTotal) {
+        displayPointsText = "" + pointTotal;
+        mHandler.post(mUpdateResults);
+    }
+
+    /**
+     * AppConnect.getPoints() 方法的实现，必须实现
+     *
+     * @param error
+     *            请求失败的错误信息
+     */
+    public void getUpdatePointsFailed(String error) {
+        displayPointsText = error;
+        mHandler.post(mUpdateResults);
     }
 }

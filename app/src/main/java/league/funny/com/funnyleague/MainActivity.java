@@ -136,6 +136,7 @@ public class MainActivity extends BaseActivity implements OnTabSelectedListener 
         if (!fragment.isAdded()) {    // 先判断是否被add过
             getSupportFragmentManager().beginTransaction().hide(currentFragment).add(R.id.fragment_container, fragment).commit(); // 隐藏当前的fragment，add下一个到Activity中
         } else {
+            fragment.setUserVisibleHint(true);
             getSupportFragmentManager().beginTransaction().hide(currentFragment).show(fragment).commit(); // 隐藏当前的fragment，显示下一个
         }
 

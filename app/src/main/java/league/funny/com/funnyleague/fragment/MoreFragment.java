@@ -178,4 +178,13 @@ public class MoreFragment extends BaseFragment implements UpdatePointsListener {
         displayPointsText = error;
         mHandler.post(mUpdateResults);
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            cacheCount.setText(Util.getCacheSize(getActivity()));
+            AppConnect.getInstance(getActivity()).getPoints(this);
+        }
+    }
 }

@@ -81,7 +81,7 @@
         <activity android:name=".activity.WebViewAcitivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"></activity>
-        <meta-data android:name="APP_ID" android:value="0362f8a8abd0db6cf12826cfe5ff7357" />
+        <meta-data android:name="APP_ID" android:value="d36b848c901d45b704241e24d193c2bc" />
         <meta-data android:name="APP_PID" android:value="default" />
     </application>
 

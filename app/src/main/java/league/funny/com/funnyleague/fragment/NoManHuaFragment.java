@@ -121,7 +121,7 @@ public class NoManHuaFragment extends BaseFragment implements UpdatePointsListen
             ((MainActivity)getActivity()).onTabSelected(0);
             ((MainActivity)getActivity()).onTabSelected(3);
         }else{
-            Toast.makeText(getActivity(),"积分不足，请先赚到足够积分",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),"积分不足，请先赚取积分",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -141,7 +141,15 @@ public class NoManHuaFragment extends BaseFragment implements UpdatePointsListen
             ((MainActivity)getActivity()).onTabSelected(0);
             ((MainActivity)getActivity()).onTabSelected(3);
         }else{
-            Toast.makeText(getActivity(),"积分不足，请先赚到足够积分",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),"积分不足，请先赚取积分",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            AppConnect.getInstance(getActivity()).getPoints(this);
         }
     }
 
